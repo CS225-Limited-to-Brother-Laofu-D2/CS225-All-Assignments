@@ -1,7 +1,7 @@
 #ifndef heap_h
 #define heap_h
 
-//LAOFUNIUBI
+//LAOFUNIUBI laofu
 
 template<class T> class AList
 {

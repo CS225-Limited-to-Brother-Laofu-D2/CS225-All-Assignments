@@ -1,6 +1,8 @@
 #ifndef heap_h
 #define heap_h
 
+//LAOFUNIUBI
+
 template<class T> class AList
 {
 public:

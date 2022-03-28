@@ -2,7 +2,7 @@
 Assignments for
 </p>
 <p align="center">
-**CS 225 – Data Structures**  
+CS 225 – Data Structures
 </p>
 <p align="center">
 ZJU-UIUC / Klaus-Dieter Schewe

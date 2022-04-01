@@ -124,14 +124,18 @@ int main()
                     myhashtable2.display();
                 break;
             }
-            /*case 5:
+            case 5:
             {
+                int intkey;
+                cout<<"Enter the key\n";
                 if(type == 0){
-                    cout<< myhashtable1.retrieve<<"\n";
+                    cin>>intkey;
+                    cout<< myhashtable1.retrieve(intkey)<<"\n";
                 }else{
-                    cout<< myhashtable2.retrieve<<"\n";
+                    cin>>intkey;
+                    cout<< myhashtable2.retrieve(intkey)<<"\n";
                 }
-            }*/
+            }
         }
     }
     while (op != 0);

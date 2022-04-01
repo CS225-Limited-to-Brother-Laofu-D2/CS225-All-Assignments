@@ -66,7 +66,7 @@ template<class T> void hashset<T>::add(T item)
 
     hash<T> hashfunction; // use the predefined hashfunction to get "key" values
     int index;
-    int psl_counter;
+    T psl_counter;
     psl_counter = 0;
     index = hashfunction(item) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.
     int location = -1;  // used to distinguish between undefined entries (null pointer) and placeholders
@@ -85,11 +85,13 @@ template<class T> void hashset<T>::add(T item)
         // Here we need to consider other cases: no placeholder is found and we need to compare the PSL, PSL is smaller or equal, we should do nothing, i.e., follow the normal procedure
         if(psl_counter > *PSLarray[index]) // In this case, we need to swap the two elements.
         {
-            T temp1,temp2;
-            temp1 = *reprarray[index];
-            temp2 = *PSLarray[index]
-            *reprarray[index] = item;
-            *PSLarray[index] = psl_counter;
+            T *temp1,*temp2;
+            *temp1 = reprarray[index];
+            *temp2 = PSLarray[index];
+            T *itemlaofu = item;
+            T *psl_counterlaofu = psl_counter
+            reprarray[index] = itemlaofu;
+            PSLarray[index] = psl_counterlaofu;
             item = temp1;
             psl_counter = temp2;
         }

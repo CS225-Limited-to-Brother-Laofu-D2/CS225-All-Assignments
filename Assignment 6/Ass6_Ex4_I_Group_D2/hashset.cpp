@@ -21,10 +21,15 @@ template<class T> hashset<T>::hashset(int size)
         maxsize = 20; // default size is 20; no smaller hashtables are considered
     numitems = 0; // initially, the hashtable is empty
     reprarray = new T*[maxsize];  // allocate space for the array of pointers
+    PSLarray = new T*[maxsize]; // Add for ex4 i.
     // the for loop initialises all table entries to be undefined
     for (int i = 0; i < maxsize; i++)
     {
         reprarray[i] = 0;
+    }
+    for (int i = 0; i < maxsize; i++)
+    {
+        PSLarray[i] = 0;
     }
     T *pt0 = new T;  // This defines the fixed placeholder pointer
     *pt0 = 0;

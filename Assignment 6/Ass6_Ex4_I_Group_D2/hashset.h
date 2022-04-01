@@ -25,6 +25,7 @@ public:
 private:
     int numitems;           // contains the number of elements in the hashtable
     T **reprarray;
+    T **PSLarray; // Added for ex4 i
 /* reprarray defines a pointer to (an array of) pointers to values of type T. We will use a null pointer, if an entry is undefined, and a fixed pointer as placeholder for free entries (after remove) */
     T *pt_nil;              // used as placeholder
     int maxsize;            // defines the size of the hashtable

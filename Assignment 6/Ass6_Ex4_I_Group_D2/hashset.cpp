@@ -80,8 +80,10 @@ template<class T> void hashset<T>::add(T item)
         {
             location = index;
         }
-        if
+        // Here we need to consider other cases: no placeholder is found and we need to compare the PSL
+        if()
         index = (index + 1) % maxsize;
+        psl_counter++; // PSL increase since no insertion in this loop.
     }
     // after leaving the while loop we either have location < 1, i.e. we store the item at the last examined index (which contains a null pointer),
     // otherwise, if location >= 0 holds, we found a placeholder, so the item will be stored at the location of this placeholder

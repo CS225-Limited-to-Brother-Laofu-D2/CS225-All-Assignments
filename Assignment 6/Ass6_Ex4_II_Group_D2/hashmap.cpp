@@ -139,12 +139,12 @@ template<class K, class T> T hashmap<K,T>::retrieve(K key)
 template<class K, class T> bool hashmap<K,T>::member(K key, T item)
 {
     /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-    hash<T> hashfunction;  // use the "key" function for the type T (if defined)
+    hash<K> hashfunction;  // use the "key" function for the type T (if defined)
     int index;
     index = hashfunction(key) % maxsize;
     while (keyarray[index] != 0) // again we search for item starting from the index position until we find a null pointer
     {
-        if (keyarray[index] != pt_nil && *keyarray[index] == key)
+        if (keyarray[index] != pt_nil && *keyarray[index] == key && reprarray[index]==T)
             return true;  // item was found
         index = (index + 1) % maxsize;
     }
@@ -169,7 +169,7 @@ template<class K, class T> void hashmap<K,T>::rehash(int newsize)
         {
             K item = *keyarray[i];
             T value = reprarray[i];
-            hash<T> hashfunction;       
+            hash<K> hashfunction;       
             int index = hashfunction(item) % newsize;
                 // recompute the new hash value
             while (newkeyarray[index] != 0)  // find the first free place, where the entry can be stored in the new hashtable

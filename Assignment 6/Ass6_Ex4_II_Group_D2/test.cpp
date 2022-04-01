@@ -1,10 +1,3 @@
-//
-//  hashmgt.cpp
-//  
-//
-//  Created by KD on 6.03.21.
-//
-
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
@@ -16,8 +9,8 @@ using std::hash;
 int main()
 {
     int type, size, op;
-    hashset<int> myhashtable1;
-    hashset<double> myhashtable2;
+    hashmap<int,int> myhashtable1;
+    hashmap<int,double> myhashtable2;
     bool boolresult;
     do
     {
@@ -34,12 +27,12 @@ int main()
     {
         case 0:
         {
-            myhashtable1 = hashmap<int>(size);
+            myhashtable1 = hashmap<int,int>(size);
             break;
         }
         case 1:
         {
-            myhashtable2 = hashmap<double>(size);
+            myhashtable2 = hashmap<int,double>(size);
             break;
         }
     }
@@ -53,8 +46,8 @@ int main()
             cout << "2: delete\n";
             cout << "3: member\n";
             cout << "4: display\n";
-            cout << "5: retrieve\n"
-            cin >> op ;
+            cout << "5: retrieve\n";
+            cin >> op;
         }
         while ((op < 0) && (op > 5));
         switch(op)
@@ -73,11 +66,11 @@ int main()
                 }
                 else
                 {
-                    double doublekey;
-                    cin >> doublekey;
+                    int intkey;
+                    cin >> intkey;
                     double doubleitem;
                     cin >> doubleitem;
-                    myhashtable2.add(doublekey,doubleitem);
+                    myhashtable2.add(intkey,doubleitem);
                 }
                 break;
             }
@@ -92,9 +85,9 @@ int main()
                 }
                 else
                 {
-                    double doublekey;
-                    cin >> doublekey;
-                    myhashtable2.remove(doublekey);
+                    int intkey;
+                    cin >> intkey;
+                    myhashtable2.remove(intkey);
                 }
                 break;
             }
@@ -111,11 +104,11 @@ int main()
                 }
                 else
                 {
-                    double doublekey;
-                    cin >> doublekey;
+                    int intkey;
+                    cin >> intkey;
                     double doubleitem;
                     cin >> doubleitem;
-                    boolresult = myhashtable2.member(doublekey,doubleitem);
+                    boolresult = myhashtable2.member(intkey,doubleitem);
                 }
                 if (boolresult == true)
                     cout << "The value is in the hashtable.\n";
@@ -131,14 +124,14 @@ int main()
                     myhashtable2.display();
                 break;
             }
-            case 5:
+            /*case 5:
             {
                 if(type == 0){
                     cout<< myhashtable1.retrieve<<"\n";
                 }else{
                     cout<< myhashtable2.retrieve<<"\n";
                 }
-            }
+            }*/
         }
     }
     while (op != 0);

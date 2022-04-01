@@ -96,7 +96,9 @@ template<class T> void hashset<T>::add(T item)
     T* pt=new T;
     * pt=item;
     reprarray[location] = pt;   // store item in the hashtable
-    PSLarray[location] = &psl_counter;
+    int *psl_location=new int;
+    *psl_location=psl_counter;
+    PSLarray[location] = psl_location;
     ++ numitems;
     int load = 100 * numitems / maxsize;
     if (load >= 75)             // max load factor is exceeded; double the size

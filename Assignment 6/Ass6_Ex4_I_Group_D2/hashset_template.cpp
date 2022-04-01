@@ -54,7 +54,34 @@ template<class T> T & hashset<T>::operator[](int index)
 
 template<class T> void hashset<T>::add(T item)
 {
-    /* This function needs to be re-implemented by taking the Robin Hood method into account */
+    // Most of the codes are from lab7, we, Group D2, modified it for some for Robin Hood Hashing.
+    hash<T> hashfunction; // use the predefined hashfunction to get "key" values
+    int index;
+    index = hashfunction(item) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.
+    int location = -1;  // used to distinguish between undefined entries (null pointer) and placeholders
+    while (reprarray[index] != 0) // We first check, if the item is already in the hashtable
+    {
+        if (reprarray[index] != pt_nil && *reprarray[index] == item)
+            return;   // item found; no insertion
+        if (location < 0 && reprarray[index] == pt_nil) // a placeholder object is found; i.e. if the item is not in the hashtable, this will be the place for the insertion
+            location = index;
+        index = (index + 1) % maxsize;
+    }
+    // after leaving the while loop we either have location < 1, i.e. we store the item at the last examined index (which contains a null pointer),
+    // otherwise, if location >= 0 holds, we found a placeholder, so the item will be stored at the location of this placeholder
+    if (location < 0)
+        location = index;
+    T *pt = new T;
+    *pt = item;
+    reprarray[location] = pt;   // store item in the hashtable
+    ++ numitems;
+    int load = 100 * numitems / maxsize;
+    if (load >= 75)             // max load factor is exceeded; double the size
+    {
+        int newsize = 2 * numitems;
+        rehash(newsize);
+    }
+    return;
 }
 
 template<class T> void hashset<T>::remove(T item)

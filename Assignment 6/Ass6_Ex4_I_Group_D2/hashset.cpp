@@ -54,7 +54,11 @@ template<class T> T & hashset<T>::operator[](int index)
 
 template<class T> void hashset<T>::add(T item)
 {
+
     // Most of the codes are from lab7, we, Group D2, modified it for some for Robin Hood Hashing.
+
+    // We also modified the header file to get PSL array for each item.
+
     hash<T> hashfunction; // use the predefined hashfunction to get "key" values
     int index;
     index = hashfunction(item) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.

@@ -75,7 +75,7 @@ template<class T> void hashset<T>::add(T item)
         if (location < 0 && reprarray[index] == pt_nil) // a placeholder object is found; i.e. if the item is not in the hashtable, this will be the place for the insertion
             location = index;
         // Here we need to consider other cases: no placeholder is found and we need to compare the PSL, PSL is smaller or equal, we should do nothing, i.e., follow the normal procedure
-        if(psl_counter > *PSLarray[index]) // In this case, we need to swap the two elements.
+        if(location<0 && psl_counter > *PSLarray[index]) // In this case, we need to swap the two elements.
         {
             int temp1=*PSLarray[index];
             *PSLarray[index]=psl_counter;

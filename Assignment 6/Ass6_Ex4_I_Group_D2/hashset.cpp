@@ -21,7 +21,7 @@ template<class T> hashset<T>::hashset(int size)
         maxsize = 20; // default size is 20; no smaller hashtables are considered
     numitems = 0; // initially, the hashtable is empty
     reprarray = new T*[maxsize];  // allocate space for the array of pointers
-    PSLarray = new T*[maxsize]; // Add for ex4 i.
+    PSLarray = new int*[maxsize]; // Add for ex4 i.
     // the for loop initialises all table entries to be undefined
     for (int i = 0; i < maxsize; i++)
     {
@@ -29,7 +29,7 @@ template<class T> hashset<T>::hashset(int size)
     }
     for (int i = 0; i < maxsize; i++)
     {
-        *PSLarray[i] = 0;
+        PSLarray[i] = 0;
     }
     T *pt0 = new T;  // This defines the fixed placeholder pointer
     *pt0 = 0;
@@ -65,35 +65,26 @@ template<class T> void hashset<T>::add(T item)
     // We also modified the header file as well as the constructor function to get PSL array for each item.
 
     hash<T> hashfunction; // use the predefined hashfunction to get "key" values
-    int index;
-    T psl_counter;
-    psl_counter = 0;
+    int index,psl_counter=0;
     index = hashfunction(item) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.
     int location = -1;  // used to distinguish between undefined entries (null pointer) and placeholders
     while (reprarray[index] != 0) // We first check, if the item is already in the hashtable
     {
         if (reprarray[index] != pt_nil && *reprarray[index] == item)
-        {
             return;   // item found; no insertion
-        }     
         if (location < 0 && reprarray[index] == pt_nil) // a placeholder object is found; i.e. if the item is not in the hashtable, this will be the place for the insertion
-        {
             location = index;
-            index = (index + 1) % maxsize;
-            break;
-        }
         // Here we need to consider other cases: no placeholder is found and we need to compare the PSL, PSL is smaller or equal, we should do nothing, i.e., follow the normal procedure
         if(psl_counter > *PSLarray[index]) // In this case, we need to swap the two elements.
         {
-            T *temp1,*temp2;
-            *temp1 = reprarray[index];
-            *temp2 = PSLarray[index];
-            T *itemlaofu = item;
-            T *psl_counterlaofu = psl_counter
-            reprarray[index] = itemlaofu;
-            PSLarray[index] = psl_counterlaofu;
-            item = temp1;
-            psl_counter = temp2;
+            int temp1=*PSLarray[index];
+            *PSLarray[index]=psl_counter;
+            psl_counter=temp1;
+            T temp2=*reprarray[index];
+            T *loc=new T;
+            * loc=item;
+            reprarray[index]=loc;
+            item=temp2;
         }
         index = (index + 1) % maxsize;
         psl_counter++; // PSL increase since no insertion in this loop.
@@ -102,9 +93,10 @@ template<class T> void hashset<T>::add(T item)
     // otherwise, if location >= 0 holds, we found a placeholder, so the item will be stored at the location of this placeholder
     if (location < 0)
         location = index;
-    T *pt = new T;
-    *pt = item;
+    T* pt=new T;
+    * pt=item;
     reprarray[location] = pt;   // store item in the hashtable
+    PSLarray[location] = &psl_counter;
     ++ numitems;
     int load = 100 * numitems / maxsize;
     if (load >= 75)             // max load factor is exceeded; double the size

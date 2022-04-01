@@ -14,7 +14,7 @@ using std::cin;
 using std::hash;
 
 /* This defines a constructor */
-template<class T> hashset<T>::hashset(int size, int min, int max)
+template<class T> hashset<T>::hashset(int size, int min, int max) //laofu;
 {
     maxsize = size;
     fillmin = min;

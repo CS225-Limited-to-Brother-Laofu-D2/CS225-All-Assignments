@@ -80,8 +80,11 @@ template<class T> void hashset<T>::add(T item)
         {
             location = index;
         }
-        // Here we need to consider other cases: no placeholder is found and we need to compare the PSL
-        if()
+        // Here we need to consider other cases: no placeholder is found and we need to compare the PSL, PSL is smaller or equal, we should do nothing, i.e., follow the normal procedure
+        if(psl_counter <= this->PSLarray[index])
+        {
+            
+        }
         index = (index + 1) % maxsize;
         psl_counter++; // PSL increase since no insertion in this loop.
     }

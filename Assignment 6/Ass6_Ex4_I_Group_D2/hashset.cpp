@@ -62,10 +62,12 @@ template<class T> void hashset<T>::add(T item)
 
     // Most of the codes are from lab7, we, Group D2, modified it for some for Robin Hood Hashing.
 
-    // We also modified the header file to get PSL array for each item.
+    // We also modified the header file as well as the constructor function to get PSL array for each item.
 
     hash<T> hashfunction; // use the predefined hashfunction to get "key" values
     int index;
+    int psl_counter;
+    psl_counter = 0;
     index = hashfunction(item) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.
     int location = -1;  // used to distinguish between undefined entries (null pointer) and placeholders
     while (reprarray[index] != 0) // We first check, if the item is already in the hashtable

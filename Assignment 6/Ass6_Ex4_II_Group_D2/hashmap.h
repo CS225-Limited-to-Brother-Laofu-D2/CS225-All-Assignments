@@ -1,6 +1,6 @@
 //
 //  hashmap.h
-//  
+//
 //
 //  Created by KD on 6.03.21.
 //  Modified on 22.03.22
@@ -26,7 +26,7 @@ public:
 private:
     int numitems;           // contains the number of elements in the hashmap
     K **keyarray;
-    T *reprarray
+    T *reprarray;
 /* keyarray defines a pointer to (an array of) pointers to key values of type K. reprarray defines an array of corresponding values of type T. We will use a null pointer, if an entry is undefined, and a fixed pointer as placeholder for free entries (after remove) */
     K *pt_nil;              // used as placeholder
     int maxsize;            // defines the size of the hashmap

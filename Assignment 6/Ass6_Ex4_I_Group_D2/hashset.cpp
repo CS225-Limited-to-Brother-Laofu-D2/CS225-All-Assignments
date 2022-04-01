@@ -29,7 +29,7 @@ template<class T> hashset<T>::hashset(int size)
     }
     for (int i = 0; i < maxsize; i++)
     {
-        PSLarray[i] = 0;
+        *PSLarray[i] = 0;
     }
     T *pt0 = new T;  // This defines the fixed placeholder pointer
     *pt0 = 0;
@@ -79,11 +79,19 @@ template<class T> void hashset<T>::add(T item)
         if (location < 0 && reprarray[index] == pt_nil) // a placeholder object is found; i.e. if the item is not in the hashtable, this will be the place for the insertion
         {
             location = index;
+            index = (index + 1) % maxsize;
+            break;
         }
         // Here we need to consider other cases: no placeholder is found and we need to compare the PSL, PSL is smaller or equal, we should do nothing, i.e., follow the normal procedure
-        if(psl_counter <= this->PSLarray[index])
+        if(psl_counter > *PSLarray[index]) // In this case, we need to swap the two elements.
         {
-            
+            T temp1,temp2;
+            temp1 = *reprarray[index];
+            temp2 = *PSLarray[index]
+            *reprarray[index] = item;
+            *PSLarray[index] = psl_counter;
+            item = temp1;
+            psl_counter = temp2;
         }
         index = (index + 1) % maxsize;
         psl_counter++; // PSL increase since no insertion in this loop.

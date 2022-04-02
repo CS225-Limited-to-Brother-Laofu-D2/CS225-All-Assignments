@@ -23,6 +23,7 @@ public:
 // The function display is only used for testing purposes. It shows the size of
 // the hashmap, the number of elements, and displays all entries
     void display(void);
+    T fabonacci(int order);
 private:
     int numitems;           // contains the number of elements in the hashmap
     K **keyarray;

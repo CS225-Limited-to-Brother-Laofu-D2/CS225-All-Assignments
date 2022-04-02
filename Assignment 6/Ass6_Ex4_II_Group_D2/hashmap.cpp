@@ -52,9 +52,9 @@ template<class K, class T> T & hashmap<K,T>::operator[](int index)
 template<class K, class T> void hashmap<K,T>::add(K key, T item)
 {
     /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-    if(member(key,item))
+    if(member(key,item))    //Added for Memoisation.
         return;
-    hash<T> hashfunction; // use the predefined hashfunction to get "key" values
+    hash<K> hashfunction; // use the predefined hashfunction to get "key" values
     int index;
     index = hashfunction(key) % maxsize; // First determine the position index in the hash table, where the new value is stored, if free.
     int location = -1;  // used to distinguish between undefined entries (null pointer) and placeholders
@@ -88,9 +88,14 @@ template<class K, class T> void hashmap<K,T>::add(K key, T item)
 template<class K, class T> void hashmap<K,T>::remove(K key)
 {
     /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-    hash<T> hashfunction;  // use again the predefined hashfunction
+    hash<K> hashfunction;  // use again the predefined hashfunction
     int index;
     index = hashfunction(key) % maxsize;
+    if(keyarray[index]==0 || *keyarray[index]!=key)  //Added for Memoisation.
+    {
+        cout << key << " is not in the hashtable.\n";
+        return;
+    }
     while (keyarray[index] != 0)  // same as for add we search for item in the hashtable; the search starts at the designated hash value, and stops when we find a null pointer
     {
         if (keyarray[index] != pt_nil && *keyarray[index] == key)
@@ -123,7 +128,7 @@ template<class K, class T> void hashmap<K,T>::remove(K key)
 template<class K, class T> T hashmap<K,T>::retrieve(K key)
 {
     /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-    hash<T> hashfunction;  // use the "key" function for the type T (if defined)
+    hash<K> hashfunction;  // use the "key" function for the type T (if defined)
     int index;
     index = hashfunction(key) % maxsize;
     while (keyarray[index] != 0) // again we search for item starting from the index position until we find a null pointer
@@ -144,7 +149,7 @@ template<class K, class T> bool hashmap<K,T>::member(K key, T item)
     index = hashfunction(key) % maxsize;
     while (keyarray[index] != 0) // again we search for item starting from the index position until we find a null pointer
     {
-        if (keyarray[index] != pt_nil && *keyarray[index] == key && reprarray[index]==T)
+        if (keyarray[index] != pt_nil && *keyarray[index] == key && reprarray[index]==item)
             return true;  // item was found
         index = (index + 1) % maxsize;
     }

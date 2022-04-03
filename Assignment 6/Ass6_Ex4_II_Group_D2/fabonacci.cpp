@@ -1,11 +1,7 @@
 //
-//  hashmap.cpp
-//  
+//  fabonacci.cpp
+//  Created by Group D2
 //
-//  Created by KD on 6.03.21.
-//  Modified on 22.03.22.
-//
-
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
@@ -18,8 +14,8 @@ using std::hash;
 template<class K, class T> hashmap<K,T>::hashmap(int size)
 {
     maxsize = size;
-    if (size < 20)
-        maxsize = 20; // default size is 20; no smaller hashmaps are considered
+    if (size < 20000)
+        maxsize = 20000; // default size is 20; no smaller hashmaps are considered
     numitems = 0; // initially, the hashmap is empty
     keyarray = new K*[maxsize];  // allocate space for the array of pointers
     reprarray = new T[maxsize];  // allocate space for the array of pointers
@@ -49,24 +45,41 @@ template<class K, class T> T & hashmap<K,T>::operator[](int index)
     }
 }
 
-template<class K, class T> void hashmap<K,T>::add(K key, T item)
+template<class K, class T> T hashmap<K,T>::fabonacci(int order)
 {
-    /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-}
-
-template<class K, class T> void hashmap<K,T>::remove(K key)
-{
-    /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-}
-
-template<class K, class T> T hashmap<K,T>::retrieve(K key)
-{
-    /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
-}
-
-template<class K, class T> bool hashmap<K,T>::member(K key, T item)
-{
-    /* This member function needs to be implemented. Adapt the corresponding function on hashsets. */
+    hash<int> hashfunction;  //the keyarray and reprarray are used for Memoisation
+    int index;
+    index = hashfunction(order) % maxsize;
+    if(keyarray[index]!=0) //if alredy in look-up table, just return the number
+    {
+        return reprarray[index];
+    }
+    cout<<"This time we didn't use memorization\n";
+    //if not in the look-up table, calculate the number and store it in.
+    if(order==0){
+        reprarray[index]=0;
+        K *loc=new K;
+        *loc=order;
+        keyarray[index]=loc;
+    }else if(order==1 || order==2){
+        reprarray[index]=1;
+        K *loc=new K;
+        *loc=order;
+        keyarray[index]=loc;
+    }else{
+        reprarray[index]=fabonacci(order-2)+fabonacci(order-1);
+        K* loc=new K;
+        *loc = order;
+        keyarray[index]=loc;
+    }
+    ++ numitems;
+    int load = 100 * numitems / maxsize;
+    if (load >= 75)             // max load factor is exceeded; double the size
+    {
+        int newsize = 2 * numitems;
+        rehash(newsize);
+    }
+    return reprarray[index];
 }
 
 template<class K, class T> void hashmap<K,T>::rehash(int newsize)
@@ -87,7 +100,7 @@ template<class K, class T> void hashmap<K,T>::rehash(int newsize)
         {
             K item = *keyarray[i];
             T value = reprarray[i];
-            hash<T> hashfunction;
+            hash<K> hashfunction;       
             int index = hashfunction(item) % newsize;
                 // recompute the new hash value
             while (newkeyarray[index] != 0)  // find the first free place, where the entry can be stored in the new hashtable
@@ -103,20 +116,4 @@ template<class K, class T> void hashmap<K,T>::rehash(int newsize)
     keyarray = newkeyarray;   // make the new hashmap
     reprarray = newarray;
     maxsize = newsize;   // update the size
-}
-
-template<class K, class T> void hashmap<K,T>::display(void) // only for test purposes
-{
-    cout << "The size of the hashtable is: " << maxsize << "\n";
-    cout << "The number of elements in the hashtable is: " << numitems << "\n";
-    for (int i = 0; i < maxsize; ++i)
-    {
-        if (reprarray[i] == 0)
-            cout << "The entry " << i + 1 << " is undefined.\n";
-        else if (reprarray[i] == pt_nil)
-            cout << "The entry " << i + 1 << " is free.\n";
-        else
-            cout << "The entry " << i + 1 << " has the key " << *keyarray[i] << " and the value " << reprarray[i]<< " .\n";
-    }
-    return;
 }

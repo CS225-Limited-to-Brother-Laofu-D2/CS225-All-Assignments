@@ -130,10 +130,10 @@ int main()
                 cout<<"Enter the key\n";
                 if(type == 0){
                     cin>>intkey;
-                    cout<< myhashtable1.retrieve(intkey)<<"\n";
+                    cout<< "the value is "<<myhashtable1.retrieve(intkey)<<"\n";
                 }else{
                     cin>>intkey;
-                    cout<< myhashtable2.retrieve(intkey)<<"\n";
+                    cout<< "the value is "<<myhashtable2.retrieve(intkey)<<"\n";
                 }
             }
         }

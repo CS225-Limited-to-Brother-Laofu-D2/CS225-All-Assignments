@@ -2,6 +2,8 @@
 // Register.h Created by YayItsThunder on 2022.4.3
 //
 
+#include <fstream>
+#include <sstream>
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>

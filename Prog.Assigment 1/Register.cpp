@@ -4,18 +4,20 @@
 
 #include "Register.h"
 
-void SplitString(const std::string& s, std::vector<std::string>& v, const std::string& c)
+// Return 0 means cannot open this file, retry is needed.
+// Return 1 means open successfully.
+int regist(void)
 {
-  std::string::size_type pos1, pos2;
-  pos2 = s.find(c);
-  pos1 = 0;
-  while(std::string::npos != pos2)
-  {
-    v.push_back(s.substr(pos1, pos2-pos1));
- 
-    pos1 = pos2 + c.size();
-    pos2 = s.find(c, pos1);
-  }
-  if(pos1 != s.length())
-    v.push_back(s.substr(pos1));
+    ifstream registry1("registry_1.csv", ios::in);
+    if (!registry1)
+    {
+        cout << "Cannot open registry_1, please retry." << endl;
+        return 0;
+    }
+    ifstream registry2("registry_2.csv", ios::in);
+    if (!registry2)
+    {
+        cout << "Cannot open registry_2, please retry." << endl;
+        return 0;
+    }
 }

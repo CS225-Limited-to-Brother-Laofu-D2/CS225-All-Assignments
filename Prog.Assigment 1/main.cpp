@@ -9,7 +9,7 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int)
+int report_weekly (int);
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
 
 //------------------------------main function------------------------------
@@ -18,3 +18,4 @@ int report_weekly (int)
 //2. Deal with queues and lists
 
 //3. Report: Both weekly and monthly
+

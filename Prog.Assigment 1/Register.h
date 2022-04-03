@@ -6,8 +6,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <vector>
 using namespace std;
-class Person
+
+class person
 {
     public:
         int id;
@@ -21,4 +23,5 @@ class Person
         int wechat;
         string email;
 
+        void person();
 };

@@ -12,7 +12,7 @@ person::person(void)
 
 }
 
-int regist(ifstream filename)
+int regist(ifstream filename, person** input_array)
 {
-        
+
 }

@@ -68,7 +68,7 @@ int main()
             cout<<patient_info[i]<<endl;
         }
         
-        //local_register[index]->name = patient_info[1];
+        local_register[index]->name = patient_info[1];
         
         local_register[index]->address = patient_info[2];
         local_register[index]->phone = atoi(patient_info[3].c_str());

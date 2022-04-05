@@ -9,10 +9,14 @@
 
 using namespace std;
 
+template <class T> class FibNode;
+template <class T> class FibHeap;
+template <class T> class Centralized_Queue;
+
 // FibNode is the nodes in the FibHeap.
 template <class T> class FibNode{
-    template <class T> friend class FibHeap;
-    template <class T> friend class CentralQueue;
+    template <class X> friend class FibHeap;
+    template <class Y> friend class Centralized_Queue;
     // definitions for friend classes.
 public:
     T key;// This value is used for sorting.
@@ -51,7 +55,7 @@ private:
     
     int priority;
     int dis_ddl; // when dis_ddl = 0, person will get the highest priority.
-    status stat;
+    string stat;
     int TreatDay;
     string RegData;
     int Reg_Day;
@@ -59,7 +63,7 @@ private:
 
 // Fibonacci Heap
 template <class T> class FibHeap {
-    template <class T> friend class CentralQueue;
+    template <class X> friend class CentralQueue;
     // definition for friend class.
 public:
     FibHeap();// constructor function

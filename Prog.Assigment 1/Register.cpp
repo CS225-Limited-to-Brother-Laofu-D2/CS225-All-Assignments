@@ -12,19 +12,7 @@ person::person(void)
 
 }
 
-int regist(void)
+int regist(ifstream filename)
 {
-    ifstream registry1("registry_1.csv", ios::in);
-    if (!registry1)
-    {
-        cout << "Cannot open registry_1, please retry." << endl;
-        return 0;
-    }
-    ifstream registry2("registry_2.csv", ios::in);
-    if (!registry2)
-    {
-        cout << "Cannot open registry_2, please retry." << endl;
-        return 0;
-    }
-    
+        
 }

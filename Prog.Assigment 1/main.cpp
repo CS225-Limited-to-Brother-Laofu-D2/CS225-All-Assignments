@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <queue>
 using std::cout;
 using std::cin;
 
@@ -32,8 +33,22 @@ int report_weekly (int)
 
 int main()
 {
-    
-    person** local_register1;
-    local_register1 = new person*[500];
-    
+    // Create two local queues.
+    // These two local queues per day store 10 people each, i.e., total 20 people a day.
+    queue<person*> localqueue_1;
+    queue<person*> localqueue_2;
+
+    person** local_register;
+    local_register = new person*[500];
+
+    // File open
+    ifstream registry1("registry_1.csv", ios::in);
+    if (!registry1)
+    {
+        cout << "Cannot open registry_1, program terminated." << endl;
+        return 0;
+    }
+ 
+    registry1
+
 }

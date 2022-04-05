@@ -6,6 +6,12 @@
 
 // Return 0 means cannot open this file, retry is needed.
 // Return 1 means open successfully.
+
+person::person(void)
+{
+
+}
+
 int regist(void)
 {
     ifstream registry1("registry_1.csv", ios::in);
@@ -20,4 +26,5 @@ int regist(void)
         cout << "Cannot open registry_2, please retry." << endl;
         return 0;
     }
+    
 }

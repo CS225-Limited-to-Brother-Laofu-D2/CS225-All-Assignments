@@ -20,10 +20,16 @@ class person
         int risk;
         string birth;
         int age;
+        int age_group;
         string address;
         int phone;
         int wechat;
         string email;
 
-        void person();
+        person(void);
+        
 };
+
+// Return 0 means cannot open this file, retry is needed.
+// Return 1 means open successfully.
+int regist(void);

@@ -4,12 +4,20 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+using std::cout;
+using std::cin;
+
+#include "Register.h"
+
 using namespace std;
 //Include.h files and other .cpp files here
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int);
+int report_weekly (int)
+{
+    return 0;
+}
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
 
 //------------------------------main function------------------------------
@@ -19,3 +27,13 @@ int report_weekly (int);
 
 //3. Report: Both weekly and monthly
 
+
+
+
+int main()
+{
+    
+    person** local_register1;
+    local_register1 = new person*[500];
+    
+}

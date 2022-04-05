@@ -1,11 +1,5 @@
 #include"Register.h"
 #include"appointment.h"
+#include"FibHeap.h"
 
-appointment::appointment(/* args */)
-{
-    
-}
 
-appointment::~appointment()
-{
-}

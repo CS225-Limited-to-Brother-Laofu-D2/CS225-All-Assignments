@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
 
 class person
 {
@@ -25,11 +28,19 @@ class person
         int phone;
         string wechat;
         string email;
-
-        int preferred_hos1;
-        int preferred_hos2;
-        int preferred_hos3;
-
+        //how much does each person prefer hospital 1 to hospital 3
+        //"1" represents prefer most, while "3" indicates prefer least
+        int hospital_1; 
+        int hospital_2;
+        int hospital_3;
+        //the appointed hospital location,date and time
+        int apponitment_loc;
+        string treated_date;
+        string treated_time;
+        //some symbols indicating the status of the person
+        bool treated;
+        bool appointed;
+        bool queueing;
         person(void);
         
 };

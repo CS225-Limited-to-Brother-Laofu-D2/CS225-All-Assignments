@@ -150,6 +150,9 @@ int main()
     /*for appointment part */
     appointment** appoint_daily;
     appoint_daily = new appointment*[34];
+    for(int i=0;i<34;i++){
+        appoint_daily[i]=new appointment;
+    }
     //for every day with treatment
     for(int t=0;t<34;t++){
         appointment *today;

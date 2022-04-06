@@ -8,7 +8,7 @@
 using std::cout;
 using std::cin;
 
-#include "Register.h"
+#include "Register.cpp"
 
 using namespace std;
 //Include.h files and other .cpp files here
@@ -38,15 +38,15 @@ int main()
     queue<person*> localqueue_1;
     queue<person*> localqueue_2;
 
+    // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
     local_register = new person*[500];
-
-    for(int i=0;i<=499;i++)
+    for(int i = 0 ; i <= 499 ; i++)
     {
-        cout<<local_register[i]->id<<endl;
+        local_register[i] = new person;
     }
-    cout<<"?"<<endl;
 
+    cout<<local_register[0]->id<<endl;
     // File open
     ifstream registry1("registry_1.csv", ios::in);
     if (!registry1)
@@ -57,7 +57,6 @@ int main()
     string line;
     while(getline(registry1,line))
     {
-        //cout<<line<<endl;
         stringstream thisline(line);
         string everyblank;
         vector<string> patient_info;
@@ -68,18 +67,7 @@ int main()
         // Now patient_info is an array that stores a specific patient's information.
         int patient_id = atoi(patient_info[0].c_str());
         int index = patient_id - 1;
-
-        ///////////
-        // The problem happens here.
-        local_register[index]->id = patient_id; // Minus 1 is needed since we want local_register[0] stores the first person.
-        /////////////////
-
-
-        cout<<local_register[index]->id<<endl;
-        /*for(int i=0; i<=9;i++)
-        {
-            cout<<patient_info[i]<<endl;
-        }*/   
+        local_register[index]->id = patient_id; // Minus 1 is needed since we want local_register[0] stores the first person.  
         local_register[index]->name = patient_info[1];
         local_register[index]->address = patient_info[2];
         local_register[index]->phone = atoi(patient_info[3].c_str());
@@ -144,6 +132,10 @@ int main()
         local_register[index]->age_group = patient_age_group;  
         // Four risks 0 1 2 3 (no, low, medium, high)
         local_register[index]->risk = atoi(patient_info[9].c_str());
+        local_register[index]->preferred_hos1 = atoi(patient_info[10].c_str());
+        local_register[index]->preferred_hos2 = atoi(patient_info[11].c_str());
+        local_register[index]->preferred_hos3 = atoi(patient_info[12].c_str());
+        cout<<local_register[index]->preferred_hos1<<endl;
     }
     return 1;
     

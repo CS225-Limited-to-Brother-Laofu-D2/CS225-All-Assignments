@@ -24,5 +24,5 @@ person::person(void)
 
 int regist(ifstream filename, person** input_array)
 {
-
+    return 0;
 }

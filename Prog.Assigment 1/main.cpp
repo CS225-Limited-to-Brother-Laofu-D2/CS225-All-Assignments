@@ -42,8 +42,8 @@ int main()
 
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
-    local_register = new person*[500];
-    for(int i = 0 ; i <= 499 ; i++)
+    local_register = new person*[1500];
+    for(int i = 0 ; i <= 1499 ; i++)
     {
         local_register[i] = new person;
     }

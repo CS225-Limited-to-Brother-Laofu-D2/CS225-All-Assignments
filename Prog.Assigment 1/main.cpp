@@ -46,7 +46,6 @@ int main()
         local_register[i] = new person;
     }
 
-    cout<<local_register[0]->id<<endl;
     // File open
     ifstream registry1("registry_1.csv", ios::in);
     if (!registry1)
@@ -135,7 +134,7 @@ int main()
         local_register[index]->preferred_hos1 = atoi(patient_info[10].c_str());
         local_register[index]->preferred_hos2 = atoi(patient_info[11].c_str());
         local_register[index]->preferred_hos3 = atoi(patient_info[12].c_str());
-        cout<<local_register[index]->preferred_hos1<<endl;
+        cout<<local_register[index]->name<<endl;
     }
     return 1;
     

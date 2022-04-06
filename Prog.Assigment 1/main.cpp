@@ -136,6 +136,41 @@ int main()
         local_register[index]->preferred_hos3 = atoi(patient_info[12].c_str());
         cout<<local_register[index]->name<<endl;
     }
+
+
+
+
+
+
+
+
+    Centralized_Queue<int> haha;
+    /*for appointment part */
+    appointment** appoint_daily;
+    appoint_daily = new appointment*[34];
+    //for every day with treatment
+    for(int t=0;t<34;t++){
+        appointment *today;
+        today=appoint_daily[t];
+        int num_ddl=0;
+        //for every person
+        for(int i=0;i<500;i++){
+            person one;
+            one=*local_register[i];
+            if(one.to_ddl==0 && one.treated==false && one.appointed==false && one.queueing==true)
+                if(num_ddl<15){
+                    set_appointment(local_register[i],today);
+                    num_ddl++;
+                }else{
+                    cout<<"the hospitals today have been fully occupied\n";
+                }
+        }
+        int pos_left=today->get_num();
+        for(;pos_left>0;pos_left--){
+            person *fib=haha.record_out();
+            set_appointment(fib,today);
+        }
+    }
     return 1;
     
 }

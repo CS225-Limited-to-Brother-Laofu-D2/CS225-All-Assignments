@@ -41,6 +41,12 @@ int main()
     person** local_register;
     local_register = new person*[500];
 
+    for(int i=0;i<=499;i++)
+    {
+        cout<<local_register[i]->id<<endl;
+    }
+    cout<<"?"<<endl;
+
     // File open
     ifstream registry1("registry_1.csv", ios::in);
     if (!registry1)

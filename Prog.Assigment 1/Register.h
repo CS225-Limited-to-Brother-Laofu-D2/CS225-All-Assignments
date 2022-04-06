@@ -31,6 +31,11 @@ class person
         int phone;
         string wechat;
         string email;
+        //the order and day for registration
+        int register_order;
+        int register_day;
+        //how many days left from the deadline for treatment
+        int to_ddl;
         //how much does each person prefer hospital 1 to hospital 3
         //"1" represents prefer most, while "3" indicates prefer least
         int preferred_hos1; 
@@ -38,6 +43,7 @@ class person
         int preferred_hos3;
         //the appointed hospital location,date and time
         int apponitment_loc;
+        int treated_order;
         string treated_date;
         string treated_time;
         //some symbols indicating the status of the person

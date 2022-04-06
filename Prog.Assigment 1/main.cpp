@@ -9,6 +9,8 @@ using std::cout;
 using std::cin;
 
 #include "Register.cpp"
+#include "FibHeap.h"
+#include "appointment.cpp"
 
 using namespace std;
 //Include.h files and other .cpp files here

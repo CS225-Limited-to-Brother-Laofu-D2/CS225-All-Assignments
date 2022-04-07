@@ -17,17 +17,21 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int Day,,, vector<FIFO*> tout )
+int report_weekly (int Day,, FibHeap, vector<FIFO*> tout )
 {//Treated people given by appointments so far
-int op;
+int op,vnum = tout.size();
 cout << "Use what sort to output?"<<endl;
-cout << "0. Without any sort"<<endl;
 cout << "1. Sort by name"<<endl;
 cout << "2. Sort by profession category"<<endl;
 cout << "3. Sort by age group"<<endl;
+cout << "Type anything but 1,2,3: Without any sort"<<endl;
 cin>>op;
 
 switch(op){
+    case 1:
+    for (int i=0; i < vnum; i++ ){
+        tout[i]->namesort()
+    }
     
 }
     return 0;

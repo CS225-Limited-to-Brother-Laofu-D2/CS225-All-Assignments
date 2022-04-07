@@ -37,7 +37,7 @@ class person
         //how many days left from the deadline for treatment
         int to_ddl;
         //how much does each person prefer hospital 1 to hospital 3
-        //"1" represents prefer most, while "3" indicates prefer least
+        //The priority of the hospital(if not full)
         int preferred_hos1; 
         int preferred_hos2;
         int preferred_hos3;

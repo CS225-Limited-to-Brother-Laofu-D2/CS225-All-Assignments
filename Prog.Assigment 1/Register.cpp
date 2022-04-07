@@ -20,6 +20,14 @@ person::person(void)
     phone = -1;
     wechat = "";
     email = "";
+    register_order = -1;
+    register_day = -1;
+    to_ddl = -1;
+    preferred_hos1 = -1;
+    preferred_hos2 = -1;
+    preferred_hos3 = -1;
+    apponitment_loc = -1;
+    treated_order = -1;
 }
 
 int regist(ifstream filename, person** input_array)

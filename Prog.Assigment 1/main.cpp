@@ -72,6 +72,7 @@ int report_monthly (){
 
 int main()
 {
+    int sum_morning_afternoon = 200;
     // Create two local queues.
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*> localqueue_1;
@@ -185,30 +186,67 @@ int main()
 
 
     Centralized_Queue<int> haha;
-    /*for appointment part */
+    // Appointment array initialize.
     appointment** appoint_daily;
     appoint_daily = new appointment*[100];
     for(int i=0;i<100;i++){
         appoint_daily[i]=new appointment;
     }
-    //for every day with treatment
-    for(int t=0;t<100;t++){
+    // Initialize end.
+
+
+    int k; // This is the morning, afternoon counter.
+
+    for( k = 1 ; k <= sum_morning_afternoon ; k++)
+    {
+        // Main loop here.
+        int day = (k + 1) / 2; // Ceiling
+        int morning_afternoon = k % 2;
+        if(morning_afternoon == 1) // A new day begin
+        {
+            cout<<"A new day has begun, Day "<<day<<endl;
+            cout<<"Please choose the operation you want:"<<endl;
+
+
+            // Xinzhuo
+
+
+        
+        }
+        if(morning_afternoon == 1) // Morning
+        {
+            local_queue1_push_pop(k,local_register);
+        }
+        if(morning_afternoon == 0) // Afternoon
+        {
+            local_queue2_push_pop(k,local_register);
+        }
+        //laofu
+        //**********
+        //laofu
         appointment *today;
         today=appoint_daily[t];
         int num_ddl=0;
         int count=0;
         //for every person
-        for(int i=0;i<1500;i++){
+        for(int i=0;i<1500;i++)
+        {
             person one;
             one=*local_register[i];
             if(one.to_ddl==0 && one.if_treated==false && one.if_appointed==false && one.if_queueing==true)
-                if(num_ddl<15){
+            {
+                if(num_ddl<15)
+                {
                     set_appointment(local_register[i],today);
                     num_ddl++;
                     today->day_treat[count++]=local_register[i];
-                }else{
+                }
+                else
+                {
                     cout<<"the hospitals today have been fully occupied\n";
                 }
+            }
+            
         }
         int pos_left=today->get_num();
         for(;pos_left>0;pos_left--){
@@ -216,34 +254,17 @@ int main()
             set_appointment(fib,today);
             today->day_treat[count++]=fib;
         }
-        if ( (t+1) % 7 == 0 ){
+        if ( day % 7 == 0 ){
             cout<<"\n"<<endl;
             cout<<"*******WEEKLY REPORT*******"<<endl;
             report_weekly (t, );
         }
-        if ( (t+1) % 30 == 0 ){
+        if ( day % 30 == 0 ){
             cout<<"\n"<<endl;
             cout<<"*******MONTHLY REPORT*******"<<endl;
             report_monthly (, );
         }
-    }
-    return 1;
 
-int k; // This is the morning, afternoon counter.
-
-for( k = 1 ; k <= 1000 ; k++)
-{
-    // Main loop here.
-    int day = (k + 1) / 2; // Ceiling
-    int morning_afternoon = k % 2;
-    if(morning_afternoon = 0)
-    {
-        local_queue1_push(k,local_register);
-    }
-    if(morning_afternoon = 1)
-    {
-        local_queue2_push(k,local_register)
-    }
 
 
 
@@ -254,4 +275,3 @@ for( k = 1 ; k <= 1000 ; k++)
 }
 
     
-}

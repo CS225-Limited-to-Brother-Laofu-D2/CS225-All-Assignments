@@ -17,12 +17,26 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int)
-{
+int report_weekly (int Day,,, vector<FIFO*> tout )
+{//Treated people given by appointments so far
+int op;
+cout << "Use what sort to output?"<<endl;
+cout << "0. Without any sort"<<endl;
+cout << "1. Sort by name"<<endl;
+cout << "2. Sort by profession category"<<endl;
+cout << "3. Sort by age group"<<endl;
+cin>>op;
+
+switch(op){
+    
+}
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-
+int report_monthly (){
+    
+    return 0;
+}
 //------------------------------main function------------------------------
 //1. Patients input
 
@@ -174,6 +188,16 @@ int main()
         for(;pos_left>0;pos_left--){
             person *fib=haha.record_out();
             set_appointment(fib,today);
+        }
+        if ( t% 7 == 0 ){
+            cout<<"\n"<<endl;
+            cout<<"*******WEEKLY REPORT*******"<<endl;
+            report_weekly (t, )
+        }
+        if ( t% 30 == 0 ){
+            cout<<"\n"<<endl;
+            cout<<"*******MONTHLY REPORT*******"<<endl;
+            report_monthly (, )
         }
     }
     return 1;

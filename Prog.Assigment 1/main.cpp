@@ -160,26 +160,29 @@ int main()
 
 
 
+
     Centralized_Queue<int> haha;
     /*for appointment part */
     appointment** appoint_daily;
-    appoint_daily = new appointment*[34];
-    for(int i=0;i<34;i++){
+    appoint_daily = new appointment*[100];
+    for(int i=0;i<100;i++){
         appoint_daily[i]=new appointment;
     }
     //for every day with treatment
-    for(int t=0;t<34;t++){
+    for(int t=0;t<100;t++){
         appointment *today;
         today=appoint_daily[t];
         int num_ddl=0;
+        int count=0;
         //for every person
-        for(int i=0;i<500;i++){
+        for(int i=0;i<1500;i++){
             person one;
             one=*local_register[i];
             if(one.to_ddl==0 && one.treated==false && one.appointed==false && one.queueing==true)
                 if(num_ddl<15){
                     set_appointment(local_register[i],today);
                     num_ddl++;
+                    today->day_treat[count++]=local_register[i];
                 }else{
                     cout<<"the hospitals today have been fully occupied\n";
                 }
@@ -188,16 +191,17 @@ int main()
         for(;pos_left>0;pos_left--){
             person *fib=haha.record_out();
             set_appointment(fib,today);
+            today->day_treat[count++]=fib;
         }
-        if ( t% 7 == 0 ){
+        if ( (t+1) % 7 == 0 ){
             cout<<"\n"<<endl;
             cout<<"*******WEEKLY REPORT*******"<<endl;
-            report_weekly (t, )
+            report_weekly (t, );
         }
-        if ( t% 30 == 0 ){
+        if ( (t+1) % 30 == 0 ){
             cout<<"\n"<<endl;
             cout<<"*******MONTHLY REPORT*******"<<endl;
-            report_monthly (, )
+            report_monthly (, );
         }
     }
     return 1;

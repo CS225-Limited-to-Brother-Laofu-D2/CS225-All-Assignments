@@ -43,6 +43,57 @@ template <class T> void FibHeap<T>::insert(FibNode<T> *node) {
     return;
 }
 
+// merge Other into the current heap
+template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
+    if (other==NULL)
+        return ;
+
+    if(other->maxDegree > this->maxDegree)
+        swap(*this, *other);
+
+    if((this->min) == NULL) 
+    { // this has no "minimum node"
+        this->min = other->min;
+        this->keyNum = other->keyNum;
+        free(other->cons);
+        delete other;
+    }
+    else if((other->min) == NULL)           
+    { // this has "minimum node" && other Has no "minimum node"
+        free(other->cons);
+        delete other;
+    }                                       
+    else
+    { // this has "minimum node" && other has "minimum node"
+        // add "other root list "to "this"
+        catList(this->min, other->min);
+
+        if (this->min->key > other->min->key)
+            this->min = other->min;
+        this->keyNum += other->keyNum;
+        free(other->cons);
+        delete other;
+    }
+}
+
+// Update Fibonacci heap node node with key
+template <class T> void FibHeap<T>::update(FibNode<T> *node, T key) {
+    if(key < node->key)
+        decrease(node, key);
+    else if(key > node->key)
+        increase(node, key);
+    else
+        cout << "No need to update!!!" << endl;
+}
+
+/*
+* Whether there are key nodes in the Fibonacci heap
+* Returns true if it exists, false otherwise
+*/
+template <class T> bool FibHeap<T>::contains(T key) {
+    return search(key)!=NULL ? true: false;
+}
+
 // remove the min value node from the root list
 template <class T> FibNode<T>* FibHeap<T>::extractMin() {
     FibNode<T> *ptr = min;
@@ -229,6 +280,62 @@ template <class T> void FibHeap<T>::cascadingCut(FibNode<T> *node) {
     }
 }
 
+// Add the Fibonacci heap node to key
+template <class T>
+void FibHeap<T>::increase(FibNode<T> *node, T key)
+{
+    FibNode<T> *child, *parent, *right;
+
+    if (min==NULL ||node==NULL)
+        return ;
+
+    if (key <= node->key)
+    {
+        cout << "increase failed: the new key(" << key <<") "
+             << "is no greater than current key(" << node->key <<")" << endl;
+        return ;
+    }
+
+    // Will node every son (excluding grandchildren, great-grandchildren...) All added to the Fibonacci Heap root list
+    while (node->child != NULL)
+    {
+        child = node->child;
+        // Remove child from node's child list
+        removeNode(child);               
+        if (child->right == child)
+            node->child = NULL;
+        else
+            node->child = child->right;
+        // Add child to the root list
+        addNode(child, min);       
+        child->parent = NULL;
+    }
+    node->degree = 0;
+    node->key = key;
+
+    // If node is not in the root list,
+    // Remove node from child link of parent node.
+    // And make node a member of the root list of the heap,
+    // Then perform "cascading clipping"
+    // Otherwise, determine whether the smallest node of the heap needs to be updated
+    parent = node->parent;
+    if(parent != NULL)
+    {
+        cut(node, parent);
+        cascadingCut(parent);
+    }
+    else if(min == node)
+    {
+        right = node->right;
+        while(right != node)
+        {
+            if(node->key > right->key)
+                min = right;
+            right = right->right;
+        }
+    }
+}
+
 // Decrease the value of node node in the Fibonacci heap to key
 template <class T> void FibHeap<T>::decrease(FibNode<T> *node, T key) {
     FibNode<T> *parent;
@@ -291,3 +398,4 @@ template <class T> void FibHeap<T>::remove(FibNode<T> *node) {
     removeMin();
 }
 
+// following are functions of Centralized_Queue

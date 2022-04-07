@@ -25,6 +25,10 @@ appointment::appointment(/* args */)
         each_hos_filled[i]=0;
     }
     set_num(15);
+    day_treat=new person*[15];
+    for(int i=0;i<15;i++){
+        day_treat[i]=new person;
+    }
 }
 
 void ranking(int a,int b,int c,int *best,int *good,int *fair){

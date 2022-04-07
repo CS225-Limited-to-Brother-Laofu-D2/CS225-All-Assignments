@@ -56,6 +56,6 @@ class person
 
 // Return 0 means cannot deal with this file or some other wrong caused, retry or modification is needed.
 // Return 1 means registed successfully.
-int regist(ifstream filename, person** input_array);
+int local_queue_push(int k , person** input_array);
 
 #endif

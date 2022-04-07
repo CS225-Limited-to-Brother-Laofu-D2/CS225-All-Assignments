@@ -35,7 +35,7 @@ person::person(void)
     if_queueing = false;
 }
 
-int regist(ifstream filename, person** input_array)
+int local_queue_push(int k , person** input_array)
 {
     return 0;
 }

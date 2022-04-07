@@ -28,6 +28,11 @@ person::person(void)
     preferred_hos3 = -1;
     apponitment_loc = -1;
     treated_order = -1;
+    treated_time ="";
+    treated_date ="";
+    if_treated = false;
+    if_appointed = false;
+    if_queueing = false;
 }
 
 int regist(ifstream filename, person** input_array)

@@ -47,9 +47,9 @@ class person
         string treated_date;
         string treated_time;
         //some symbols indicating the status of the person
-        bool treated;
-        bool appointed;
-        bool queueing;
+        bool if_treated;
+        bool if_appointed;
+        bool if_queueing;
         person(void);
         
 };

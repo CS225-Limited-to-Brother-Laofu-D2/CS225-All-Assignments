@@ -77,8 +77,7 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
 }
 
 // Update Fibonacci heap node node with key
-template <class T> void FibHeap<T>::update(FibNode<T> *node, T key)
-{
+template <class T> void FibHeap<T>::update(FibNode<T> *node, T key) {
     if(key < node->key)
         decrease(node, key);
     else if(key > node->key)
@@ -91,9 +90,7 @@ template <class T> void FibHeap<T>::update(FibNode<T> *node, T key)
 * Whether there are key nodes in the Fibonacci heap
 * Returns true if it exists, false otherwise
 */
-template <class T>
-bool FibHeap<T>::contains(T key)
-{
+template <class T> bool FibHeap<T>::contains(T key) {
     return search(key)!=NULL ? true: false;
 }
 
@@ -401,3 +398,4 @@ template <class T> void FibHeap<T>::remove(FibNode<T> *node) {
     removeMin();
 }
 
+// following are functions of Centralized_Queue

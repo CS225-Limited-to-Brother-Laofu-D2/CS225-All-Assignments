@@ -106,7 +106,10 @@ private:
 template <class T> class Centralized_Queue {
 
 public:
-    Centralized_Queue();
+    // conductor function
+    Centralized_Queue() {
+        fib_heap = new FibHeap<T>
+    };
     // these are the functions needed in other files
     void set_date(int date); // set the date of tomorrow. Those people with medium risk or withdraw may released.
     void record_in(person *person); // transfer the data from local registry to center

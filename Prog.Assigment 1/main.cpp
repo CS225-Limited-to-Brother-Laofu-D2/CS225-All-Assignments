@@ -224,46 +224,50 @@ int main()
         //laofu
         //**********
         //laofu
-        appointment *today;
-        today=appoint_daily[t];
-        int num_ddl=0;
-        int count=0;
-        //for every person
-        for(int i=0;i<1500;i++)
+        if(morning_afternoon = 0)
         {
-            person one;
-            one=*local_register[i];
-            if(one.to_ddl==0 && one.if_treated==false && one.if_appointed==false && one.if_queueing==true)
+            appointment *today;
+            today=appoint_daily[day];
+            int num_ddl=0;
+            int count=0;
+            //for every person
+            for(int i=0;i<1500;i++)
             {
-                if(num_ddl<15)
+                person one;
+                one=*local_register[i];
+                if(one.to_ddl==0 && one.if_treated==false && one.if_appointed==false && one.if_queueing==true)
                 {
-                    set_appointment(local_register[i],today);
-                    num_ddl++;
-                    today->day_treat[count++]=local_register[i];
+                    if(num_ddl<15)
+                    {
+                        set_appointment(local_register[i],today);
+                        num_ddl++;
+                        today->day_treat[count++]=local_register[i];
+                    }
+                    else
+                    {
+                        cout<<"the hospitals today have been fully occupied\n";
+                    }
                 }
-                else
-                {
-                    cout<<"the hospitals today have been fully occupied\n";
-                }
+                
             }
-            
+            int pos_left=today->get_num();
+            for(;pos_left>0;pos_left--){
+                person *fib=haha.record_out();
+                set_appointment(fib,today);
+                today->day_treat[count++]=fib;
+            }
+            if ( day % 7 == 0 ){
+                cout<<"\n"<<endl;
+                cout<<"*******WEEKLY REPORT*******"<<endl;
+                report_weekly (t, );
+            }
+            if ( day % 30 == 0 ){
+                cout<<"\n"<<endl;
+                cout<<"*******MONTHLY REPORT*******"<<endl;
+                report_monthly (, );
+            }
         }
-        int pos_left=today->get_num();
-        for(;pos_left>0;pos_left--){
-            person *fib=haha.record_out();
-            set_appointment(fib,today);
-            today->day_treat[count++]=fib;
-        }
-        if ( day % 7 == 0 ){
-            cout<<"\n"<<endl;
-            cout<<"*******WEEKLY REPORT*******"<<endl;
-            report_weekly (t, );
-        }
-        if ( day % 30 == 0 ){
-            cout<<"\n"<<endl;
-            cout<<"*******MONTHLY REPORT*******"<<endl;
-            report_monthly (, );
-        }
+        
 
 
 

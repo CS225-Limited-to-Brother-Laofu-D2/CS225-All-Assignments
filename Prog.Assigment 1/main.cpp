@@ -17,9 +17,9 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int Day,, FibHeap, vector<FIFO*> tout )
-{//Treated people given by appointments so far
-int op,vnum = tout.size();
+int report_weekly (int Day, reg , cen, vector<appointment*> app )
+{//choose the way to sort
+int op,vnum = app.size();
 cout << "Use what sort to output?"<<endl;
 cout << "1. Sort by name"<<endl;
 cout << "2. Sort by profession category"<<endl;
@@ -30,9 +30,28 @@ cin>>op;
 switch(op){
     case 1:
     for (int i=0; i < vnum; i++ ){
-        tout[i]->namesort()
-    }
+        app[i]->namesort();
+    }break;
+    case 2:
+    for (int i=0; i < vnum; i++ ){
+        app[i]->profsort();
+    }break;
+    case 3:
+    for (int i=0; i < vnum; i++ ){
+        app[i]->agesort();
+    }break;
+    default:
+    break;
     
+}
+//Treated people given by appointments so far
+person* per;
+cout<<"Treated people this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
+for(int i=0; i<vnum; i++){
+    per = app[i];
+    int treat_time = Day - per->register_day;
+    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << ;
 }
     return 0;
 }

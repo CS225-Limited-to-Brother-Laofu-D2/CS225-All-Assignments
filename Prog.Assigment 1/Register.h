@@ -37,7 +37,7 @@ class person
         //how many days left from the deadline for treatment
         int to_ddl;
         //how much does each person prefer hospital 1 to hospital 3
-        //"1" represents prefer most, while "3" indicates prefer least
+        //The priority of the hospital(if not full)
         int preferred_hos1; 
         int preferred_hos2;
         int preferred_hos3;
@@ -47,15 +47,16 @@ class person
         string treated_date;
         string treated_time;
         //some symbols indicating the status of the person
-        bool treated;
-        bool appointed;
-        bool queueing;
+        bool if_treated;
+        bool if_appointed;
+        bool if_queueing;
         person(void);
         
 };
 
 // Return 0 means cannot deal with this file or some other wrong caused, retry or modification is needed.
 // Return 1 means registed successfully.
-int regist(ifstream filename, person** input_array);
+int local_queue1_push_pop(int k , person** input_array);
+int local_queue2_push_pop(int k , person** input_array);
 
 #endif

@@ -201,7 +201,7 @@ int main()
         for(int i=0;i<1500;i++){
             person one;
             one=*local_register[i];
-            if(one.to_ddl==0 && one.treated==false && one.appointed==false && one.queueing==true)
+            if(one.to_ddl==0 && one.if_treated==false && one.if_appointed==false && one.if_queueing==true)
                 if(num_ddl<15){
                     set_appointment(local_register[i],today);
                     num_ddl++;
@@ -228,5 +228,30 @@ int main()
         }
     }
     return 1;
+
+int k; // This is the morning, afternoon counter.
+
+for( k = 1 ; k <= 1000 ; k++)
+{
+    // Main loop here.
+    int day = (k + 1) / 2; // Ceiling
+    int morning_afternoon = k % 2;
+    if(morning_afternoon = 0)
+    {
+        local_queue1_push(k,local_register);
+    }
+    if(morning_afternoon = 1)
+    {
+        local_queue2_push(k,local_register)
+    }
+
+
+
+
+
+
+
+}
+
     
 }

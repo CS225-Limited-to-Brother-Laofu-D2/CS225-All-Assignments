@@ -17,12 +17,15 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int)
+int report_weekly (int Day, )
 {
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-
+int report_monthly (){
+    
+    return 0;
+}
 //------------------------------main function------------------------------
 //1. Patients input
 

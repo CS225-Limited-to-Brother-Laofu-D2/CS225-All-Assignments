@@ -48,8 +48,7 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
     if (other==NULL)
         return ;
 
-    if(other->maxDegree > this->maxDegree)
-        swap(*this, *other);
+    if(other->maxDegree > this->maxDegree) swap(*this, *other);
 
     if((this->min) == NULL) 
     { // this has no "minimum node"
@@ -78,28 +77,23 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
 
 // Update Fibonacci heap node node with key
 template <class T> void FibHeap<T>::update(FibNode<T> *node, T key) {
-    if(key < node->key)
-        decrease(node, key);
-    else if(key > node->key)
-        increase(node, key);
-    else
-        cout << "No need to update!!!" << endl;
+    if(key < node->key) decrease(node, key);
+    else if(key > node->key) increase(node, key);
+    else cout << "No need to update!!!" << endl;
 }
 
-/*
-* Whether there are key nodes in the Fibonacci heap
-* Returns true if it exists, false otherwise
-*/
+// Whether there are key nodes in the Fibonacci heap
+// Returns true if it exists, false otherwise
 template <class T> bool FibHeap<T>::contains(T key) {
     return search(key)!=NULL ? true: false;
 }
 
 // remove the min value node from the root list
 template <class T> FibNode<T>* FibHeap<T>::extractMin() {
+    // ptr is a temporary variable
     FibNode<T> *ptr = min;
-
-    if (ptr == ptr->right)
-        min = nullptr;
+    
+    if (ptr == ptr->right) min = nullptr;
     else
     {
         removeNode(ptr);
@@ -115,10 +109,8 @@ template <class T> void FibHeap<T>::link(FibNode<T>* node, FibNode<T>* root) {
     // remove node from the double link list
     removeNode(node);
     // set node as root's child
-    if (root->child == nullptr)
-        root->child = node;
-    else
-        addNode(node, root->child);
+    if (root->child == nullptr) root->child = node;
+    else addNode(node, root->child);
 
     node->parent = root;
     root->degree++;
@@ -131,12 +123,10 @@ template <class T> void FibHeap<T>::makeCons() {
 
     // calculate log2(keyNum), considering rounding up
     maxDegree = (log(keyNum)/log(2.0)) + 1;
-    if (old >= maxDegree)
-        return ;
+    if (old >= maxDegree) return ;
 
     // because the degree is maxDegree may be merged, so to maxDegree+1
-    cons = (FibNode<T> **)realloc(cons,
-            sizeof(FibHeap<T> *) * (maxDegree + 1));
+    cons = (FibNode<T> **)realloc(cons, sizeof(FibHeap<T> *) * (maxDegree + 1));
 }
 
 // Merge trees of the same degree left and right in the root-linked table of the Fibonacci heap
@@ -147,8 +137,7 @@ template <class T> void FibHeap<T>::consolidate() {
     makeCons(); // create the space for hashing
     big_degree = maxDegree + 1;
 
-    for (i = 0; i < big_degree; i++)
-        cons[i] = nullptr;
+    for (i = 0; i < big_degree; i++) cons[i] = nullptr;
 
     // merge root nodes of the same degree so that the tree of each degree is unique
     while (min != nullptr)
@@ -159,8 +148,7 @@ template <class T> void FibHeap<T>::consolidate() {
         while (cons[degree] != nullptr)
         {
             y = cons[degree];                // y is a tree which has the same degree as x
-            if (x->key > y->key)        // ensure that the key value of x is smaller than y
-                swap(x, y);
+            if (x->key > y->key) swap(x, y);       // ensure that the key value of x is smaller than y
 
             link(y, x);    // link y to x
             cons[degree] = nullptr;
@@ -175,13 +163,11 @@ template <class T> void FibHeap<T>::consolidate() {
     {
         if (cons[i] != nullptr)
         {
-            if (min == nullptr)
-                min = cons[i];
+            if (min == nullptr) min = cons[i];
             else
             {
                 addNode(cons[i], min);
-                if ((cons[i])->key < min->key)
-                    min = cons[i];
+                if ((cons[i])->key < min->key) min = cons[i];
             }
         }
     }
@@ -189,8 +175,7 @@ template <class T> void FibHeap<T>::consolidate() {
 
 // remove the min node
 template <class T> FibNode<T> *FibHeap<T>::popMin() {
-    if (min==nullptr)
-        return nullptr;
+    if (min==nullptr) return nullptr;
 
     FibNode<T> *child = nullptr;
     FibNode<T> *move = min;

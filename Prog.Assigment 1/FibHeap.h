@@ -108,7 +108,8 @@ template <class T> class Centralized_Queue {
 public:
     // conductor function
     Centralized_Queue() {
-        fib_heap = new FibHeap<T>
+        fib_heap = new FibHeap<T>;
+        return;
     };
     // these are the functions needed in other files
     void set_date(int date); // set the date of tomorrow. Those people with medium risk or withdraw may released.

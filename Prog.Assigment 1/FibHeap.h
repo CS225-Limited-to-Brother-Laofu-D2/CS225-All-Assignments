@@ -72,11 +72,15 @@ public:
     void insert(FibNode<T> *node); // insert a node into the root list
     FibNode<T>* popMin(); // pop the min node from the heap
     void remove(FibNode<T> *node); // remove the node
+    void combine(FibHeap<T> *other); // Merge other into the current heap
+    
+    void update(FibNode<T> *node, T key); // Update the Fibonacci heap oldkey to newkey
+    bool contains(T key); // Whether the Fibonacci heap contains the key
     FibNode<T>* extractMin(); // remove the node with the minimum key, return a pointer to the node
     
     FibNode<T>* id_search(FibNode<T>* root, T key, int id); // search the node according to key and id
     void decrease(FibNode<T> *node, T key); // Decrease the value of the node who has the key in the Fibonacci heap
-    
+    void increase(FibNode<T> *node, T key); // Add the Fibonacci heap node to key
     bool minimum(T *min_key); // Get the minimum key value in the Fibonacci heap and save it to the min_key; success returns true, otherwise returns false.
 
 

@@ -116,12 +116,12 @@ int main()
     int sum_morning_afternoon = 200;
     // Create two local queues.
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
-    queue<person*> localqueue_1;
-    queue<person*> localqueue_2;
-    queue<person*> localqueue_1_medium_risk;
-    queue<person*> localqueue_2_medium_risk;
-    queue<person*> localqueue_1_high_risk;
-    queue<person*> localqueue_2_high_risk;
+    queue<person*>* localqueue_1;
+    queue<person*>* localqueue_2;
+    queue<person*>* localqueue_1_medium_risk;
+    queue<person*>* localqueue_2_medium_risk;
+    queue<person*>* localqueue_1_high_risk;
+    queue<person*>* localqueue_2_high_risk;
 
     Centralized_Queue<person*> Central_queue;
     

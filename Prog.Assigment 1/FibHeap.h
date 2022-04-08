@@ -64,7 +64,7 @@ public:
     bool minimum(T *highest_priority); // Get the highest priority in the Fibonacci heap and save it to the highest_priority; success returns true, otherwise returns false.
     bool ifempty(); // if empty retun ture, else retun false
     void print(int day); // Print the Fibonacci heap
-    queue<person*> pop_ddl(FibNode<T> *root, int day); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
+    FibNode<T>* pop_ddl(FibNode<T> *root, int day, queue<person*>* ddl_queue); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
 
     int keyNum;         // the number of nodes in the heap
     int maxDegree;      // the maximum degree
@@ -104,7 +104,7 @@ public:
     void withdraw_heap(person *person);
     void WeeklyReport(int day);
     void MonthlyReport();
-    queue<person*> get_everyone_loc(FibNode<T> *root);
+    FibNode<T>* get_everyone_loc(FibNode<T> *root, queue<person*>* everyone_loc);
     
 private:
     //int date; // tomorrow's date

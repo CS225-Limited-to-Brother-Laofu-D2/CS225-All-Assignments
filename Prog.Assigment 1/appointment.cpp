@@ -29,7 +29,7 @@ appointment::appointment(/* args */)
 }
 
 
-void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue)
+void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
     // get the length of the queue p
     int len;
@@ -66,13 +66,12 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
             }
         }else if(categroy==3){
             int begin=0;
-            queue<person*> everyone_loc;
-            everyone_loc = Central_queue.get_everyone_loc(Central_queue.fib_heap->min);
-            while(!everyone_loc.empty())
+            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+            while(!everyone_loc->empty())
             {
-                person* one_person= everyone_loc.front();
+                person* one_person= everyone_loc->front();
                 temp[begin++]=one_person;
-                everyone_loc.pop();
+                everyone_loc->pop();
             }
         }
     }
@@ -101,7 +100,7 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
     }
 }
 
-void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue)
+void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
     // get the length of the queue p
     int len;
@@ -138,13 +137,12 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
             }
         }else if(categroy==3){
             int begin=0;
-            queue<person*> everyone_loc;
-            everyone_loc = Central_queue.get_everyone_loc(Central_queue.fib_heap->min);
-            while(!everyone_loc.empty())
+            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+            while(!everyone_loc->empty())
             {
-                person* one_person= everyone_loc.front();
+                person* one_person= everyone_loc->front();
                 temp[begin++]=one_person;
-                everyone_loc.pop();
+                everyone_loc->pop();
             }
         }
     }
@@ -173,7 +171,7 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
     }
 }
 
-void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue)
+void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
     // get the length of the queue p
     int len;
@@ -210,13 +208,12 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
             }
         }else if(categroy==3){
             int begin=0;
-            queue<person*> everyone_loc;
-            everyone_loc = Central_queue.get_everyone_loc(Central_queue.fib_heap->min);
-            while(!everyone_loc.empty())
+            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+            while(!everyone_loc->empty())
             {
-                person* one_person= everyone_loc.front();
+                person* one_person= everyone_loc->front();
                 temp[begin++]=one_person;
-                everyone_loc.pop();
+                everyone_loc->pop();
             }
         }
     }

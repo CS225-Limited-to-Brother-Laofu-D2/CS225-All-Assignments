@@ -2,7 +2,6 @@
 
 #include "FibHeap.h"
 #include "Register.h"
-
 // Following are the functions of FibHeap
 // constructor
 template <class T> FibHeap<T>::FibHeap() {
@@ -392,9 +391,9 @@ template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, person* l
 // remove the node
 template <class T> void FibHeap<T>::remove(FibNode<T> *node) {
     // set the key of the node to be the min
-    T p = min->loc->profession;
-    T original = node->loc->profession;
-    decrease(node, p-1);
+    int p = min->loc->profession;
+    int original = node->loc->profession;
+    decreaseProfession(node, p-1);
     popMin();
     node->loc->profession = original;
 }
@@ -423,12 +422,12 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     do
     {
         if (direction == 1)
-            cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
         else
-            cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
 
         if (node->child != NULL)
-            print(node->child, node, 1);
+            print(node->child, node, 1, day);
 
         // Brother nodes
         prev = node;
@@ -450,8 +449,8 @@ void FibHeap<T>::print(int day)
     p = min;
     do {
         cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
-        cout<<p->loc->name<<" "<<p->id<<" "<<p->loc->profession<<" "<<p->loc->age<<" "<<p->loc->risk<<" "<<(day-p->loc->register_day)<<endl;
-        print(p->child, p, 1);
+        cout<<p->loc->name<<" "<<p->loc->id<<" "<<p->loc->profession<<" "<<p->loc->age<<" "<<p->loc->risk<<" "<<(day-p->loc->register_day)<<endl;
+        print(p->child, p, 1, day);
         p = p->right;
     } while (p != min);
     cout << endl;
@@ -459,10 +458,9 @@ void FibHeap<T>::print(int day)
 
 // this function is used to find the person reaching ddl
 // pop the ones reaching the ddl and have not been treated
-template <class T> queue<person*> FibHeap<T>::pop_ddl(FibNode<T> *root, int day) {
+template <class T> FibNode<T>* FibHeap<T>::pop_ddl(FibNode<T> *root, int day, queue<person*>* ddl_queue) {
     FibNode<T> *tmp = root;    // temporary node
     FibNode<T> *p = nullptr;    // target node
-    queue<person*> ddl_queue;  // this queue is used to store the person reaching the ddl
     if (root == nullptr)
         return root; // protect the stability
 
@@ -471,18 +469,18 @@ template <class T> queue<person*> FibHeap<T>::pop_ddl(FibNode<T> *root, int day)
         if ((tmp->loc->ddl_day == day) && (tmp->loc->if_treated == false))
         {
             p = tmp;
-            ddl_queue.push(p->loc);
+            ddl_queue->push(p->loc);
             remove(p);
         }
         else
         {
-            if ((p = pop_ddl(tmp->child, day)) != nullptr)
+            if ((p = pop_ddl(tmp->child, day, ddl_queue)) != nullptr)
                 break;
         }
         tmp = tmp->right;
     } while (tmp != root);
 
-    return ddl_queue;
+    return p;
 }
 
 // following are functions of Centralized_Queue
@@ -497,7 +495,7 @@ template <class T> void Centralized_Queue<T>::set_in(person *person, FibNode<T> 
 template <class T> void Centralized_Queue<T>::record_in(person *person) {
     if (person == nullptr) return;
     
-    FibNode<int> *fib_node = new FibNode<int>(0);
+    FibNode<T> *fib_node = new FibNode<T>(0);
     set_in(person, fib_node);
     this->fib_heap->insert(fib_node);
 }
@@ -507,7 +505,7 @@ template <class T> void Centralized_Queue<T>::record_in(person *person) {
 template <class T> person *Centralized_Queue<T>::record_out() {
     FibNode<T> *fib_node = nullptr;
     // check if there is any node in the fibheap
-    if (this->fib_heap->ifempty()) return fib_node;
+    if (this->fib_heap->ifempty()) return fib_node->loc;
     else {
         fib_node = this->fib_heap->popMin();
         return fib_node->loc;
@@ -582,20 +580,19 @@ template <class T> void Centralized_Queue<T>::MonthlyReport() {
     cout<<"The whole number of person who had withdrawed"<<" "<<this->fib_heap->withdraw_number<<endl;
 }
 
-template <class T> queue<person*> Centralized_Queue<T>::get_everyone_loc(FibNode<T> *root) {
+template <class T> FibNode<T>* Centralized_Queue<T>::get_everyone_loc(FibNode<T> *root, queue<person*>* everyone_loc) {
     FibNode<T> *tmp = root;    // temporary node
     FibNode<T> *p = nullptr;    // target node
-    queue<person*> everyone_loc;  // this queue is used to store the person reaching the ddl
     if (root == nullptr)
         return root; // protect the stability
 
     do
     {
         p = tmp;
-        everyone_loc.push(p->loc);
-        if ((p = get_everyone_loc(tmp->child)) != nullptr) break;
+        everyone_loc->push(p->loc);
+        if ((p = get_everyone_loc(tmp->child, everyone_loc)) != nullptr) break;
         tmp = tmp->right;
     } while (tmp != root);
 
-    return everyone_loc;
+    return p;
 }

@@ -20,7 +20,7 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<person*> Central_queue)
+int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {//choose the way to sort
     int week=Day/7;
     int category;
@@ -36,13 +36,13 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cin>>op;
     switch(op){
         case 1:
-            namesort(category,appoint_daily,week, Central_queue);
+            namesort(category,appoint_daily,week, Central_queue, everyone_loc);
             break;
         case 2:
-            profsort(category,appoint_daily,week,Central_queue);
+            profsort(category,appoint_daily,week,Central_queue, everyone_loc);
             break;
         case 3:
-            agesort(category,appoint_daily,week,Central_queue);
+            agesort(category,appoint_daily,week,Central_queue, everyone_loc);
             break;
     }
     //Treated people given by appointments so far
@@ -113,6 +113,8 @@ int main()
     queue<person*>* localqueue_1_high_risk;
     queue<person*>* localqueue_2_high_risk;
     queue<person*>* re_register_queue;
+    queue<person*>* everyone_loc;
+    queue<person*>* ddl_queue;
 
     Centralized_Queue<person*> Central_queue;
     
@@ -354,17 +356,16 @@ int main()
                 time_total=0;
             }
             appointment *today;
-            queue<person*> ddl_queue;
             today=appoint_daily[day];
             //how many people have been treated today in total
             int count=0;
             //for every person
                 //how many people have deadline today
             int num_ddl=0;
-            ddl_queue = Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day);
-            while(!ddl_queue.empty())
+            Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day, ddl_queue);
+            while(!ddl_queue->empty())
             {
-                person* ddl_person = ddl_queue.front();
+                person* ddl_person = ddl_queue->front();
                 num_ddl++;
                 if(num_ddl<=15){
                     set_appointment(ddl_person,today,day);
@@ -374,7 +375,7 @@ int main()
                     cout<<"the 3 local hospitals today have been fully occupied\n";
                     cout<<"Move the person with deadline today to another hospital in the city town\n";
                 }
-                ddl_queue.pop();
+                ddl_queue->pop();
             }
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
@@ -419,7 +420,7 @@ int main()
             if ( day % 7 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******WEEKLY REPORT*******"<<endl;
-                report_weekly (day,appoint_daily,Central_queue);
+                report_weekly (day,appoint_daily,Central_queue, everyone_loc);
             }
             if ( day % 30 == 0 ){
                 cout<<"\n"<<endl;

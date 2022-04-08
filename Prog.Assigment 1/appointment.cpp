@@ -31,6 +31,7 @@ appointment::appointment(/* args */)
     }
 }
 
+/*
 void appointment::agesort()
 {
     // get the length of the queue p
@@ -157,7 +158,7 @@ void appointment::profsort()
         p->push(a[i]);
     }
     // return p;
-}
+}*/
 
 
 

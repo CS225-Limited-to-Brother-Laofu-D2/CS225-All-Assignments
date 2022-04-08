@@ -9,7 +9,7 @@ using std::cout;
 using std::cin;
 
 #include "Register.cpp"
-#include "FibHeap.h"
+#include "FibHeap.cpp"
 #include "appointment.cpp"
 
 using namespace std;
@@ -27,7 +27,7 @@ cout << "3. Sort by age group"<<endl;
 cout << "Type anything but 1,2,3: Without any sort"<<endl;
 cin>>op;
 
-switch(op){
+/*switch(op){
     case 1:
     for (int i=0; i < vnum; i++ ){
         app[i]->namesort();
@@ -43,7 +43,7 @@ switch(op){
     default:
     break;
     
-}
+}*/
 //Treated people given by appointments so far
 person* per;
 cout<<"Treated people this week"<<endl;
@@ -63,12 +63,32 @@ cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiti
 cout<<"\n"<<endl;
 //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
 cout<<"Queueing poeple without appointments this week"<<endl;
-cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" 
+"<<"risk"<<" "<<"waiting-time-until-today"<<endl;
 
 
 cout<<"\n"<<endl;
 
 cout<<"Weekly Report is done"<<endl;
+    
+    /*int week;
+    int begin_day=(week-1)*7;
+    for(int i=0;i<=5;i++){
+        appointment *now_day=appoint_daily[begin_day+i];
+        for(int j=0;j<15;j++){
+            person *reported=now_day->day_treat[j];
+            cout<<"the person with id:"<<reported->id<<",profession:"<<reported->profession<<",age category:";
+            cout<<reported->age_group<<",risk status:"<<reported->risk<<",waiting day(s):";
+            cout<<reported->treated_day-reported->register_day<<" has been treated!!!\n";
+        }
+    }
+    appointment *now_day=appoint_daily[begin_day+6];
+    for(int j=0;j<15;j++){
+        person *reported=now_day->day_treat[j];
+        cout<<"the registered people with id:"<<reported->id<<" with a set appointment has profession:";
+        cout<<reported->profession<<",age category:"<<reported->age_group<<",risk status:"<<reported->risk;
+        cout<<",waiting day(s):"<<reported->treated_day-reported->register_day!\n";
+    }*/
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
@@ -107,6 +127,8 @@ int main()
     queue<person*> localqueue_1_high_risk;
     queue<person*> localqueue_2_high_risk;
 
+    Centralized_Queue<person*> Central_queue;
+    
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
     local_register = new person*[1500];
@@ -214,7 +236,7 @@ int main()
 
 
 
-    Centralized_Queue<int> haha;
+    
     // Appointment array initialize.
     appointment** appoint_daily;
     appoint_daily = new appointment*[100];
@@ -234,7 +256,7 @@ int main()
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {int op1;
+        {   int op1;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
             cout<<"1.update profession category"<<endl;
@@ -264,7 +286,7 @@ int main()
         }
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,register_process,local_register,haha);
+            local_queue1_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
         }
         if(morning_afternoon == 0) // Afternoon
         {
@@ -277,33 +299,54 @@ int main()
         {
             appointment *today;
             today=appoint_daily[day];
-            int num_ddl=0;
+            //how many people have been treated today in total
             int count=0;
             //for every person
-            for(int i=0;i<1500;i++)
-            {
-                person one;
-                one=*local_register[i];
-                if(one.to_ddl==0 && one.if_treated==false && one.if_appointed==false && one.if_queueing==true)
-                {
-                    if(num_ddl<15)
-                    {
-                        set_appointment(local_register[i],today);
-                        num_ddl++;
-                        today->day_treat[count++]=local_register[i];
-                    }
-                    else
-                    {
-                        cout<<"the hospitals today have been fully occupied\n";
+            if(day>20){
+                //how many people have deadline today
+                int num_ddl=0;
+                int t=(day-21)*20;
+                for(int i=0;i<20;i++){
+                    person one;
+                    one=*local_register[t+i];
+                    if(one.if_treated==false && one.if_appointed==false && one.if_queueing==true){
+                        if(num_ddl<15){
+                            set_appointment(local_register[t+i],today);
+                            num_ddl++;
+                            today->day_treat[count++]=local_register[t+i];
+                        }else{
+                            cout<<"the 3 local hospitals today have been fully occupied\n";
+                            cout<<"Move the person with deadline today to another hospital in the city town\n";
+                        }
                     }
                 }
-                
             }
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
-                person *fib=haha.record_out();
+                person *fib=Central_queue.record_out();
                 set_appointment(fib,today);
                 today->day_treat[count++]=fib;
+            }
+            for(int i=0;i<15;i++){
+                person *x =today->day_treat[i];
+                int order=x->treated_order;
+                switch(order){
+                    case 1:
+                        x->treated_time="8:00-10:00";
+                        break;
+                    case 2:
+                        x->treated_time="10:00-12:00";
+                        break;
+                     case 3:
+                        x->treated_time="13:00-15:00";
+                        break;
+                     case 4:
+                        x->treated_time="15:00-17:00";
+                        break;
+                     case 5:
+                        x->treated_time="17:00-19:00";
+                        break;
+                }
             }
             if ( day % 7 == 0 ){
                 cout<<"\n"<<endl;
@@ -316,6 +359,7 @@ int main()
                 report_monthly (, );
             }
         }
+    }
         
 
 

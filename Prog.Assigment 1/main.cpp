@@ -218,13 +218,6 @@ int main()
     }
 
 
-
-
-
-
-
-
-
     
     // Appointment array initialize.
     appointment** appoint_daily;
@@ -239,13 +232,17 @@ int main()
     int register_process; // This counts what's the index of local register we should process next.
     register_process = 0; // First we should deal with the first register.
 
+    int* register_counter; // Used for monthly report.
+    *register_counter = 0;
+
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
         // Main loop here.
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {   int op1,op2;
+        {  
+            int op1,op2;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
             cout<<"1.update profession category"<<endl;
@@ -253,35 +250,34 @@ int main()
             cout<<"3.withdraw a patient"<<endl;
             cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
             cin>>op1;
-        
-        do
-        {
-            switch (op1)
+            do
             {
-            case 1:
-                //update profession and change priority
-                break;
-            case 2:
-                //update risk status and change priority
-                break;
-            case 3:
-                cout<<"Please inter the ID of the patient"<<endl;
-                cin>>op2;
-                //withdraw from centralized queue
-                break;
-            default:
-                break;
-            }
-        }while(op1 == 1 || op1 == 2 || op1 == 3);
-        
+                switch (op1)
+                {
+                case 1:
+                    //update profession and change priority
+                    break;
+                case 2:
+                    //update risk status and change priority
+                    break;
+                case 3:
+                    cout<<"Please inter the ID of the patient"<<endl;
+                    cin>>op2;
+                    //withdraw from centralized queue
+                    break;
+                default:
+                    break;
+                }
+            }while(op1 == 1 || op1 == 2 || op1 == 3);
         }
+
         if(morning_afternoon == 1) // Morning
         {
-            register_process = local_queue_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            register_process = local_queue_push_pop(k,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk);
         }
         //laofu
         //**********

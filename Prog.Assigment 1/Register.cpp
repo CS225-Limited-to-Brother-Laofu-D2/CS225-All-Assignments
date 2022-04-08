@@ -37,7 +37,7 @@ person::person(void)
     wait_before_in_queue = -1;
 }
 
-int local_queue_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
+int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
 {
     int day = (k + 1) / 2;
     int counter = 0; // Every half day we only process 10 people.
@@ -49,6 +49,7 @@ int local_queue_push_pop(int k , int register_process , person** input_array , C
         medium_person_process->if_queueing = true;
         medium_person_process->register_day = day;
         medium_person_process->ddl_day = day + 20;
+        *register_counter++;
         counter++;
     }
     if(Central_queue.fib_heap->ifempty()) // In this case, we can process with the people with high risk.
@@ -61,6 +62,7 @@ int local_queue_push_pop(int k , int register_process , person** input_array , C
             high_person_process->if_queueing = true;
             high_person_process->register_day = day;
             high_person_process->ddl_day = day + 20;
+            *register_counter++;
             counter++;
         }
     }
@@ -73,6 +75,7 @@ int local_queue_push_pop(int k , int register_process , person** input_array , C
             person_now_process->if_queueing = true;
             person_now_process->register_day = day;
             person_now_process->ddl_day = day + 20; // We suppoose the ddl is 20 days
+            *register_counter++;
             register_process++;
         }
         else

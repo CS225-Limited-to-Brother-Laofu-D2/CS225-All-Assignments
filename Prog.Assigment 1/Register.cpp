@@ -52,7 +52,7 @@ int local_queue1_push_pop(int k , int register_process , person** input_array , 
         register_process++;
     }
     
-    if(Central_queue->)
+    if(Central_queue.fib_heap)
     {
 
     }

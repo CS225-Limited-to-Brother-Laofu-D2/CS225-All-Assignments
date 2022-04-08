@@ -122,6 +122,7 @@ int main()
     queue<person*>* localqueue_2_medium_risk;
     queue<person*>* localqueue_1_high_risk;
     queue<person*>* localqueue_2_high_risk;
+    queue<person*>* re_register_queue;
 
     Centralized_Queue<person*> Central_queue;
     
@@ -323,8 +324,21 @@ int main()
                         cout<<"Please enter the correct id"<<endl;
                         break;
                     }
-                    if( local_register[op2 - 1]->if_withdrawed){
-                        
+                    if(local_register[op2 - 1]->if_withdrawed)
+                    {
+                        local_register[op2 - 1]->if_re_registered = true;
+                        if(local_register[op2 - 1]->risk = 3)
+                        {
+                            localqueue_1_high_risk->push(local_register[op2 - 1]); // If this patient is high risk, no need to wait (according to K.D)
+                            break;
+                        }
+                        local_register[op2 - 1]->wait_re_register = day + 14; // If this patient is no or low or medium risk, treat them as the same(arrording to K.D)
+                        re_register_queue->push(local_register[op2 - 1]);
+                    }
+                    else
+                    {
+                        cout<<"This patient is either not withdrawed yet or not registered yet"<<endl;
+                        break;
                     }
                 default:
                     break;
@@ -334,11 +348,11 @@ int main()
 
         if(morning_afternoon == 1) // Morning
         {
-            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);
         }
         //laofu
         //**********

@@ -39,7 +39,7 @@ person::person(void)
     wait_before_in_queue = -1;
 }
 
-int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk)
+int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue)
 {
     int day = (k + 1) / 2;
     int counter = 0; // Every half day we only process 10 people.
@@ -67,6 +67,21 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             *register_counter++;
             counter++;
         }
+    }
+    // We also need to deal with the people who withdrawed then registered.
+    // Say that they have waited for enough days.
+    while(!re_register_queue->empty() && re_register_queue->front()->wait_re_register == day && counter <= 10)
+    {
+        person* re_register_person_process = re_register_queue->front();
+        re_register_queue->pop();
+        localqueue_1->push(re_register_person_process);
+        re_register_person_process->if_queueing = true;
+        re_register_person_process->if_re_registered = false;
+        re_register_person_process->if_withdrawed = false;
+        re_register_person_process->register_day = day;
+        re_register_person_process->ddl_day = day + 20;
+        *register_counter++;
+        counter++;
     }
     for(/*nothing here*/; counter <= 10 ; counter++)
     {

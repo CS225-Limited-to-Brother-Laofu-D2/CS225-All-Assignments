@@ -98,7 +98,7 @@ int local_queue1_push_pop(int k , int register_process , person** input_array , 
     // Local queue process ended, now need to pop into fibo heap(centralized queue)
     while(!localqueue_1.empty())
     {
-        person* person_push_into = localqueue_1.front()
+        person* person_push_into = localqueue_1.front();
     }
     return register_process;
 }

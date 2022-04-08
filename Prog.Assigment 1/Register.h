@@ -56,7 +56,7 @@ class person
 
 // Return 0 means cannot deal with this local queue or some other wrong caused, retry or modification is needed.
 // Return 1 means registed successfully.
-int local_queue1_push_pop(int k , person** input_array);
-int local_queue2_push_pop(int k , person** input_array);
+int local_queue1_push_pop(int k , int register_process , person** input_array);
+int local_queue2_push_pop(int k , int register_process , person** input_array);
 
 #endif

@@ -1,6 +1,7 @@
 // This file contains the class functions of CentralQueue and FibHeap
 
 #include "FibHeap.h"
+#include "Register.h"
 
 // Following are the functions of FibHeap
 // constructor

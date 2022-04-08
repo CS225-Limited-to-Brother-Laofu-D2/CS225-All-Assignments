@@ -1,6 +1,3 @@
-#include"Register.cpp"
-#include"appointment.h"
-#include"FibHeap.cpp"
 
 void appointment::set_num(int num){
     num_left=num;

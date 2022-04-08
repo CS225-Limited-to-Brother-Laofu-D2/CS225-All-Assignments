@@ -3,7 +3,6 @@
 //
 
 #include "Register.h"
-#include "FibHeap.h"
 
 // Return 0 means cannot open this file, retry is needed.
 // Return 1 means open successfully.
@@ -39,6 +38,8 @@ person::person(void)
     wait_before_in_queue = -1;
 }
 
+// This function will return the register_process counter.
+// Or return -1 means failure.
 int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue)
 {
     int day = (k + 1) / 2;

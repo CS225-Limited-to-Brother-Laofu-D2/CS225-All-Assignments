@@ -8,6 +8,9 @@
 using std::cout;
 using std::cin;
 
+#include "Fibheap.h"
+#include "Register.h"
+#include "appointment.h"
 #include "FibHeap.cpp"
 #include "Register.cpp"
 #include "appointment.cpp"

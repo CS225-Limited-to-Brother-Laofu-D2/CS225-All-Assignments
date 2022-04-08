@@ -81,7 +81,7 @@ cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,){
+int report_monthly (int num_appoint,double av_time,){
     //number of registered people
 
     //number of waiting people
@@ -235,6 +235,7 @@ int main()
     int* register_counter; // Used for monthly report.
     *register_counter = 0;
     int appoint_count=0; // Used for monthly report.
+    double time_total=0;
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
         // Main loop here.
@@ -286,6 +287,7 @@ int main()
         {
             if( day % 30 == 1){
                 appoint_count=0;
+                time_total=0;
             }
             appointment *today;
             today=appoint_daily[day];
@@ -301,7 +303,7 @@ int main()
                     one=*local_register[t+i];
                     if(one.if_treated==false && one.if_appointed==false && one.if_queueing==true){
                         if(num_ddl<15){
-                            set_appointment(local_register[t+i],today);
+                            set_appointment(local_register[t+i],today,day);
                             num_ddl++;
                             today->day_treat[count++]=local_register[t+i];
                         }else{
@@ -314,12 +316,13 @@ int main()
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
                 person *fib=Central_queue.record_out();
-                set_appointment(fib,today);
+                set_appointment(fib,today,day);
                 today->day_treat[count++]=fib;
             }
             appoint_count+=(15-today->get_num());
             for(int i=0;i<15;i++){
                 person *x =today->day_treat[i];
+                time_total+=(x->treated_date-x->register_day);
                 int order=x->treated_order;
                 switch(order){
                     case 1:
@@ -358,7 +361,8 @@ int main()
             if ( day % 30 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
-                report_monthly (appoint_count, );
+                double av_time=time_total/30;
+                report_monthly (appoint_count,av_time, );
             }
         }
     }

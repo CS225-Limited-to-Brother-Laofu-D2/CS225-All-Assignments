@@ -162,7 +162,7 @@ void appointment::profsort()
 
 
 
-void set_appointment(person *one,appointment *day){
+void set_appointment(person *one,appointment *day,int day_now){
     int pos_left=day->get_num();
     if(pos_left==0){
         cout<<"the hospitals have been fully occupied today,try tomorrow!\n";
@@ -171,6 +171,7 @@ void set_appointment(person *one,appointment *day){
     int best=one->preferred_hos1;
     int good=one->preferred_hos2;
     int fair=one->preferred_hos3;
+    one->treated_date=day_now+1;
     if(day->get_hos(best)<5){
         one->apponitment_loc=best;
         int x=day->get_hos(best);

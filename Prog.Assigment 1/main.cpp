@@ -221,6 +221,8 @@ int main()
 
 
     int k; // This is the morning, afternoon counter.
+    int register_process; // This counts what's the index of local register we should process next.
+    register_process = 0; // First we should deal with the first register.
 
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
@@ -237,21 +239,22 @@ int main()
             cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
             cin>>op1;
         
-            do{
-        switch (op1)
+        do
         {
-        case 1:
-            //update profession and change priority
-            break;
-        case 2:
-            //update risk status and change priority
-            break;
-        case 3:
-            //withdraw from centralized queue
-            break;
-        default:
-            break;
-        }
+            switch (op1)
+            {
+            case 1:
+                //update profession and change priority
+                break;
+            case 2:
+                //update risk status and change priority
+                break;
+            case 3:
+                //withdraw from centralized queue
+                break;
+            default:
+                break;
+            }
         }while(op1 == 1 || op1 == 2 || op1 == 3);
         
         }

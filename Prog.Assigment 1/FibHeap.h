@@ -7,6 +7,9 @@
 #include <cmath>
 #include "Register.h"
 
+#ifndef FibHeap_h
+#define FibHeap_h
+
 using namespace std;
 
 template <class T> class FibNode;
@@ -114,3 +117,5 @@ private:
     // void build_array(person *a, FibNode<T> *root, int n);
     //  void build_vecotr(vector<Reg_Node> *a, FibNode<T> *root, int n);
 };
+
+#endif

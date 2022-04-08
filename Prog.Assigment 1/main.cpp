@@ -17,7 +17,7 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int Day, reg , cen, vector<appointment*> app )
+int report_weekly (int Day, appointment **appoint_daily)
 {//choose the way to sort
 int op,vnum = app.size();
 cout << "Use what sort to output?"<<endl;
@@ -45,50 +45,39 @@ cin>>op;
     
 }*/
 //Treated people given by appointments so far
-person* per;
 cout<<"Treated people this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
-for(int i=0; i<vnum; i++){
-    per = app[i];
-    int treat_time = per->treated_date - per->register_day;
-    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << treat_time<<endl;
 
-}
+int week=Day/7;
+int begin_day=(week-1)*7;
+    for(int i=0;i<=5;i++){
+        appointment *now_day=appoint_daily[begin_day+i];
+        for(int j=0;j<15;j++){
+            person *reported=now_day->day_treat[j];
+            cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
+        }
+    }
 cout<<"\n"<<endl;
 //Waiting people with appointments (lists from three hospitals)
 cout<<"Waiting people with appointments this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
-
+appointment *now_day=appoint_daily[begin_day+6];
+    for(int j=0;j<15;j++){
+        person *reported=now_day->day_treat[j];
+        cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
+    }
 
 cout<<"\n"<<endl;
 //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
 cout<<"Queueing poeple without appointments this week"<<endl;
-cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" 
-"<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
 
 
 cout<<"\n"<<endl;
 
 cout<<"Weekly Report is done"<<endl;
     
-    /*int week;
-    int begin_day=(week-1)*7;
-    for(int i=0;i<=5;i++){
-        appointment *now_day=appoint_daily[begin_day+i];
-        for(int j=0;j<15;j++){
-            person *reported=now_day->day_treat[j];
-            cout<<"the person with id:"<<reported->id<<",profession:"<<reported->profession<<",age category:";
-            cout<<reported->age_group<<",risk status:"<<reported->risk<<",waiting day(s):";
-            cout<<reported->treated_day-reported->register_day<<" has been treated!!!\n";
-        }
-    }
-    appointment *now_day=appoint_daily[begin_day+6];
-    for(int j=0;j<15;j++){
-        person *reported=now_day->day_treat[j];
-        cout<<"the registered people with id:"<<reported->id<<" with a set appointment has profession:";
-        cout<<reported->profession<<",age category:"<<reported->age_group<<",risk status:"<<reported->risk;
-        cout<<",waiting day(s):"<<reported->treated_day-reported->register_day!\n";
-    }*/
+    
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
@@ -351,7 +340,7 @@ int main()
             if ( day % 7 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******WEEKLY REPORT*******"<<endl;
-                report_weekly (t, );
+                report_weekly (day,appoint_daily);
             }
             if ( day % 30 == 0 ){
                 cout<<"\n"<<endl;

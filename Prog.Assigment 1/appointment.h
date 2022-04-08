@@ -24,9 +24,9 @@ public:
     //store the info about 15 persons get treated each day
     person **day_treat;
     //sort according to requests
-    /*void namesort(void);
-    void profsort(void);
-    void agesort(void);*/
+    void namesort(int categroy,appointment **appoint_daily,int week);
+    void profsort(int categroy,appointment **appoint_daily,int week);
+    void agesort(int categroy,appointment **appoint_daily,int week);
 private:
     //how many people has been filled for each day
     int *each_hos_filled;

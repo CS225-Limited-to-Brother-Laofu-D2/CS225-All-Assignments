@@ -413,7 +413,7 @@ template <class T> bool FibHeap<T>::ifempty() {
 * direction -- 1, indicating that the current node is a left child;
 * 2: indicates that the current node is a sibling node.
 */
-template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, int direction)
+template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, int direction, int day)
 {
     FibNode<T> *start=node;
 
@@ -422,9 +422,9 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     do
     {
         if (direction == 1)
-            cout<<"name"<<" "<< <<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+            cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
         else
-            cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+            cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
 
         if (node->child != NULL)
             print(node->child, node, 1);
@@ -437,7 +437,7 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
 }
 
 template <class T>
-void FibHeap<T>::print()
+void FibHeap<T>::print(int day)
 {
     int i=0;
     FibNode<T> *p;
@@ -445,12 +445,11 @@ void FibHeap<T>::print()
     if (min==NULL)
         return ;
 
-    cout << "== Details of the Centralized Queue: ==" << endl;
+    cout << "== Weekly report of the Centralized Queue: ==" << endl;
     p = min;
     do {
-        i++;
-        cout << setw(2) << i << ". " << setw(4) << p->key << "(" << p->degree << ") is root" << endl;
-
+        cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+        cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
         print(p->child, p, 1);
         p = p->right;
     } while (p != min);
@@ -471,7 +470,7 @@ template <class T> queue<person*> FibHeap<T>::pop_ddl(FibNode<T> *root, int day)
         if ((tmp->loc->ddl_day == day) && (tmp->loc->if_treated == false))
         {
             p = tmp;
-            ddl_queue.pushback(p->loc);
+            ddl_queue.push(p->loc);
             remove(p);
         }
         else
@@ -573,6 +572,29 @@ template <class T> person* Centralized_Queue<T>::change_risk(person *person, int
     else return nullptr;
 }
 
-template <class T> void Centralized_Queue<T>::report() {
-    this->fib_heap->print();
+template <class T> void Centralized_Queue<T>::WeeklyReport(int day) {
+    this->fib_heap->print(day);
+}
+
+template <class T> void Centralized_Queue<T>::MonthlyReport() {
+    cout<<"The whole number of person in the Centralized Queue"<<" "<<this->fib_heap->keyNum<<endl;
+    cout<<"The whole number of person who had withdrawed"<<" "<<this->fib_heap->withdraw_number<<endl;
+}
+
+template <class T> queue<person*> Centralized_Queue<T>::get_everyone_loc(FibNode<T> *root) {
+    FibNode<T> *tmp = root;    // temporary node
+    FibNode<T> *p = nullptr;    // target node
+    queue<person*> everyone_loc;  // this queue is used to store the person reaching the ddl
+    if (root == nullptr)
+        return root; // protect the stability
+
+    do
+    {
+        p = tmp;
+        everyone_loc.push(p->loc);
+        if ((p = get_everyone_loc(tmp->child) != nullptr) break;
+        tmp = tmp->right;
+    } while (tmp != root);
+
+    return everyone_loc;
 }

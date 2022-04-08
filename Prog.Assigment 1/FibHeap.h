@@ -46,7 +46,7 @@ template <class T> class FibHeap {
 public:
     FibHeap();// constructor function
     ~FibHeap();// destructor function
-    
+    int withdraw_number = 0;  // the numer of person withdrawing
     void insert(FibNode<T> *node); // insert a node into the root list
     FibNode<T>* popMin(); // pop the min node from the heap
     void remove(FibNode<T> *node); // remove the node
@@ -62,6 +62,7 @@ public:
     bool minimum(T *highest_priority); // Get the highest priority in the Fibonacci heap and save it to the highest_priority; success returns true, otherwise returns false.
     bool ifempty(); // if empty retun ture, else retun false
     void print(); // Print the Fibonacci heap
+    queue<person*> pop_ddl(FibNode<T> *root, int day); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
 
 private:
     int keyNum;         // the number of nodes in the heap
@@ -98,8 +99,10 @@ public:
     void record_in(person *person); // transfer the data from local registry to center
     person *record_out(); // pop a "minimum" node
     void change_profession(person *person, int profession);
+    person* change_risk(person *person, int risk);
     void change_risk(person* person, int risk);
     void withdraw_heap(person *person);
+    void report();
     
 private:
     //int date; // tomorrow's date

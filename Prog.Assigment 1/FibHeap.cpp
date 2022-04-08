@@ -362,7 +362,6 @@ template <class T> void FibHeap<T>::decreaseProfession(FibNode<T> *node, int pro
         min = node;
 }
 
-
 // search the exact person recursively, according to the key and ID; if not find, return NULL
 template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, person* loc, int ID) {
     FibNode<T> *tmp = root;    // temporary node
@@ -458,6 +457,34 @@ void FibHeap<T>::print()
     cout << endl;
 }
 
+// this function is used to find the person reaching ddl
+// pop the ones reaching the ddl and have not been treated
+template <class T> queue<person*> FibHeap<T>::pop_ddl(FibNode<T> *root, int day) {
+    FibNode<T> *tmp = root;    // temporary node
+    FibNode<T> *p = nullptr;    // target node
+    queue<person*> ddl_queue;  // this queue is used to store the person reaching the ddl
+    if (root == nullptr)
+        return root; // protect the stability
+
+    do
+    {
+        if ((tmp->loc->ddl_day == day) && (tmp->loc->if_treated == false))
+        {
+            p = tmp;
+            ddl_queue.pushback(p->loc);
+            remove(p);
+        }
+        else
+        {
+            if ((p = pop_ddl(tmp->child, day)) != nullptr)
+                break;
+        }
+        tmp = tmp->right;
+    } while (tmp != root);
+
+    return ddl_queue;
+}
+
 // following are functions of Centralized_Queue
 // set the point from person to fib_node
 template <class T> void Centralized_Queue<T>::set_in(person *person, FibNode<T> *fib_node){
@@ -483,7 +510,7 @@ template <class T> person *Centralized_Queue<T>::record_out() {
     if (this->fib_heap->ifempty()) return fib_node;
     else {
         fib_node = this->fib_heap->popMin();
-        return fib_node;
+        return fib_node->loc;
     }
 }
 
@@ -518,6 +545,34 @@ template <class T> void Centralized_Queue<T>::withdraw_heap(person *person) {
     // change the status to withdraw, and remove the node
     fib_node->loc->if_withdraw = true;
     this->fib_heap->remove(fib_node);
+    this->fib_heap->withdraw_number++;
     return;
 }
 
+// this function is used to change node's risk
+// if no/low risk convert to medium risk then pop
+// if any risk convert to high risk and there are
+// more than 15 person in the centralized queue
+// then remove it. Otherwise, just return null
+template <class T> person* Centralized_Queue<T>::change_risk(person *person, int risk){
+    FibNode<T> * fib_node = nullptr;
+    int original_risk;
+    // search the node in the heap
+    search_node(person, &fib_node);
+    // not found
+    if (fib_node == nullptr) return fib_node;
+
+    original_risk = fib_node->loc->risk;
+    if(((original_risk == 0) && (risk == 2)) || ((original_risk == 1) && (risk == 2) )) {
+        fib_node->loc->risk = risk;
+        this->fib_heap->remove(fib_node);
+        return fib_node->loc;
+    }
+    else if((original_risk == 0 || original_risk == 1 || original_risk == 2) 
+            && (risk == 3) && (this->fib_heap->keyNum > 15)) this->fib_heap->remove(fib_node);
+    else return nullptr;
+}
+
+template <class T> void Centralized_Queue<T>::report() {
+    this->fib_heap->print();
+}

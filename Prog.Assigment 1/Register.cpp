@@ -36,7 +36,7 @@ person::person(void)
 
 int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1)
 {
-    int day = (k + 1) / 2; // 
+    int day = (k + 1) / 2;
     int counter ;
     for(counter = 1 ; counter <= 20 ; counter++)
     {

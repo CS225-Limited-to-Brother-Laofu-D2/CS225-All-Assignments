@@ -102,6 +102,10 @@ int main()
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*> localqueue_1;
     queue<person*> localqueue_2;
+    queue<person*> localqueue_1_medium_risk;
+    queue<person*> localqueue_2_medium_risk;
+    queue<person*> localqueue_1_high_risk;
+    queue<person*> localqueue_2_high_risk;
 
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;

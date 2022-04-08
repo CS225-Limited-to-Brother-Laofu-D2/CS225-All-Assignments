@@ -81,7 +81,7 @@ cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (){
+int report_monthly (int num_appoint,){
     //number of registered people
 
     //number of waiting people
@@ -234,7 +234,7 @@ int main()
 
     int* register_counter; // Used for monthly report.
     *register_counter = 0;
-
+    int appoint_count=0; // Used for monthly report.
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
         // Main loop here.
@@ -284,6 +284,9 @@ int main()
         //laofu
         if(morning_afternoon = 0)
         {
+            if( day % 30 == 1){
+                appoint_count=0;
+            }
             appointment *today;
             today=appoint_daily[day];
             //how many people have been treated today in total
@@ -314,6 +317,7 @@ int main()
                 set_appointment(fib,today);
                 today->day_treat[count++]=fib;
             }
+            appoint_count+=(15-today->get_num());
             for(int i=0;i<15;i++){
                 person *x =today->day_treat[i];
                 int order=x->treated_order;
@@ -335,6 +339,17 @@ int main()
                         break;
                 }
             }
+            //if not the first day, then we need to update the status of people get treated in previous day
+            if(day>1){
+                appointment *yesterday;
+                yesterday=appoint_daily[day-2];
+                for(int j=0;j<15;j++){
+                    person *reported=today->day_treat[j];
+                    reported->if_treated=true;
+                    reported->if_appointed=false;
+                    reported->if_queueing=false;
+                }
+            }
             if ( day % 7 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******WEEKLY REPORT*******"<<endl;
@@ -343,7 +358,7 @@ int main()
             if ( day % 30 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
-                report_monthly (, );
+                report_monthly (appoint_count, );
             }
         }
     }

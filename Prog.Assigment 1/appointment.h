@@ -21,6 +21,7 @@ public:
     int get_num();
     void set_hos(int order,int num);
     void set_num(int num);
+    //store the info about 15 persons get treated each day
     person **day_treat;
 private:
     //how many people has been filled for each day

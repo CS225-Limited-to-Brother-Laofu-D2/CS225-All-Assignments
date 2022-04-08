@@ -36,5 +36,36 @@ person::person(void)
 
 int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1)
 {
-    int day = (k + 1) / 2; // Ceiling
+    int day = (k + 1) / 2; // 
+    int counter ;
+    for(counter = 1 ; counter <= 20 ; counter++)
+    {
+        person* person_now_process = input_array[register_process + counter];
+        if(person_now_process->risk == 0 || person_now_process->risk == 1)// no or low risk
+        {
+            localqueue_1.push(person_now_process);
+            person_now_process->if_queueing = true;
+            person_now_process->register_day = day;
+            person_now_process->ddl_day = day + 20; // We suppoose the ddl is 20 days
+        }
+        else
+        {
+            if(person_now_process->risk == 2) // medium risk
+            {
+
+            }
+            else
+            {
+                if(person_now_process->risk == 3) // Hight risk
+                {
+
+                }
+                else
+                {
+                    cout<<"Error detected, this person cannot be registered."<<endl;
+                    return -1;
+                }
+            }
+        }
+    }
 }

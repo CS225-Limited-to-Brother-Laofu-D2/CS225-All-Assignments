@@ -73,6 +73,15 @@ cout<<"Weekly Report is done"<<endl;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
 int report_monthly (){
+    //number of registered people
+
+    //number of waiting people
+
+    //number of treatment appointments
+
+    //average waiting time
+
+    //number of withdraw people
     
     return 0;
 }
@@ -227,6 +236,8 @@ int main()
             cout<<"3.withdraw a patient"<<endl;
             cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
             cin>>op1;
+        
+            do{
         switch (op1)
         {
         case 1:
@@ -241,7 +252,7 @@ int main()
         default:
             break;
         }
-
+        }while(op1 == 1 || op1 == 2 || op1 == 3);
         
         }
         if(morning_afternoon == 1) // Morning

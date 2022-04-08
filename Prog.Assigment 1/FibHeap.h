@@ -1,14 +1,12 @@
 // This file contains three classes: FibNode, FibHeap, and CentralQueue.
-
+#ifndef _FIB_HEAP_H
+#define _FIB_HEAP_H
 #include <stdio.h>
 #include <iomanip>
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
 #include "Register.h"
-
-#ifndef FibHeap_h
-#define FibHeap_h
 
 using namespace std;
 

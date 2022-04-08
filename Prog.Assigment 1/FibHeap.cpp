@@ -98,8 +98,8 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
 
 // Update Fibonacci heap node node with key
 template <class T> void FibHeap<T>::updateProfession(FibNode<T> *node, int profession) {
-    if(profession < node->loc->profession) decrease(node, profession);
-    else if(profession > node->loc->profession) increase(node, profession);
+    if(profession < node->loc->profession) decreaseProfession(node, profession);
+    else if(profession > node->loc->profession) increaseProfession(node, profession);
     else cout << "No need to update!!!" << endl;
 }
 
@@ -372,7 +372,7 @@ template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, person* l
 
     do
     {
-        if ((tmp->loc == loc) && (tmp->ID == ID))
+        if ((tmp->loc == loc) && (tmp->loc->id == ID))
         {
             p = tmp;
             break;
@@ -516,9 +516,8 @@ template <class T> person *Centralized_Queue<T>::record_out() {
 template <class T> void Centralized_Queue<T>::search_node(person *person, FibNode<T> **fib_node){
     FibNode<T> *root_node;
     int id = person->id;
-    FibNode<T> *loc = person;
     root_node = this->fib_heap->min;
-    *fib_node = this->fib_heap->id_search(root_node, loc, id);
+    *fib_node = this->fib_heap->id_search(root_node, person, id);
     return;
 }
 
@@ -558,7 +557,7 @@ template <class T> person* Centralized_Queue<T>::change_risk(person *person, int
     // search the node in the heap
     search_node(person, &fib_node);
     // not found
-    if (fib_node == nullptr) return fib_node;
+    if (fib_node == nullptr) return nullptr;
 
     original_risk = fib_node->loc->risk;
     if(((original_risk == 0) && (risk == 2)) || ((original_risk == 1) && (risk == 2) )) {

@@ -255,22 +255,24 @@ int main()
         {  
             int op1,op2;
             cout<<"A new day has begun, Day "<<day<<endl;
-            cout<<"Please choose the operation you want:"<<endl;
-            cout<<"1.update profession category"<<endl;
-            cout<<"2.update risk status"<<endl;
-            cout<<"3.withdraw a patient"<<endl;
-            cout<<"4.re-register a patient that has withdrawed"<<endl;
-            cout<<"Press anything but 1,2,3,4 to continue without any operation"<<endl;
-            cin>>op1;
             do
-            {
+            {   
+                cout<<"Please choose the operation you want:"<<endl;
+                cout<<"1.update profession category"<<endl;
+                cout<<"2.update risk status"<<endl;
+                cout<<"3.withdraw a patient"<<endl;
+                cout<<"4.re-register a patient that has withdrawed"<<endl;
+                cout<<"Press anything but 1,2,3,4 to continue without any operation"<<endl;
+                cin>>op1;
                 switch (op1)
                 {
                 case 1:
                     int new_profession;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
-                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    //person *one=local_register[op2-1];
+                    //FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, one, op2);
+                    if(typeid(op2) != typeid(int) || op2 <= 0 /*|| node == nullptr*/)
                     {
                         cout<<"Please enter the correct id"<<endl;
                         break;
@@ -278,6 +280,7 @@ int main()
                     //update profession and change priority
                     cout<<"Please enter the profession you want to change"<<endl;
                     cin>>new_profession;
+                    //Central_queue.fib_heap->updateProfession(node, new_profession);
                     if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
                     {
                         cout<<"Please enter the correct profession number"<<endl;
@@ -291,16 +294,18 @@ int main()
                     int new_risk;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
-                    if(typeid(op2) != typeid(int) || op2 <= 0)
-                    {
-                        cout<<"Please enter the correct id"<<endl;
-                        break;
-                    }
+                    //person *two=local_register[op2-1];
                     //update risk status and change priority
                     cin>>new_risk;
                     if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3)
                     {
                         cout<<"Please enter the correct risk type"<<endl;
+                        break;
+                    }
+                    //person* risk_changing = Central_queue.change_risk(two, new_risk);
+                    if(typeid(op2) != typeid(int) || op2 <= 0 /*|| risk_changing == nullptr*/)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
                         break;
                     }
                     break;
@@ -356,9 +361,7 @@ int main()
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);
         }
-        //laofu
-        //**********
-        //laofu
+
         if(morning_afternoon = 0)
         {
             if( day % 30 == 1){
@@ -394,6 +397,7 @@ int main()
                 today->day_treat[count++]=fib;
             }
             appoint_count+=(15-today->get_num());
+            //
             for(int i=0;i<15;i++){
                 person *x =today->day_treat[i];
                 time_total+=(x->treated_date-x->register_day);

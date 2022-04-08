@@ -64,7 +64,6 @@ public:
     void print(); // Print the Fibonacci heap
     queue<person*> pop_ddl(FibNode<T> *root, int day); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
 
-private:
     int keyNum;         // the number of nodes in the heap
     int maxDegree;      // the maximum degree
     FibNode<T> *min;    // a pointer to the minimum node
@@ -103,6 +102,7 @@ public:
     void change_risk(person* person, int risk);
     void withdraw_heap(person *person);
     void report();
+
     
 private:
     //int date; // tomorrow's date

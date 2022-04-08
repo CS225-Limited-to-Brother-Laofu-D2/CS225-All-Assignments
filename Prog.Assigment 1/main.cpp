@@ -67,13 +67,13 @@ appointment *now_day=appoint_daily[begin_day+6];
         cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
     }
 
-cout<<"\n"<<endl;
+cout<<"\n";
 //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
 cout<<"Queueing poeple without appointments this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
 
 
-cout<<"\n"<<endl;
+cout<<"\n";
 
 cout<<"Weekly Report is done"<<endl;
     
@@ -245,7 +245,7 @@ int main()
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {   int op1;
+        {   int op1,op2;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
             cout<<"1.update profession category"<<endl;
@@ -265,6 +265,8 @@ int main()
                 //update risk status and change priority
                 break;
             case 3:
+                cout<<"Please inter the ID of the patient"<<endl;
+                cin>>op2;
                 //withdraw from centralized queue
                 break;
             default:

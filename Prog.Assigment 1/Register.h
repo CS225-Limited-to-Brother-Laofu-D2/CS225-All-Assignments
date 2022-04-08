@@ -2,6 +2,9 @@
 // Register.h Created by YayItsThunder on 2022.4.3
 //
 
+#ifndef Register_h
+#define Register_h
+
 #include <fstream>
 #include <sstream>
 #include <stdio.h>
@@ -14,9 +17,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-#ifndef Register_h
-#define Register_h
-    
 class person
 {
     public:

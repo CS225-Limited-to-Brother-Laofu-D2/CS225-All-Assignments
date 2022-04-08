@@ -102,7 +102,6 @@ public:
     person *record_out(); // pop a "minimum" node
     void change_profession(person *person, int profession);
     person* change_risk(person *person, int risk);
-    void change_risk(person* person, int risk);
     void withdraw_heap(person *person);
     void WeeklyReport(int day);
     void MonthlyReport();

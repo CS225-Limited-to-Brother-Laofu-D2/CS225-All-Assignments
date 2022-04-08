@@ -50,13 +50,38 @@ cout<<"Treated people this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 for(int i=0; i<vnum; i++){
     per = app[i];
-    int treat_time = Day - per->register_day;
-    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << ;
+    int treat_time = per->treated_date - per->register_day;
+    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << treat_time<<endl;
+
 }
+cout<<"\n"<<endl;
+//Waiting people with appointments (lists from three hospitals)
+cout<<"Waiting people with appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+
+
+cout<<"\n"<<endl;
+//Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
+cout<<"Queueing poeple without appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+
+
+cout<<"\n"<<endl;
+
+cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
 int report_monthly (){
+    //number of registered people
+
+    //number of waiting people
+
+    //number of treatment appointments
+
+    //average waiting time
+
+    //number of withdraw people
     
     return 0;
 }
@@ -77,6 +102,10 @@ int main()
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*> localqueue_1;
     queue<person*> localqueue_2;
+    queue<person*> localqueue_1_medium_risk;
+    queue<person*> localqueue_2_medium_risk;
+    queue<person*> localqueue_1_high_risk;
+    queue<person*> localqueue_2_high_risk;
 
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
@@ -196,6 +225,8 @@ int main()
 
 
     int k; // This is the morning, afternoon counter.
+    int register_process; // This counts what's the index of local register we should process next.
+    register_process = 0; // First we should deal with the first register.
 
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
@@ -203,23 +234,41 @@ int main()
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {
+        {int op1;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
-
-
-            // Xinzhuo
-
-
+            cout<<"1.update profession category"<<endl;
+            cout<<"2.update risk status"<<endl;
+            cout<<"3.withdraw a patient"<<endl;
+            cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
+            cin>>op1;
+        
+        do
+        {
+            switch (op1)
+            {
+            case 1:
+                //update profession and change priority
+                break;
+            case 2:
+                //update risk status and change priority
+                break;
+            case 3:
+                //withdraw from centralized queue
+                break;
+            default:
+                break;
+            }
+        }while(op1 == 1 || op1 == 2 || op1 == 3);
         
         }
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,local_register);
+            local_queue1_push_pop(k,register_process,local_register,haha);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            local_queue2_push_pop(k,local_register);
+            local_queue2_push_pop(k,register_process,local_register,haha);
         }
         //laofu
         //**********

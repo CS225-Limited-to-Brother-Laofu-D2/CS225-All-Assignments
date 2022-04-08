@@ -34,8 +34,6 @@ class person
         //the order and day for registration
         int register_order;
         int register_day;
-        //how many days left from the deadline for treatment
-        int to_ddl;
         //how much does each person prefer hospital 1 to hospital 3
         //The priority of the hospital(if not full)
         int preferred_hos1; 
@@ -44,19 +42,22 @@ class person
         //the appointed hospital location,date and time
         int apponitment_loc;
         int treated_order;
-        string treated_date;
+        int treated_date;
         string treated_time;
         //some symbols indicating the status of the person
         bool if_treated;
         bool if_appointed;
         bool if_queueing;
+        //Special situations
+        int ddl_day;
+        int wait_before_in_queue; // Only for medium risk.
         person(void);
         
 };
 
-// Return 0 means cannot deal with this file or some other wrong caused, retry or modification is needed.
-// Return 1 means registed successfully.
-int local_queue1_push_pop(int k , person** input_array);
-int local_queue2_push_pop(int k , person** input_array);
+// These two functions will return the register_process counter
+// Or return -1 means failure.
+int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk);
+int local_queue2_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_2);
 
 #endif

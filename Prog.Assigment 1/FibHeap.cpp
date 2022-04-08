@@ -422,9 +422,9 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     do
     {
         if (direction == 1)
-            cout << setw(8) << "(" << node->degree << ") is "<< setw(2) << prev->key << "'s child" << endl;
+            cout<<"name"<<" "<< <<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
         else
-            cout << setw(8) << "(" << node->degree << ") is "<< setw(2) << prev->key << "'s next" << endl;
+            cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
 
         if (node->child != NULL)
             print(node->child, node, 1);

@@ -277,11 +277,11 @@ int main()
         }
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
+            register_process = local_queue_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            local_queue2_push_pop(k,register_process,local_register,haha);
+            register_process = local_queue_push_pop(k,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk);
         }
         //laofu
         //**********

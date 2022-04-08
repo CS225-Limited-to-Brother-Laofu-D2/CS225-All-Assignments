@@ -37,7 +37,7 @@ person::person(void)
     wait_before_in_queue = -1;
 }
 
-int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
+int local_queue_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
 {
     int day = (k + 1) / 2;
     int counter = 0; // Every half day we only process 10 people.

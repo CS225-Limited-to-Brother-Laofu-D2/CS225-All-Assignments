@@ -54,9 +54,9 @@ class person
         
 };
 
-// Return 0 means cannot deal with this local queue or some other wrong caused, retry or modification is needed.
-// Return 1 means registed successfully.
-int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap);
-int local_queue2_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap);
+// These two functions will return the register_process counter
+// Or return -1 means failure.
+int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1;);
+int local_queue2_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_2;);
 
 #endif

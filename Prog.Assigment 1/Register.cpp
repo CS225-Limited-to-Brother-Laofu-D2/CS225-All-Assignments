@@ -34,7 +34,7 @@ person::person(void)
     if_queueing = false;
 }
 
-int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap)
+int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1)
 {
     int day = (k + 1) / 2; // Ceiling
 }

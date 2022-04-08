@@ -127,6 +127,8 @@ int main()
     queue<person*> localqueue_1_high_risk;
     queue<person*> localqueue_2_high_risk;
 
+    Centralized_Queue<person*> Central_queue;
+    
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
     local_register = new person*[1500];
@@ -234,7 +236,7 @@ int main()
 
 
 
-    Centralized_Queue<int> haha;
+    
     // Appointment array initialize.
     appointment** appoint_daily;
     appoint_daily = new appointment*[100];
@@ -284,7 +286,7 @@ int main()
         }
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,register_process,local_register,haha);
+            local_queue1_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
         }
         if(morning_afternoon == 0) // Afternoon
         {
@@ -321,7 +323,7 @@ int main()
             }
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
-                person *fib=haha.record_out();
+                person *fib=Central_queue.record_out();
                 set_appointment(fib,today);
                 today->day_treat[count++]=fib;
             }

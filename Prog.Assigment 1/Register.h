@@ -57,7 +57,7 @@ class person
 
 // These two functions will return the register_process counter
 // Or return -1 means failure.
-int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk);
-int local_queue2_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_2);
+int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk);
+int local_queue2_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_2);
 
 #endif

@@ -36,7 +36,7 @@ person::person(void)
     wait_before_in_queue = -1;
 }
 
-int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<int> Fibo_heap , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
+int local_queue1_push_pop(int k , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*> localqueue_1 , queue<person*> localqueue_1_medium_risk , queue<person*> localqueue_1_high_risk)
 {
     int day = (k + 1) / 2;
     int counter ; // Every half day we only process 10 people.
@@ -50,12 +50,9 @@ int local_queue1_push_pop(int k , int register_process , person** input_array , 
         medium_person_process->register_day = day + 20;
         counter++;
         register_process++;
-        if(localqueue_1_medium_risk.empty())
-        {
-            break;
-        }
     }
-    if(Fibo_heap)
+    
+    if(Central_queue->)
     {
 
     }
@@ -99,6 +96,8 @@ int local_queue1_push_pop(int k , int register_process , person** input_array , 
     while(!localqueue_1.empty())
     {
         person* person_push_into = localqueue_1.front();
+        localqueue_1.pop();
+        
     }
     return register_process;
 }

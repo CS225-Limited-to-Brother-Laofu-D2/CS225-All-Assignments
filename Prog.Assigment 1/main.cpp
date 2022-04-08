@@ -27,23 +27,23 @@ cout << "3. Sort by age group"<<endl;
 cout << "Type anything but 1,2,3: Without any sort"<<endl;
 cin>>op;
 
-/*switch(op){
+switch(op){
     case 1:
     for (int i=0; i < vnum; i++ ){
-        app[i]->namesort();
+        //app[i]->namesort();
     }break;
     case 2:
     for (int i=0; i < vnum; i++ ){
-        app[i]->profsort();
+       // app[i]->profsort();
     }break;
     case 3:
     for (int i=0; i < vnum; i++ ){
-        app[i]->agesort();
+        //app[i]->agesort();
     }break;
     default:
     break;
     
-}*/
+}
 //Treated people given by appointments so far
 cout<<"Treated people this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
@@ -81,17 +81,19 @@ cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,double av_time,){
+int report_monthly (int num_appoint,int* reg, double av_time, int* withdraw_counter){
     //number of registered people
-
+    cout<<"The number of registered people is: "<<*reg<<endl;
     //number of waiting people
 
     //number of treatment appointments
-
+    cout<<"The number of waiting people is: "<<num_appoint<<endl;
     //average waiting time
-
+    cout<<"The average waiting time is: "<<av_time<<endl;
     //number of withdraw people
-    
+    cout<<"The number of withdraw people is: "<<withdraw_counter<<endl;
+ *withdraw_counter  = 0;  
+ cout<<"Monthly Report is done"<<endl;   
     return 0;
 }
 //------------------------------main function------------------------------
@@ -234,6 +236,8 @@ int main()
 
     int* register_counter; // Used for monthly report.
     *register_counter = 0;
+    int* withdraw_counter;
+    *withdraw_counter = 0;
     int appoint_count=0; // Used for monthly report.
     double time_total=0;
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
@@ -249,23 +253,77 @@ int main()
             cout<<"1.update profession category"<<endl;
             cout<<"2.update risk status"<<endl;
             cout<<"3.withdraw a patient"<<endl;
-            cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
+            cout<<"4.re-register a patient that has withdrawed"<<endl;
+            cout<<" Press anything but 1,2,3,4 to continue without any operation"<<endl;
             cin>>op1;
             do
             {
                 switch (op1)
                 {
                 case 1:
+                    int new_profession;
+                    cout<<"Please enter the ID of the patient"<<endl;
+                    cin>>op2;
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
                     //update profession and change priority
+                    cout<<"Please enter the profession you want to change"<<endl;
+                    cin>>new_profession;
+                    if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
+                    {
+                        cout<<"Please enter the correct profession number"<<endl;
+                        break;
+                    }
+
+
+
                     break;
                 case 2:
+                    int new_risk;
+                    cout<<"Please enter the ID of the patient"<<endl;
+                    cin>>op2;
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
                     //update risk status and change priority
+                    cin>>new_risk;
+                    if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3)
+                    {
+                        cout<<"Please enter the correct risk type"<<endl;
+                        break;
+                    }
                     break;
                 case 3:
-                    cout<<"Please inter the ID of the patient"<<endl;
+                    cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
+
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
+                    local_register[op2 - 1]->if_withdrawed = true;
+                    *withdraw_counter++;
+
                     //withdraw from centralized queue
                     break;
+                case 4:
+                    cout<<"Please enter the ID of the patient"<<endl;
+                    cin>>op2;
+
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
+                    if( local_register[op2 - 1]->if_withdrawed){
+                        
+                    }
                 default:
                     break;
                 }
@@ -362,7 +420,7 @@ int main()
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
                 double av_time=time_total/30;
-                report_monthly (appoint_count,av_time, );
+                report_monthly (appoint_count,register_counter,av_time,*withdraw_counter);
             }
         }
     }

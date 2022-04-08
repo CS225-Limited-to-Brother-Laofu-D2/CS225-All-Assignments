@@ -33,6 +33,8 @@ person::person(void)
     if_treated = false;
     if_appointed = false;
     if_queueing = false;
+    if_withdrawed = false;
+    if_re_registered = false;
     ddl_day = -1;
     wait_before_in_queue = -1;
 }

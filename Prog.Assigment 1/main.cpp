@@ -51,8 +51,24 @@ cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiti
 for(int i=0; i<vnum; i++){
     per = app[i];
     int treat_time = Day - per->register_day;
-    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << ;
+    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << treat_time<<endl;
+
 }
+cout<<"\n"<<endl;
+//Waiting people with appointments (lists from three hospitals)
+cout<<"Waiting people with appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+
+
+cout<<"\n"<<endl;
+//Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
+cout<<"Queueing poeple without appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+
+
+cout<<"\n"<<endl;
+
+cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
@@ -203,13 +219,28 @@ int main()
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {
+        {int op1;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
-
-
-            // Xinzhuo
-
+            cout<<"1.update profession category"<<endl;
+            cout<<"2.update risk status"<<endl;
+            cout<<"3.withdraw a patient"<<endl;
+            cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
+            cin>>op1;
+        switch (op1)
+        {
+        case 1:
+            //update profession and change priority
+            break;
+        case 2:
+            //update risk status and change priority
+            break;
+        case 3:
+            //withdraw from centralized queue
+            break;
+        default:
+            break;
+        }
 
         
         }

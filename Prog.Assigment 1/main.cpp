@@ -20,6 +20,10 @@ using namespace std;
 int report_weekly (int Day, appointment **appoint_daily)
 {//choose the way to sort
 int op,vnum = app.size();
+int category;
+cout<<"which category do you want to sort?\n";
+cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
+cin>>category;
 cout << "Use what sort to output?"<<endl;
 cout << "1. Sort by name"<<endl;
 cout << "2. Sort by profession category"<<endl;
@@ -42,7 +46,7 @@ switch(op){
     }break;
     default:
     break;
-    
+   
 }
 //Treated people given by appointments so far
 cout<<"Treated people this week"<<endl;
@@ -81,7 +85,7 @@ cout<<"Weekly Report is done"<<endl;
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,int* reg, double av_time, int* withdraw_counter){
+int report_monthly (int num_appoint,int* reg, double av_time){
     //number of registered people
     cout<<"The number of registered people is: "<<*reg<<endl;
     //number of waiting people
@@ -91,8 +95,9 @@ int report_monthly (int num_appoint,int* reg, double av_time, int* withdraw_coun
     //average waiting time
     cout<<"The average waiting time is: "<<av_time<<endl;
     //number of withdraw people
-    cout<<"The number of withdraw people is: "<<withdraw_counter<<endl;
- *withdraw_counter  = 0;  
+    cout<<"The number of withdraw people is: "<< <<endl;
+  
+    
  cout<<"Monthly Report is done"<<endl;   
     return 0;
 }
@@ -236,8 +241,6 @@ int main()
 
     int* register_counter; // Used for monthly report.
     *register_counter = 0;
-    int* withdraw_counter;
-    *withdraw_counter = 0;
     int appoint_count=0; // Used for monthly report.
     double time_total=0;
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
@@ -308,7 +311,6 @@ int main()
                         break;
                     }
                     local_register[op2 - 1]->if_withdrawed = true;
-                    *withdraw_counter++;
 
                     //withdraw from centralized queue
                     break;
@@ -348,28 +350,27 @@ int main()
                 time_total=0;
             }
             appointment *today;
+            queue<person*> ddl_queue;
             today=appoint_daily[day];
             //how many people have been treated today in total
             int count=0;
             //for every person
-            if(day>20){
                 //how many people have deadline today
-                int num_ddl=0;
-                int t=(day-21)*20;
-                for(int i=0;i<20;i++){
-                    person one;
-                    one=*local_register[t+i];
-                    if(one.if_treated==false && one.if_appointed==false && one.if_queueing==true){
-                        if(num_ddl<15){
-                            set_appointment(local_register[t+i],today,day);
-                            num_ddl++;
-                            today->day_treat[count++]=local_register[t+i];
-                        }else{
-                            cout<<"the 3 local hospitals today have been fully occupied\n";
-                            cout<<"Move the person with deadline today to another hospital in the city town\n";
-                        }
-                    }
+            int num_ddl=0;
+            ddl_queue = Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day);
+            while(!ddl_queue.empty())
+            {
+                person* ddl_person = ddl_queue.front();
+                num_ddl++;
+                if(num_ddl<=15){
+                    set_appointment(ddl_person,today,day);
+                    num_ddl++;
+                    today->day_treat[count++]=ddl_person;
+                }else{
+                    cout<<"the 3 local hospitals today have been fully occupied\n";
+                    cout<<"Move the person with deadline today to another hospital in the city town\n";
                 }
+                ddl_queue.pop();
             }
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
@@ -420,7 +421,7 @@ int main()
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
                 double av_time=time_total/30;
-                report_monthly (appoint_count,register_counter,av_time,*withdraw_counter);
+                report_monthly (appoint_count,register_counter,av_time);
             }
         }
     }

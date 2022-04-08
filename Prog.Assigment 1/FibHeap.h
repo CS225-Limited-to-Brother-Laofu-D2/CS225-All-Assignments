@@ -87,9 +87,12 @@ private:
 template <class T> class Centralized_Queue {
 
 public:
-    // conductor function
+    FibHeap<T> *fib_heap; // the central queue
+    FibHeap<T> *withdraw_heap; // the heap for those who withdrawed
+    // constructor function
     Centralized_Queue() {
         fib_heap = new FibHeap<T>;
+        withdraw_heap = new FibHeap<T>;
         return;
     };
     // these are the functions needed in other files
@@ -108,7 +111,4 @@ private:
     
     void build_array(person *a, FibNode<T> *root, int n);
    //  void build_vecotr(vector<Reg_Node> *a, FibNode<T> *root, int n);
-    
-    FibHeap<T> *fib_heap; // the central queue
-    FibHeap<T> *withdraw_heap; // the heap for those who withdrawed
 };

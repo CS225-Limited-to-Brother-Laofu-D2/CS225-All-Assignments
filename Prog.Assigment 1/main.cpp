@@ -17,7 +17,7 @@ using namespace std;
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
-int report_weekly (int Day, reg , cen, vector<appointment*> app )
+int report_weekly (int Day, appointment **appoint_daily)
 {//choose the way to sort
 int op,vnum = app.size();
 cout << "Use what sort to output?"<<endl;
@@ -45,54 +45,43 @@ cin>>op;
     
 }*/
 //Treated people given by appointments so far
-person* per;
 cout<<"Treated people this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
-for(int i=0; i<vnum; i++){
-    per = app[i];
-    int treat_time = per->treated_date - per->register_day;
-    cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << treat_time<<endl;
 
-}
-cout<<"\n"<<endl;
-//Waiting people with appointments (lists from three hospitals)
-cout<<"Waiting people with appointments this week"<<endl;
-cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
-
-
-cout<<"\n"<<endl;
-//Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
-cout<<"Queueing poeple without appointments this week"<<endl;
-cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" 
-"<<"risk"<<" "<<"waiting-time-until-today"<<endl;
-
-
-cout<<"\n"<<endl;
-
-cout<<"Weekly Report is done"<<endl;
-    
-    /*int week;
-    int begin_day=(week-1)*7;
+int week=Day/7;
+int begin_day=(week-1)*7;
     for(int i=0;i<=5;i++){
         appointment *now_day=appoint_daily[begin_day+i];
         for(int j=0;j<15;j++){
             person *reported=now_day->day_treat[j];
-            cout<<"the person with id:"<<reported->id<<",profession:"<<reported->profession<<",age category:";
-            cout<<reported->age_group<<",risk status:"<<reported->risk<<",waiting day(s):";
-            cout<<reported->treated_day-reported->register_day<<" has been treated!!!\n";
+            cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
         }
     }
-    appointment *now_day=appoint_daily[begin_day+6];
+cout<<"\n"<<endl;
+//Waiting people with appointments (lists from three hospitals)
+cout<<"Waiting people with appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+appointment *now_day=appoint_daily[begin_day+6];
     for(int j=0;j<15;j++){
         person *reported=now_day->day_treat[j];
-        cout<<"the registered people with id:"<<reported->id<<" with a set appointment has profession:";
-        cout<<reported->profession<<",age category:"<<reported->age_group<<",risk status:"<<reported->risk;
-        cout<<",waiting day(s):"<<reported->treated_day-reported->register_day!\n";
-    }*/
+        cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
+    }
+
+cout<<"\n";
+//Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
+cout<<"Queueing poeple without appointments this week"<<endl;
+cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+
+
+cout<<"\n";
+
+cout<<"Weekly Report is done"<<endl;
+    
+    
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (){
+int report_monthly (int num_appoint,double av_time,){
     //number of registered people
 
     //number of waiting people
@@ -229,13 +218,6 @@ int main()
     }
 
 
-
-
-
-
-
-
-
     
     // Appointment array initialize.
     appointment** appoint_daily;
@@ -250,13 +232,18 @@ int main()
     int register_process; // This counts what's the index of local register we should process next.
     register_process = 0; // First we should deal with the first register.
 
+    int* register_counter; // Used for monthly report.
+    *register_counter = 0;
+    int appoint_count=0; // Used for monthly report.
+    double time_total=0;
     for( k = 1 ; k <= sum_morning_afternoon ; k++)
     {
         // Main loop here.
         int day = (k + 1) / 2; // Ceiling
         int morning_afternoon = k % 2;
         if(morning_afternoon == 1) // A new day begin
-        {   int op1;
+        {  
+            int op1,op2;
             cout<<"A new day has begun, Day "<<day<<endl;
             cout<<"Please choose the operation you want:"<<endl;
             cout<<"1.update profession category"<<endl;
@@ -264,39 +251,44 @@ int main()
             cout<<"3.withdraw a patient"<<endl;
             cout<<" Press anything but 1,2,3 to continue without any operation"<<endl;
             cin>>op1;
-        
-        do
-        {
-            switch (op1)
+            do
             {
-            case 1:
-                //update profession and change priority
-                break;
-            case 2:
-                //update risk status and change priority
-                break;
-            case 3:
-                //withdraw from centralized queue
-                break;
-            default:
-                break;
-            }
-        }while(op1 == 1 || op1 == 2 || op1 == 3);
-        
+                switch (op1)
+                {
+                case 1:
+                    //update profession and change priority
+                    break;
+                case 2:
+                    //update risk status and change priority
+                    break;
+                case 3:
+                    cout<<"Please inter the ID of the patient"<<endl;
+                    cin>>op2;
+                    //withdraw from centralized queue
+                    break;
+                default:
+                    break;
+                }
+            }while(op1 == 1 || op1 == 2 || op1 == 3);
         }
+
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            local_queue2_push_pop(k,register_process,local_register,haha);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk);
         }
         //laofu
         //**********
         //laofu
         if(morning_afternoon = 0)
         {
+            if( day % 30 == 1){
+                appoint_count=0;
+                time_total=0;
+            }
             appointment *today;
             today=appoint_daily[day];
             //how many people have been treated today in total
@@ -311,7 +303,7 @@ int main()
                     one=*local_register[t+i];
                     if(one.if_treated==false && one.if_appointed==false && one.if_queueing==true){
                         if(num_ddl<15){
-                            set_appointment(local_register[t+i],today);
+                            set_appointment(local_register[t+i],today,day);
                             num_ddl++;
                             today->day_treat[count++]=local_register[t+i];
                         }else{
@@ -324,11 +316,13 @@ int main()
             int pos_left=today->get_num();
             for(;pos_left>0;pos_left--){
                 person *fib=Central_queue.record_out();
-                set_appointment(fib,today);
+                set_appointment(fib,today,day);
                 today->day_treat[count++]=fib;
             }
+            appoint_count+=(15-today->get_num());
             for(int i=0;i<15;i++){
                 person *x =today->day_treat[i];
+                time_total+=(x->treated_date-x->register_day);
                 int order=x->treated_order;
                 switch(order){
                     case 1:
@@ -348,15 +342,27 @@ int main()
                         break;
                 }
             }
+            //if not the first day, then we need to update the status of people get treated in previous day
+            if(day>1){
+                appointment *yesterday;
+                yesterday=appoint_daily[day-2];
+                for(int j=0;j<15;j++){
+                    person *reported=today->day_treat[j];
+                    reported->if_treated=true;
+                    reported->if_appointed=false;
+                    reported->if_queueing=false;
+                }
+            }
             if ( day % 7 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******WEEKLY REPORT*******"<<endl;
-                report_weekly (t, );
+                report_weekly (day,appoint_daily);
             }
             if ( day % 30 == 0 ){
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
-                report_monthly (, );
+                double av_time=time_total/30;
+                report_monthly (appoint_count,av_time, );
             }
         }
     }

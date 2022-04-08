@@ -260,11 +260,11 @@ int main()
         }
         if(morning_afternoon == 1) // Morning
         {
-            local_queue1_push_pop(k,local_register);
+            local_queue1_push_pop(k,register_process,local_register,haha);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            local_queue2_push_pop(k,local_register);
+            local_queue2_push_pop(k,register_process,local_register,haha);
         }
         //laofu
         //**********

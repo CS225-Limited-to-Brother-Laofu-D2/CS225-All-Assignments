@@ -256,14 +256,51 @@ int main()
                 switch (op1)
                 {
                 case 1:
+                    int new_profession;
+                    cout<<"Please enter the ID of the patient"<<endl;
+                    cin>>op2;
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
                     //update profession and change priority
+                    cout<<"Please enter the profession you want to change"<<endl;
+                    cin>>new_profession;
+                    if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
+                    {
+                        cout<<"Please enter the correct profession number"<<endl;
+                        break;
+                    }
+
+
+
                     break;
                 case 2:
+                    int new_risk;
+                    cout<<"Please enter the ID of the patient"<<endl;
+                    cin>>op2;
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
                     //update risk status and change priority
+                    cin>>new_risk;
+                    if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3)
+                    {
+                        cout<<"Please enter the correct risk type"<<endl;
+                        break;
+                    }
                     break;
                 case 3:
-                    cout<<"Please inter the ID of the patient"<<endl;
+                    cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
+                    if(typeid(op2) != typeid(int) || op2 <= 0)
+                    {
+                        cout<<"Please enter the correct id"<<endl;
+                        break;
+                    }
                     //withdraw from centralized queue
                     break;
                 default:

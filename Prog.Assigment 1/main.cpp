@@ -50,7 +50,7 @@ cout<<"Treated people this week"<<endl;
 cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 for(int i=0; i<vnum; i++){
     per = app[i];
-    int treat_time = Day - per->register_day;
+    int treat_time = per->treated_date - per->register_day;
     cout << per->name << " " << per->id << " "<< per->profession << " "<< per->age_group << " " << per->risk << " " << treat_time<<endl;
 
 }

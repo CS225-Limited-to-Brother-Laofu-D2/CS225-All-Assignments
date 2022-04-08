@@ -19,7 +19,7 @@ template <class T> class FibNode{
     template <class Y> friend class Centralized_Queue;
     // definitions for friend classes.
 public:
-    T key;// This value is used for sorting.
+    person* loc; // loc is the pointer of the person
     int degree;
     FibNode<T> *left;
     FibNode<T> *right;
@@ -27,9 +27,9 @@ public:
     FibNode<T> *parent;
     bool marked; // whether the first child is deleted or not
 
-    FibNode(T value) {
+    FibNode(person* pt) {
         // constructor function
-        key    = value;
+        loc    = pt;
         degree = 0;
         marked = false;
         left   = this;
@@ -37,28 +37,6 @@ public:
         parent = nullptr;
         child  = nullptr;
     }
-private:
-    int id;
-    string name;
-    int profession;
-    int risk;
-    string birth;
-    int age;
-    int age_group;
-    string address;
-    int phone;
-    string wechat;
-    string email;
-    int preferred_hos1;
-    int preferred_hos2;
-    int preferred_hos3;
-    
-    int priority;
-    int dis_ddl; // when dis_ddl = 0, person will get the highest priority.
-    string stat;
-    int TreatDay;
-    string RegData;
-    int Reg_Day;
 };
 
 // Fibonacci Heap
@@ -74,15 +52,16 @@ public:
     void remove(FibNode<T> *node); // remove the node
     void combine(FibHeap<T> *other); // Merge other into the current heap
     
-    void update(FibNode<T> *node, T key); // Update the Fibonacci heap oldkey to newkey
-    bool contains(T key); // Whether the Fibonacci heap contains the key
+    void updateProfession(FibNode<T> *node, int profession); // Update the Fibonacci heap old_risk to new_risk
+
     FibNode<T>* extractMin(); // remove the node with the minimum key, return a pointer to the node
     
-    FibNode<T>* id_search(FibNode<T>* root, T key, int id); // search the node according to key and id
-    void decrease(FibNode<T> *node, T key); // Decrease the value of the node who has the key in the Fibonacci heap
-    void increase(FibNode<T> *node, T key); // Add the Fibonacci heap node to key
-    bool minimum(T *min_key); // Get the minimum key value in the Fibonacci heap and save it to the min_key; success returns true, otherwise returns false.
-
+    FibNode<T>* id_search(FibNode<T>* root, person* loc, int id); // search the node according to pointer and id
+    void decreaseProfession(FibNode<T> *node, int profession); // Decrease the value of the node who has the risk in the Fibonacci heap
+    void increaseProfession(FibNode<T> *node, int profession); // Add the Fibonacci heap node to risk
+    bool minimum(T *highest_priority); // Get the highest priority in the Fibonacci heap and save it to the highest_priority; success returns true, otherwise returns false.
+    bool ifempty(); // if empty retun ture, else retun false
+    void print(); // Print the Fibonacci heap
 
 private:
     int keyNum;         // the number of nodes in the heap
@@ -91,6 +70,7 @@ private:
     FibNode<T> **cons;    // the memory area of the maximum degree
     
 private:
+    int comparePriority(FibNode<T> *node0, FibNode<T> *node1); // if node0 has higher priority return 0, else return 1
     void removeNode(FibNode<T> *node); // remove node from the double link list
     void addNode(FibNode<T> *node, FibNode<T> *root); // add node to the left of the root
     void link(FibNode<T>* node, FibNode<T>* root); // list node to the root list
@@ -99,6 +79,7 @@ private:
     void renewDegree(FibNode<T> *parent, int degree); // update the degree
     void cut(FibNode<T> *node, FibNode<T> *parent); // Strip the node from the parent's child links and make the node a member of the root list
     void cascadingCut(FibNode<T> *node) ; // do cascading cut to the node
+    void print(FibNode<T> *node, FibNode<T> *prev, int direction); // Print "Fibonacci heap"
 };
 
 // CentralQueue is the class that other files need to call
@@ -129,4 +110,5 @@ private:
    //  void build_vecotr(vector<Reg_Node> *a, FibNode<T> *root, int n);
     
     FibHeap<T> *fib_heap; // the central queue
+    FibHeap<T> *withdraw_heap; // the heap for those who withdrawed
 };

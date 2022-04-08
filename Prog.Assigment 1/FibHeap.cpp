@@ -14,6 +14,28 @@ template <class T> FibHeap<T>::FibHeap() {
 // destructor
 template <class T> FibHeap<T>::~FibHeap() { }
 
+// if node0 has higher priority return 0, else return 1
+// assume that for every criterion, the smaaler number 
+// means the higher priority
+template <class T> int FibHeap<T>::comparePriority(FibNode<T> *node0, FibNode<T> *node1) {
+    if (node0->loc->profession < node1->loc->profession) return 0;
+    else if (node0->loc->profession > node1->loc->profession) return 1;
+    else {
+        if (node0->loc->age_group < node1->loc->age_group) return 0;
+        else if (node0->loc->age_group > node1->loc->age_group) return 1;
+        else {
+            // id is the data of registration
+            if (node0->loc->id < node1->loc->id) return 0;
+            else if (node0->loc->id > node1->loc->id) return 1;
+            else {
+                if (node0->loc->register_day < node1->loc->register_day) return 0;
+                else if (node0->loc->register_day > node1->loc->register_day) return 1;
+                else return 0;
+            }
+        }
+    }
+}
+
 // remove a node from the double link list
 template <class T> void FibHeap<T>::removeNode(FibNode<T> *node) {
     node->right->left = node->left;
@@ -37,7 +59,7 @@ template <class T> void FibHeap<T>::insert(FibNode<T> *node) {
     if (min == nullptr) min = node;
     else {
         addNode(node, min);
-        if(min.key > node.key) min = node;
+        if(comparePriority(min, node) == 1) min = node;
     }
     keyNum++;
     return;
@@ -67,8 +89,7 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
         // add "other root list "to "this"
         catList(this->min, other->min);
 
-        if (this->min->key > other->min->key)
-            this->min = other->min;
+        if (comparePriority(this->min, other->min) == 1) this->min = other->min;
         this->keyNum += other->keyNum;
         free(other->cons);
         delete other;
@@ -76,16 +97,10 @@ template <class T> void FibHeap<T>::combine(FibHeap<T> *other) {
 }
 
 // Update Fibonacci heap node node with key
-template <class T> void FibHeap<T>::update(FibNode<T> *node, T key) {
-    if(key < node->key) decrease(node, key);
-    else if(key > node->key) increase(node, key);
+template <class T> void FibHeap<T>::updateProfession(FibNode<T> *node, int profession) {
+    if(profession < node->loc->profession) decrease(node, profession);
+    else if(profession > node->loc->profession) increase(node, profession);
     else cout << "No need to update!!!" << endl;
-}
-
-// Whether there are key nodes in the Fibonacci heap
-// Returns true if it exists, false otherwise
-template <class T> bool FibHeap<T>::contains(T key) {
-    return search(key)!=NULL ? true: false;
 }
 
 // remove the min value node from the root list
@@ -148,7 +163,7 @@ template <class T> void FibHeap<T>::consolidate() {
         while (cons[degree] != nullptr)
         {
             y = cons[degree];                // y is a tree which has the same degree as x
-            if (x->key > y->key) swap(x, y);       // ensure that the key value of x is smaller than y
+            if (comparePriority(x, y) == 1) swap(x, y);       // ensure that the key value of x is smaller than y
 
             link(y, x);    // link y to x
             cons[degree] = nullptr;
@@ -167,7 +182,7 @@ template <class T> void FibHeap<T>::consolidate() {
             else
             {
                 addNode(cons[i], min);
-                if ((cons[i])->key < min->key) min = cons[i];
+                if (comparePriority((cons[i]), min) == 0) min = cons[i];
             }
         }
     }
@@ -209,12 +224,12 @@ template <class T> FibNode<T> *FibHeap<T>::popMin() {
     return move;
 }
 
-// Get the minimum key value in the Fibonacci heap and save it to the pkey; success returns true, otherwise returns false.
+// Get the minimum loc value in the Fibonacci heap and save it to the pkey; success returns true, otherwise returns false.
 template <class T> bool FibHeap<T>::minimum(T *ptr) {
     if (min==nullptr || ptr==nullptr)
         return false;
 
-    *ptr = min->key;
+    *ptr = min->loc;
     return true;
 }
 
@@ -266,18 +281,17 @@ template <class T> void FibHeap<T>::cascadingCut(FibNode<T> *node) {
 }
 
 // Add the Fibonacci heap node to key
-template <class T>
-void FibHeap<T>::increase(FibNode<T> *node, T key)
+template <class T> void FibHeap<T>::increaseProfession(FibNode<T> *node, int profession)
 {
     FibNode<T> *child, *parent, *right;
 
     if (min==NULL ||node==NULL)
         return ;
 
-    if (key <= node->key)
+    if (profession <= node->loc->profession)
     {
-        cout << "increase failed: the new key(" << key <<") "
-             << "is no greater than current key(" << node->key <<")" << endl;
+        cout << "increase failed: the new key(" << profession <<") "
+             << "is no greater than current key(" << node->loc->profession <<")" << endl;
         return ;
     }
 
@@ -296,7 +310,7 @@ void FibHeap<T>::increase(FibNode<T> *node, T key)
         child->parent = NULL;
     }
     node->degree = 0;
-    node->key = key;
+    node->loc->profession = profession;
 
     // If node is not in the root list,
     // Remove node from child link of parent node.
@@ -314,7 +328,7 @@ void FibHeap<T>::increase(FibNode<T> *node, T key)
         right = node->right;
         while(right != node)
         {
-            if(node->key > right->key)
+            if(comparePriority(node, right) == 1)
                 min = right;
             right = right->right;
         }
@@ -322,21 +336,21 @@ void FibHeap<T>::increase(FibNode<T> *node, T key)
 }
 
 // Decrease the value of node node in the Fibonacci heap to key
-template <class T> void FibHeap<T>::decrease(FibNode<T> *node, T key) {
+template <class T> void FibHeap<T>::decreaseProfession(FibNode<T> *node, int profession) {
     FibNode<T> *parent;
 
     if (min == nullptr ||node == nullptr)
         return ;
 
-    if ( key>=node->key)
+    if ( profession>=node->loc->profession)
     {
         // cout << "new key is greater than current key" << endl;
         return ;
     }
 
-    node->key = key;
+    node->loc->profession = profession;
     parent = node->parent;
-    if (parent != nullptr && node->key < parent->key)
+    if (parent != nullptr && (comparePriority(node, parent) == 0))
     {
         // strip the node from its parent parent and add the node to the root chain table
         cut(node, parent);
@@ -344,13 +358,13 @@ template <class T> void FibHeap<T>::decrease(FibNode<T> *node, T key) {
     }
 
     // update the min node
-    if (node->key < min->key)
+    if (comparePriority(node, min) == 0)
         min = node;
 }
 
 
 // search the exact person recursively, according to the key and ID; if not find, return NULL
-template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, T key, int ID) {
+template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, person* loc, int ID) {
     FibNode<T> *tmp = root;    // temporary node
     FibNode<T> *p = nullptr;    // target node
 
@@ -359,14 +373,14 @@ template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, T key, in
 
     do
     {
-        if ((tmp->key == key) && (tmp->ID == ID))
+        if ((tmp->loc == loc) && (tmp->ID == ID))
         {
             p = tmp;
             break;
         }
         else
         {
-            if ((p = id_search(tmp->child, key, ID)) != nullptr)
+            if ((p = id_search(tmp->child, loc, ID)) != nullptr)
                 break;
         }
         tmp = tmp->right;
@@ -378,9 +392,70 @@ template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, T key, in
 // remove the node
 template <class T> void FibHeap<T>::remove(FibNode<T> *node) {
     // set the key of the node to be the min
-    T m = min->key-1;
-    decrease(node, m-1);
-    removeMin();
+    T p = min->loc->profession;
+    T original = node->loc->profession;
+    decrease(node, p-1);
+    popMin();
+    node->loc->profession = original;
+}
+
+// if empty retun ture, else retun false
+template <class T> bool FibHeap<T>::ifempty() {
+    if (this->keyNum == 0) return true;
+    else return false;
+}
+
+/*
+* Print "Fibonacci heap"
+*
+* Parameter description:
+* node -- the current node
+* prev -- the previous node of the current node (parent or sibling)
+* direction -- 1, indicating that the current node is a left child;
+* 2: indicates that the current node is a sibling node.
+*/
+template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, int direction)
+{
+    FibNode<T> *start=node;
+
+    if (node==NULL)
+        return ;
+    do
+    {
+        if (direction == 1)
+            cout << setw(8) << "(" << node->degree << ") is "<< setw(2) << prev->key << "'s child" << endl;
+        else
+            cout << setw(8) << "(" << node->degree << ") is "<< setw(2) << prev->key << "'s next" << endl;
+
+        if (node->child != NULL)
+            print(node->child, node, 1);
+
+        // Brother nodes
+        prev = node;
+        node = node->right;
+        direction = 2;
+    } while(node != start);
+}
+
+template <class T>
+void FibHeap<T>::print()
+{
+    int i=0;
+    FibNode<T> *p;
+
+    if (min==NULL)
+        return ;
+
+    cout << "== Details of the Centralized Queue: ==" << endl;
+    p = min;
+    do {
+        i++;
+        cout << setw(2) << i << ". " << setw(4) << p->key << "(" << p->degree << ") is root" << endl;
+
+        print(p->child, p, 1);
+        p = p->right;
+    } while (p != min);
+    cout << endl;
 }
 
 // following are functions of Centralized_Queue

@@ -449,7 +449,7 @@ void FibHeap<T>::print(int day)
     p = min;
     do {
         cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
-        cout<<node->loc->name<<" "<<node->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+        cout<<p->loc->name<<" "<<p->id<<" "<<p->loc->profession<<" "<<p->loc->age<<" "<<p->loc->risk<<" "<<(day-p->loc->register_day)<<endl;
         print(p->child, p, 1);
         p = p->right;
     } while (p != min);
@@ -592,7 +592,7 @@ template <class T> queue<person*> Centralized_Queue<T>::get_everyone_loc(FibNode
     {
         p = tmp;
         everyone_loc.push(p->loc);
-        if ((p = get_everyone_loc(tmp->child) != nullptr) break;
+        if ((p = get_everyone_loc(tmp->child)) != nullptr) break;
         tmp = tmp->right;
     } while (tmp != root);
 

@@ -107,14 +107,24 @@ int main()
     // Create two local queues.
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*>* localqueue_1;
+    localqueue_1 = new queue<person*>;
     queue<person*>* localqueue_2;
+    localqueue_2 = new queue<person*>;
     queue<person*>* localqueue_1_medium_risk;
+    localqueue_1_medium_risk = new queue<person*>;
     queue<person*>* localqueue_2_medium_risk;
+    localqueue_2_medium_risk = new queue<person*>;
     queue<person*>* localqueue_1_high_risk;
+    localqueue_1_high_risk = new queue<person*>;
     queue<person*>* localqueue_2_high_risk;
+    localqueue_2_high_risk = new queue<person*>;
     queue<person*>* re_register_queue;
+    re_register_queue = new queue<person*>;
     queue<person*>* everyone_loc;
+    everyone_loc = new queue<person*>;
     queue<person*>* ddl_queue;
+    ddl_queue = new queue<person*>;
+    
 
     Centralized_Queue<person*> Central_queue;
     
@@ -225,13 +235,14 @@ int main()
         appoint_daily[i]=new appointment;
     }
     // Initialize end.
-
+    
 
     int k; // This is the morning, afternoon counter.
     int register_process; // This counts what's the index of local register we should process next.
     register_process = 0; // First we should deal with the first register.
 
     int* register_counter; // Used for monthly report.
+    register_counter = new int;
     *register_counter = 0;
     int appoint_count=0; // Used for monthly report.
     double time_total=0;
@@ -249,7 +260,7 @@ int main()
             cout<<"2.update risk status"<<endl;
             cout<<"3.withdraw a patient"<<endl;
             cout<<"4.re-register a patient that has withdrawed"<<endl;
-            cout<<" Press anything but 1,2,3,4 to continue without any operation"<<endl;
+            cout<<"Press anything but 1,2,3,4 to continue without any operation"<<endl;
             cin>>op1;
             do
             {

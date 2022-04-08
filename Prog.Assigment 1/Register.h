@@ -60,6 +60,6 @@ class person
 
 // These two functions will return the register_process counter
 // Or return -1 means failure.
-//int local_queue_push_pop(int k , int* register_counter, int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue);
+int local_queue_push_pop(int k , int* register_counter, int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue);
 
 #endif

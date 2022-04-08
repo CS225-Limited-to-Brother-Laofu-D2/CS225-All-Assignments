@@ -459,3 +459,65 @@ void FibHeap<T>::print()
 }
 
 // following are functions of Centralized_Queue
+// set the point from person to fib_node
+template <class T> void Centralized_Queue<T>::set_in(person *person, FibNode<T> *fib_node){
+    if (person == nullptr) return;
+    fib_node->loc = person;
+}
+
+// transfer the data from local registry to center
+// the input is *person. call this function will generate a node in the FibHeap
+template <class T> void Centralized_Queue<T>::record_in(person *person) {
+    if (person == nullptr) return;
+    
+    FibNode<int> *fib_node = new FibNode<int>(0);
+    set_in(person, fib_node);
+    this->fib_heap->insert(fib_node);
+}
+
+// pop a minimum node. it will return a pointer to the node.
+// if there is no node, it will return a NULL pointer
+template <class T> person *Centralized_Queue<T>::record_out() {
+    FibNode<T> *fib_node = nullptr;
+    // check if there is any node in the fibheap
+    if (this->fib_heap->ifempty()) return fib_node;
+    else {
+        fib_node = this->fib_heap->popMin();
+        return fib_node;
+    }
+}
+
+// search the node with loc and ID in the fibheap. return a pointer to the node; if not find, return NULL
+template <class T> void Centralized_Queue<T>::search_node(person *person, FibNode<T> **fib_node){
+    FibNode<T> *root_node;
+    int id = person->id;
+    FibNode<T> *loc = person;
+    root_node = this->fib_heap->min;
+    *fib_node = this->fib_heap->id_search(root_node, loc, id);
+    return;
+}
+
+// the priority change due to profession should be done after this function!!
+template <class T> void Centralized_Queue<T>::change_profession(person *person, int profession){
+    FibNode<T> *fib_node = nullptr;
+    // search the node in the heap
+    search_node(person, &fib_node);
+    // not find
+    if (fib_node == nullptr) return;
+    this->fib_heap->updateProfession(fib_node, profession);
+    return;
+}
+
+template <class T> void Centralized_Queue<T>::withdraw_heap(person *person) {
+    FibNode<T> *fib_node = nullptr;
+    // search the node in the heap
+    search_node(person, &fib_node);
+    // not found
+    if (fib_node == nullptr) return;
+    
+    // change the status to withdraw, and remove the node
+    fib_node->loc->ifwithdraw = true;
+    this->fib_heap->remove(fib_node);
+    return;
+}
+

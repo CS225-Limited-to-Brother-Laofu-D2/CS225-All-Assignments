@@ -88,27 +88,25 @@ template <class T> class Centralized_Queue {
 
 public:
     FibHeap<T> *fib_heap; // the central queue
-    FibHeap<T> *withdraw_heap; // the heap for those who withdrawed
     // constructor function
     Centralized_Queue() {
         fib_heap = new FibHeap<T>;
-        withdraw_heap = new FibHeap<T>;
         return;
     };
     // these are the functions needed in other files
-    void set_date(int date); // set the date of tomorrow. Those people with medium risk or withdraw may released.
+    // void set_date(int date); // set the date of tomorrow. Those people with medium risk or withdraw may released.
     void record_in(person *person); // transfer the data from local registry to center
     person *record_out(); // pop a "minimum" node
-    void change_profession(person *person);
+    void change_profession(person *person, int profession);
+    void change_risk(person* person, int risk);
     void withdraw_heap(person *person);
-    void sort(person *a);
     
 private:
-    int date; // tomorrow's date
-    void transfer_in(person *person, FibNode<T> *fib_node); // transfer the data from person to fib_node
-    void transfer_out(person *person, FibNode<T> *fib_node); // transfer the data from fib_node to person
-    void search_node(person *person, FibHeap<T> **heap, FibNode<T> **fib_node); // search a node
+    //int date; // tomorrow's date
+    void set_in(person *person, FibNode<T> *fib_node); // set the pointer from person to fib_node
+    //void transfer_out(person *person, FibNode<T> *fib_node); // transfer the data from fib_node to person
+    void search_node(person *person, FibNode<T> **fib_node); // search a node
     
-    void build_array(person *a, FibNode<T> *root, int n);
-   //  void build_vecotr(vector<Reg_Node> *a, FibNode<T> *root, int n);
+    // void build_array(person *a, FibNode<T> *root, int n);
+    //  void build_vecotr(vector<Reg_Node> *a, FibNode<T> *root, int n);
 };

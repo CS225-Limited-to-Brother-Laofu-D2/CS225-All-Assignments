@@ -48,11 +48,13 @@ class person
         bool if_treated;
         bool if_appointed;
         bool if_queueing;
+        //Special situations
+        int ddl_day;
         person(void);
         
 };
 
-// Return 0 means cannot deal with this file or some other wrong caused, retry or modification is needed.
+// Return 0 means cannot deal with this local queue or some other wrong caused, retry or modification is needed.
 // Return 1 means registed successfully.
 int local_queue1_push_pop(int k , person** input_array);
 int local_queue2_push_pop(int k , person** input_array);

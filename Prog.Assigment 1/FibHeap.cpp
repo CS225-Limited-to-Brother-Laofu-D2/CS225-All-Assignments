@@ -516,7 +516,7 @@ template <class T> void Centralized_Queue<T>::withdraw_heap(person *person) {
     if (fib_node == nullptr) return;
     
     // change the status to withdraw, and remove the node
-    fib_node->loc->ifwithdraw = true;
+    fib_node->loc->if_withdraw = true;
     this->fib_heap->remove(fib_node);
     return;
 }

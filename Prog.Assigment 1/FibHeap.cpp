@@ -239,7 +239,6 @@ template <class T> bool FibHeap<T>::minimum(T *ptr) {
 template <class T> void FibHeap<T>::renewDegree(FibNode<T> *parent, int degree) {
     if ((parent == nullptr) || (degree != parent->degree-1)) return;
     parent->degree -= degree;
-    cout<<parent->degree<<endl;
     if (parent->parent != nullptr) renewDegree(parent->parent, degree);
     /*parent->degree -= degree;
     if (parent-> parent != NULL)
@@ -568,7 +567,11 @@ template <class T> void Centralized_Queue<T>::change_profession(person *person, 
     // search the node in the heap
     search_node(person, &fib_node);
     // not find
-    if (fib_node == nullptr) return;
+    if (fib_node == nullptr) 
+    {
+        cout<<"This person is not in the centralized queue."<<endl;
+        return;
+    }
     this->fib_heap->updateProfession(fib_node, profession);
     return;
 }
@@ -578,15 +581,21 @@ template <class T> void Centralized_Queue<T>::withdraw_heap(person *person) {
     // search the node in the heap
     search_node(person, &fib_node);
     // not found
-    if (fib_node == nullptr) return;
+    if (fib_node == nullptr)
+    {
+        cout<<"This person is not in the centralized queue."<<endl;
+        return;
+    }
+    
     
     // change the status to withdraw, and remove the node
-    fib_node->loc->if_withdraw = true;
+    fib_node->loc->if_withdrawed = true;
     this->fib_heap->remove(fib_node);
     this->fib_heap->withdraw_number++;
+    cout<<"Withdraw successful."<<endl;
     return;
 }
-
+/*
 // this function is used to change node's risk
 // if no/low risk convert to medium risk then pop
 // if any risk convert to high risk and there are
@@ -601,15 +610,23 @@ template <class T> person* Centralized_Queue<T>::change_risk(person *person, int
     if (fib_node == nullptr) return nullptr;
 
     original_risk = fib_node->loc->risk;
-    if(((original_risk == 0) && (risk == 2)) || ((original_risk == 1) && (risk == 2) )) {
+    if(((original_risk == 0) && (risk == 2)) || ((original_risk == 1) && (risk == 2) ))
+    {
         fib_node->loc->risk = risk;
         this->fib_heap->remove(fib_node);
         return fib_node->loc;
     }
-    else if((original_risk == 0 || original_risk == 1 || original_risk == 2) 
-            && (risk == 3) && (this->fib_heap->keyNum > 15)) this->fib_heap->remove(fib_node);
-    else return nullptr;
-}
+    else if((original_risk == 0 || original_risk == 1 || original_risk == 2) && (risk == 3) )
+    {
+        this->fib_heap->remove(fib_node);
+        return nullptr;
+    } 
+    else
+    {
+        return nullptr;
+    }
+
+}*/
 
 template <class T> void Centralized_Queue<T>::WeeklyReport(int day) {
     this->fib_heap->print(day);

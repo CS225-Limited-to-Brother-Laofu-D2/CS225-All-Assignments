@@ -40,10 +40,20 @@ person::person(void)
 
 // This function will return the register_process counter.
 // Or return -1 means failure.
-int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue)
+int local_queue_push_pop(int k , int* register_counter , int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue , queue<person*>* new_risk_queue)
 {
     int day = (k + 1) / 2;
     int counter = 0; // Every half day we only process 10 people.
+    while(!new_risk_queue->empty() && counter <= 9)
+    {
+        person* new_risk_process = new_risk_queue->front();
+        new_risk_queue->pop();
+        new_risk_process->if_queueing = true;
+        new_risk_process->register_day = day;
+        new_risk_process->ddl_day = day + 20;
+        (*register_counter)++;
+        counter++;
+    }
     while(!localqueue_1_medium_risk->empty() && localqueue_1_medium_risk->front()->wait_before_in_queue == day && counter <= 9)
     {
         person* medium_person_process = localqueue_1_medium_risk->front();

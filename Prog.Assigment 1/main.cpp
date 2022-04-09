@@ -132,6 +132,8 @@ int main()
     everyone_loc = new queue<person*>;
     queue<person*>* ddl_queue;
     ddl_queue = new queue<person*>;
+    queue<person*>* new_risk_queue;
+    new_risk_queue = new queue<person*>;
     
 
     Centralized_Queue<person*> Central_queue;
@@ -263,6 +265,13 @@ int main()
         {  
             int op1,op2;
             cout<<"A new day has begun, Day "<<day<<endl;
+            person* one;
+            one = new person;
+            person* two;
+            two = new person;
+            FibNode<person*>* node;
+            person* risk_changing;
+            risk_changing = new person;
             do
             {   
                 cout<<"Please choose the operation you want:"<<endl;
@@ -272,95 +281,135 @@ int main()
                 cout<<"4.re-register a patient that has withdrawed"<<endl;
                 cout<<"Press anything but 1,2,3,4 to continue without any operation"<<endl;
                 cin>>op1;
-                if (op1 == 1){
-                    int new_profession;
-                    cout<<"Please enter the ID of the patient"<<endl;
-                    cin>>op2;
-                    person *one=local_register[op2-1];
-                    FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, one, op2);
-                    if(typeid(op2) != typeid(int) || op2 <= 0 || node == nullptr)
-                    {
-                        cout<<"Please enter the correct id"<<endl;
-                        break;
-                    }
-                    //update profession and change priority
-                    cout<<"Please enter the profession you want to change"<<endl;
-                    cin>>new_profession;
-                    Central_queue.fib_heap->updateProfession(node, new_profession);
-                    if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
-                    {
-                        cout<<"Please enter the correct profession number"<<endl;
-                        break;
-                    }break;
-                }
-                else if (op1 == 2){
-                    int new_risk;
-                    cout<<"Please enter the ID of the patient"<<endl;
-                    cin>>op2;
-                    person *two=local_register[op2-1];
-                    FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, two, op2);
-                    if(typeid(op2) != typeid(int) || op2 <= 0 || node == nullptr)
-                    {
-                        cout<<"Please enter the correct id"<<endl;
-                        break;
-                    }
-                    //update risk status and change priority
-                    cout<<"Please enter the risk you want to change"<<endl;
-                    cin>>new_risk;
-                    if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3 )
-                    {
-                        cout<<"Please enter the correct risk type"<<endl;
-                        break;
-                    }
-                    person* risk_changing = Central_queue.change_risk(two, new_risk);
-                    break;}
-                else if (op1 == 3){
-                    cout<<"Please enter the ID of the patient"<<endl;
-                    cin>>op2;
-
-                    if(typeid(op2) != typeid(int) || op2 <= 0)
-                    {
-                        cout<<"Please enter the correct id"<<endl;
-                        break;
-                    }
-                    Central_queue.withdraw_heap(local_register[op2 - 1]);//withdraw from centralized queue
-                    break;}
-                else if (op1 == 4){
-                    cout<<"Please enter the ID of the patient"<<endl;
-                    cin>>op2;
-
-                    if(typeid(op2) != typeid(int) || op2 <= 0)
-                    {
-                        cout<<"Please enter the correct id"<<endl;
-                        break;
-                    }
-                    if(local_register[op2 - 1]->if_withdrawed)
-                    {
-                        local_register[op2 - 1]->if_re_registered = true;
-                        if(local_register[op2 - 1]->risk = 3)
+                switch(op1)
+                {
+                    case 1:
+                        int new_profession;
+                        cout<<"Please enter the ID of the patient"<<endl;
+                        cin>>op2;
+                        if(typeid(op2) != typeid(int) || op2 <= 0)
                         {
-                            localqueue_1_high_risk->push(local_register[op2 - 1]); // If this patient is high risk, no need to wait (according to K.D)
+                            cout<<"Please enter the correct id"<<endl;
                             break;
                         }
-                        local_register[op2 - 1]->wait_re_register = day + 14; // If this patient is no or low or medium risk, treat them as the same(arrording to K.D)
-                        re_register_queue->push(local_register[op2 - 1]);
-                    }
-                    else
-                    {
-                        cout<<"This patient is either not withdrawed yet or not registered yet"<<endl;
+                        one=local_register[op2-1];
+                        node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, one, op2);
+                        if(node == nullptr)
+                        {
+                            cout<<"This person is not in the centralized queue."<<endl;
+                            break;
+                        }
+                        //update profession and change priority
+                        cout<<"Please enter the profession you want to change"<<endl;
+                        cin>>new_profession;         
+                        if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
+                        {
+                            cout<<"Please enter the correct profession number"<<endl;
+                            break;
+                        }
+                        if(new_profession == one->profession)
+                        {
+                            cout<<"Please type a different profession type."<<endl;
+                            break;
+                        }
+                        Central_queue.fib_heap->updateProfession(node, new_profession);
+                        cout<<"Update successful"<<endl;
                         break;
-                    }
-                }
-            }while(op1 == 1 || op1 == 2 || op1 == 3);
+                    case 2:
+                        int new_risk;
+                        cout<<"Please enter the ID of the patient"<<endl;
+                        cin>>op2;
+                        two=local_register[op2-1];
+                        node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, two, op2);
+                        if(typeid(op2) != typeid(int) || op2 <= 0 || node == nullptr)
+                        {
+                            cout<<"Please enter the correct id"<<endl;
+                            break;
+                        }
+                        //update risk status and change priority
+                        cout<<"Please enter the risk you want to change"<<endl;
+                        cin>>new_risk;
+                        if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3 )
+                        {
+                            cout<<"Please enter the correct risk type"<<endl;
+                            break;
+                        }
+                        if(new_risk == two->risk)
+                        {
+                            cout<<"Please type a different risk"<<endl;
+                            break;
+                        }
+                        Central_queue.fib_heap->remove(node);
+                        two->risk = new_risk;
+                        two->if_queueing = false;
+                        if(new_risk == 0 || new_risk == 1)
+                        {
+                            new_risk_queue->push(two);
+                        }
+                        else  
+                        {
+                            if(new_risk == 2)
+                            {
+                                two->wait_before_in_queue = day + 30;
+                                localqueue_1_medium_risk->push(two);
+                            }
+                            else
+                            {
+                                if(new_risk == 3)
+                                {
+                                    localqueue_1_high_risk->push(two);
+                                }
+                            }
+                        }
+                        break;
+                    case 3:
+                        cout<<"Please enter the ID of the patient"<<endl;
+                        cin>>op2;
+                        if(typeid(op2) != typeid(int) || op2 <= 0)
+                        {
+                            cout<<"Please enter the correct id"<<endl;
+                            break;
+                        }
+                        Central_queue.withdraw_heap(local_register[op2 - 1]);//withdraw from centralized queue
+                        break;
+                    case 4:
+                        cout<<"Please enter the ID of the patient"<<endl;
+                        cin>>op2;
+                        if(typeid(op2) != typeid(int) || op2 <= 0)
+                        {
+                            cout<<"Please enter the correct id"<<endl;
+                            break;
+                        }
+                        if(local_register[op2 - 1]->if_withdrawed)
+                        {
+                            local_register[op2 - 1]->if_re_registered = true;
+                            if(local_register[op2 - 1]->risk == 3)
+                            {
+                                localqueue_1_high_risk->push(local_register[op2 - 1]); // If this patient is high risk, no need to wait (according to K.D)
+                                cout<<"Re-register successful. This patient is high risk."<<endl;
+                                break;
+                            }
+                            local_register[op2 - 1]->wait_re_register = day + 14; // If this patient is no or low or medium risk, treat them as the same(arrording to K.D)
+                            re_register_queue->push(local_register[op2 - 1]);
+                            cout<<"Re-register successful. This patient is no or low or medium risk."<<endl;
+                            break;
+                        }
+                        else
+                        {
+                            cout<<"This patient is either not withdrawed yet or not registered yet"<<endl;
+                            break;
+                        }      
+                }   
+            }while(op1 == 1 || op1 == 2 || op1 == 3 || op1 == 4);
         }
 
         if(morning_afternoon == 1) // Morning
         {
-            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue,new_risk_queue);
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);   
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue,new_risk_queue);   
         }
 
         if(morning_afternoon == 0)

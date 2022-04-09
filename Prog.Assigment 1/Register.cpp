@@ -44,7 +44,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
 {
     int day = (k + 1) / 2;
     int counter = 0; // Every half day we only process 10 people.
-    while(!localqueue_1_medium_risk->empty() && localqueue_1_medium_risk->front()->wait_before_in_queue == day && counter <= 10)
+    while(!localqueue_1_medium_risk->empty() && localqueue_1_medium_risk->front()->wait_before_in_queue == day && counter <= 9)
     {
         person* medium_person_process = localqueue_1_medium_risk->front();
         localqueue_1_medium_risk->pop(); // We found a meidum risk people that need to push into the local queue.
@@ -52,12 +52,12 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         medium_person_process->if_queueing = true;
         medium_person_process->register_day = day;
         medium_person_process->ddl_day = day + 20;
-        *register_counter++;
+        (*register_counter)++;
         counter++;
     }
     if(Central_queue.fib_heap->ifempty()) // In this case, we can process with the people with high risk.
     {
-        while(!localqueue_1_high_risk->empty() && counter <= 10)
+        while(!localqueue_1_high_risk->empty() && counter <= 9)
         {
             person* high_person_process = localqueue_1_high_risk->front();
             localqueue_1_high_risk->pop();
@@ -65,13 +65,13 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             high_person_process->if_queueing = true;
             high_person_process->register_day = day;
             high_person_process->ddl_day = day + 20;
-            *register_counter++;
+            (*register_counter)++;
             counter++;
         }
     }
     // We also need to deal with the people who withdrawed then registered.
     // Say that they have waited for enough days.
-    while(!re_register_queue->empty() && re_register_queue->front()->wait_re_register == day && counter <= 10)
+    while(!re_register_queue->empty() && re_register_queue->front()->wait_re_register == day && counter <= 9)
     {
         person* re_register_person_process = re_register_queue->front();
         re_register_queue->pop();
@@ -81,7 +81,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         re_register_person_process->if_withdrawed = false;
         re_register_person_process->register_day = day;
         re_register_person_process->ddl_day = day + 20;
-        *register_counter++;
+        (*register_counter)++;
         counter++;
     }
     for(/*nothing here*/; counter <= 9 ; counter++)
@@ -93,7 +93,8 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             person_now_process->if_queueing = true;
             person_now_process->register_day = day;
             person_now_process->ddl_day = day + 20; // We suppoose the ddl is 20 days
-            *register_counter++;
+            (*register_counter)++;
+            cout<<*register_counter<<endl;
             register_process++;
         }
         else
@@ -128,5 +129,6 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         localqueue_1->pop();
         Central_queue.record_in(person_push_into);
     }
+    
     return register_process;
 }

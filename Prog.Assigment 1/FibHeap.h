@@ -48,7 +48,7 @@ template <class T> class FibHeap {
 public:
     FibHeap();// constructor function
     ~FibHeap();// destructor function
-    int withdraw_number = 0;  // the numer of person withdrawing
+    int withdraw_number;  // the numer of person withdrawing
     void insert(FibNode<T> *node); // insert a node into the root list
     FibNode<T>* popMin(); // pop the min node from the heap
     void remove(FibNode<T> *node); // remove the node

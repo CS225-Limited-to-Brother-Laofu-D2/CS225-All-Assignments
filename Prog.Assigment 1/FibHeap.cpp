@@ -6,6 +6,7 @@
 // constructor
 template <class T> FibHeap<T>::FibHeap() {
     keyNum = 0;
+    withdraw_number = 0;
     maxDegree = 0;
     min = nullptr;
     cons = nullptr;

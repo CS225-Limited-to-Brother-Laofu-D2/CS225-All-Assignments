@@ -98,6 +98,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             register_process++;
             if(register_process == 1500)
             {
+                cout<<"********************************************************************************************************************************************"<<endl;
+                cout<<"All people registered processed, now only consider people with medium and high risk and specials(change risk,profession or withdrawed)"<<endl;
+                cout<<"********************************************************************************************************************************************"<<endl;
+                cout<<"End Day "<<day<<endl;
                 break;
             }
         }
@@ -111,6 +115,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
                 register_process++;
                 if(register_process == 1500)
                 {
+                    cout<<"********************************************************************************************************************************************"<<endl;
+                    cout<<"All people registered processed, now only consider people with medium and high risk and specials(change risk,profession or withdrawed)"<<endl;
+                    cout<<"********************************************************************************************************************************************"<<endl;
+                    cout<<"End Day "<<day<<endl;
                     break;
                 }
             }
@@ -123,6 +131,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
                     register_process++;
                     if(register_process == 1500)
                     {
+                        cout<<"********************************************************************************************************************************************"<<endl;
+                        cout<<"All people registered processed, now only consider people with medium and high risk and specials(change risk,profession or withdrawed)"<<endl;
+                        cout<<"********************************************************************************************************************************************"<<endl;
+                        cout<<"End Day "<<day<<endl;
                         break;
                     }
                 }

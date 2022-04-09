@@ -25,7 +25,8 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     int week=Day/7;
     int category;
     int op;
-    cout<<"which category do you want to sort?\n";
+    cout<<"This is weekly report for week "<<week<<"!\n";
+    cout<<"Which category do you want to sort?\n";
     cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
     cin>>category;
     cout << "Use what sort to output?"<<endl;
@@ -52,7 +53,7 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     int begin_day=(week-1)*7;
     for(int i=0;i<=5;i++){
         appointment *now_day=appoint_daily[begin_day+i];
-        for(int j=0;j<15;j++){
+        for(int j=0;j<15-now_day->get_num();j++){
             person *reported=now_day->day_treat[j];
             cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
         }
@@ -63,21 +64,21 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"Waiting people with appointments at the end of this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
     appointment *now_day=appoint_daily[begin_day+6];
-    for(int j=0;j<15;j++){
+    for(int j=0;j<15-now_day->get_num();j++){
         person *reported=now_day->day_treat[j];
-        cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
+        cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<Day-reported->register_day<<endl;
     }
     cout<<"\n";
 
     //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
     cout<<"Queueing poeple without appointments this week"<<endl;
     Central_queue.WeeklyReport(Day);
-    cout<<"\n";
-    cout<<"Weekly Report is done"<<endl;
+    cout<<"*****Weekly Report is done*****\n\n\n";
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,int* reg, double av_time, int last_month_number, int last_month_withdraw){
+int report_monthly (int num_appoint,int* reg, double av_time, int last_month_number, int last_month_withdraw,int month){
+    cout<<"This is the monthly report for month "<<month<<"!\n";
     //number of registered people
     cout<<"The number of registered people is: "<<*reg<<endl;
     //number of treatment appointments
@@ -90,7 +91,7 @@ int report_monthly (int num_appoint,int* reg, double av_time, int last_month_num
     cout<<"The whole number of person who had withdrawed"<<" "<<last_month_withdraw<<endl;
   
     
- cout<<"Monthly Report is done"<<endl;   
+ cout<<"\n*****Monthly Report is done****\n\n\n";   
     return 0;
 }
 //------------------------------main function------------------------------
@@ -393,6 +394,7 @@ int main()
                     ddl_person->if_queueing=false;
                     ddl_person->if_treated=false;
                     ddl_person->if_appointed=true;
+                    ddl_person->treated_date=day+1;
                     cout<<"the 3 local hospitals today have been fully occupied\n";
                     cout<<"Move the person with deadline today to another hospital in the city town\n";
                 }
@@ -440,32 +442,21 @@ int main()
                 }
             }
             if ( day % 7 == 0 ){
-                cout<<"\n"<<endl;
-                cout<<"*******WEEKLY REPORT*******"<<endl;
+                cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);
             }
             if ( day % 30 == 0 ){
-                cout<<"\n"<<endl;
-                cout<<"*******MONTHLY REPORT*******"<<endl;
-                double av_time=time_total/30;
+                cout<<"\n*******MONTHLY REPORT*******\n";
+                double av_time=time_total/appoint_count;
                 last_month_number = Central_queue.fib_heap->keyNum - last_month_number;
                 last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
-                report_monthly (appoint_count,register_counter,av_time,last_month_number,last_month_withdraw);
-                appoint_count = 0;
+                report_monthly (appoint_count,register_counter,av_time,last_month_number,last_month_withdraw,day/30);
                 *register_counter = 0;
-                av_time = 0;
             }
         }
     }
         
-
-
-
-
-
-
-
-
+return 0;
 }
 
     

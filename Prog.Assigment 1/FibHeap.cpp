@@ -470,15 +470,15 @@ template <class T> FibNode<T>* FibHeap<T>::pop_ddl(FibNode<T> *root, int day, qu
             p = tmp;
             ddl_queue->push(p->loc);
             remove(p);
+            break;
         }
         else
         {
-            if ((p = pop_ddl(tmp->child, day, ddl_queue)) != nullptr)
+            if ((p = pop_ddl(tmp->child, day, ddl_queue)) != nullptr) 
                 break;
         }
         tmp = tmp->right;
     } while (tmp != root);
-
     return p;
 }
 

@@ -84,7 +84,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         *register_counter++;
         counter++;
     }
-    for(/*nothing here*/; counter <= 10 ; counter++)
+    for(/*nothing here*/; counter <= 9 ; counter++)
     {
         person* person_now_process = input_array[register_process];
         if(person_now_process->risk == 0 || person_now_process->risk == 1)// no or low risk

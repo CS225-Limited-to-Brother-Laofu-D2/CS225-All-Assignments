@@ -240,8 +240,8 @@ int main()
     
     // Appointment array initialize.
     appointment** appoint_daily;
-    appoint_daily = new appointment*[100];
-    for(int i=0;i<100;i++){
+    appoint_daily = new appointment*[150];
+    for(int i=0;i<150;i++){
         appoint_daily[i]=new appointment;
     }
     // Initialize end.
@@ -475,6 +475,7 @@ int main()
                         break;
                 }
             }
+            cout<<"here"<<endl;
             //if not the first day, then we need to update the status of people get treated in previous day
             if(day>1){
                 appointment *yesterday;

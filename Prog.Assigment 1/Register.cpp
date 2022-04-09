@@ -94,7 +94,6 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             person_now_process->register_day = day;
             person_now_process->ddl_day = day + 20; // We suppoose the ddl is 20 days
             (*register_counter)++;
-            cout<<*register_counter<<endl;
             register_process++;
             if(register_process == 1500)
             {

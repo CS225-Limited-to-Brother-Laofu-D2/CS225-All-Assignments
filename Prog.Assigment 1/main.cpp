@@ -378,11 +378,13 @@ int main()
             int count=0;
             //how many people have deadline today
             int num_ddl=0;
-            Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day, ddl_queue);
+            Central_queue.fib_heap->pop_ddl(ddl_queue, day);
             cout<<"size ============"<<Central_queue.fib_heap->keyNum<<endl;
             while(!ddl_queue->empty())
             {
                 person* ddl_person = ddl_queue->front();
+                FibNode<person*>* ddl_node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min,ddl_person,ddl_person->id);
+                Central_queue.fib_heap->remove(ddl_node);
                 num_ddl++;
                 if(num_ddl<=15){
                     set_appointment(ddl_person,today,day);
@@ -398,7 +400,6 @@ int main()
             }
             int pos_left=today->get_num();
             for(;pos_left>0 && !Central_queue.fib_heap->ifempty();pos_left--){
-                cout<<"here"<<endl;
                 person *fib=Central_queue.record_out();
                 set_appointment(fib,today,day);
                 today->day_treat[count++]=fib;

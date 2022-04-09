@@ -64,7 +64,7 @@ public:
     bool minimum(T *highest_priority); // Get the highest priority in the Fibonacci heap and save it to the highest_priority; success returns true, otherwise returns false.
     bool ifempty(); // if empty retun ture, else retun false
     void print(int day); // Print the Fibonacci heap
-    FibNode<T>* pop_ddl(FibNode<T> *root, int day, queue<person*>* ddl_queue); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
+    void pop_ddl(queue<person*>* ddl_queue, int day); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
 
     int keyNum;         // the number of nodes in the heap
     int maxDegree;      // the maximum degree
@@ -82,6 +82,7 @@ private:
     void cut(FibNode<T> *node, FibNode<T> *parent); // Strip the node from the parent's child links and make the node a member of the root list
     void cascadingCut(FibNode<T> *node) ; // do cascading cut to the node
     void print(FibNode<T> *node, FibNode<T> *prev, int direction, int day); // Print "Fibonacci heap"
+    void pop_ddl(FibNode<T> *node, FibNode<T> *prev, int direction, queue<person*>* ddl_queue, int day); // determine if there is anyone reaching the ddl, if so pop it, otherwise return null
 };
 
 // CentralQueue is the class that other files need to call

@@ -137,7 +137,8 @@ template <class T> void FibHeap<T>::makeCons() {
     int old = maxDegree;
 
     // calculate log2(keyNum), considering rounding up
-    maxDegree = (log(keyNum)/log(2.0)) + 1;
+    //maxDegree = (log(keyNum)/log(2.0)) + 1;
+    maxDegree = keyNum;
     if (old >= maxDegree) return ;
 
     // because the degree is maxDegree may be merged, so to maxDegree+1
@@ -172,7 +173,7 @@ template <class T> void FibHeap<T>::consolidate() {
         cons[degree] = x;
     }
     min = nullptr;
-
+    
     // re-add the nodes in cons to the root table
     for (i = 0; i < big_degree; i++)
     {
@@ -236,8 +237,9 @@ template <class T> bool FibHeap<T>::minimum(T *ptr) {
 
 // update degrees
 template <class T> void FibHeap<T>::renewDegree(FibNode<T> *parent, int degree) {
-    parent->degree -= degree;
-    if ((parent-> parent != nullptr) && (parent->child->degree == parent->degree-1))
+    if (!((parent-> parent != nullptr) && (parent->child->degree == parent->degree-1))) return;
+        parent->degree -= degree;
+        cout<<parent->degree<<endl;
         renewDegree(parent->parent, degree);
 }
 
@@ -437,8 +439,7 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     } while(node != start);
 }
 
-template <class T>
-void FibHeap<T>::print(int day)
+template <class T> void FibHeap<T>::print(int day)
 {
     int i=0;
     FibNode<T> *p;
@@ -458,7 +459,42 @@ void FibHeap<T>::print(int day)
 
 // this function is used to find the person reaching ddl
 // pop the ones reaching the ddl and have not been treated
-template <class T> FibNode<T>* FibHeap<T>::pop_ddl(FibNode<T> *root, int day, queue<person*>* ddl_queue) {
+template <class T> void FibHeap<T>::pop_ddl(FibNode<T> *node, FibNode<T> *prev, int direction, queue<person*>* ddl_queue, int day) {
+
+    FibNode<T> *start=node;
+
+    if (node==NULL)
+        return ;
+    do
+    {
+        if ((node->loc->ddl_day == day) && (node->loc->if_treated == false)) ddl_queue->push(node->loc);
+        if (node->child != NULL) pop_ddl(node->child, node, 1, ddl_queue, day);
+
+        // Brother nodes
+        prev = node;
+        node = node->right;
+        direction = 2;
+    } while(node != start);
+}
+
+template <class T> void FibHeap<T>::pop_ddl(queue<person*>* ddl_queue, int day) {
+
+    int i=0;
+    FibNode<T> *p;
+
+    if (min==NULL)
+        return ;
+
+    p = min;
+    do {
+        if ((p->loc->ddl_day == day) && (p->loc->if_treated == false)) ddl_queue->push(p->loc);
+        pop_ddl(p->child, p, 1, ddl_queue, day);
+        p = p->right;
+    } while (p != min);
+    
+}
+
+/*template <class T> FibNode<T>* FibHeap<T>::pop_ddl(FibNode<T> *root, int day, queue<person*>* ddl_queue) {
     FibNode<T> *tmp = root;    // temporary node
     FibNode<T> *p = nullptr;    // target node
     if (root == nullptr)
@@ -482,6 +518,7 @@ template <class T> FibNode<T>* FibHeap<T>::pop_ddl(FibNode<T> *root, int day, qu
     } while (tmp != root);
     return p;
 }
+*/
 
 // following are functions of Centralized_Queue
 // set the point from person to fib_node

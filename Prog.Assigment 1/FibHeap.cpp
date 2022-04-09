@@ -422,9 +422,9 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     do
     {
         if (direction == 1)
-            cout<<node->loc->name<<setw(10)<<node->loc->id<<setw(15)<<node->loc->profession<<setw(17)<<node->loc->age<<setw(15)<<node->loc->risk<<setw(17)<<(day-node->loc->register_day)<<endl;
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
         else
-            cout<<node->loc->name<<setw(10)<<node->loc->id<<setw(15)<<node->loc->profession<<setw(17)<<node->loc->age<<setw(15)<<node->loc->risk<<setw(17)<<(day-node->loc->register_day)<<endl;
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
 
         if (node->child != NULL)
             print(node->child, node, 1, day);
@@ -445,10 +445,10 @@ void FibHeap<T>::print(int day)
     if (min==NULL)
         return ;
 
-    cout<<"name"<<setw(12)<<"ID"<<setw(20)<<"profession"<<setw(13)<<"age"<<setw(14)<<"risk"<<setw(30)<<"waiting-time-until-today"<<endl;
+    cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
     p = min;
     do {
-        cout<<p->loc->name<<setw(10)<<p->loc->id<<setw(15)<<p->loc->profession<<setw(17)<<p->loc->age<<setw(15)<<p->loc->risk<<setw(17)<<(day-p->loc->register_day)<<endl;
+        cout<<p->loc->name<<" "<<p->loc->id<<" "<<p->loc->profession<<" "<<p->loc->age<<" "<<p->loc->risk<<" "<<(day-p->loc->register_day)<<endl;
         print(p->child, p, 1, day);
         p = p->right;
     } while (p != min);

@@ -324,7 +324,7 @@ int main()
                         cout<<"Please enter the correct id"<<endl;
                         break;
                     }
-                    local_register[op2 - 1]->if_withdrawed = true;//withdraw from centralized queue
+                    Central_queue.withdraw_heap(local_register[op2 - 1]);//withdraw from centralized queue
                     break;
                 case 4:
                     cout<<"Please enter the ID of the patient"<<endl;

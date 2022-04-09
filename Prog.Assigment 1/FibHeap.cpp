@@ -169,8 +169,6 @@ template <class T> void FibHeap<T>::consolidate() {
             link(y, x);    // link y to x
             cons[degree] = nullptr;
             degree++;
-            cout<<"max"<<this->maxDegree<<endl;
-            cout<<degree<<endl;
         }
         cons[degree] = x;
     }

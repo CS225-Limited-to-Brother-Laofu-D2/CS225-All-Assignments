@@ -235,16 +235,15 @@ template <class T> bool FibHeap<T>::minimum(T *ptr) {
 
 // update degrees
 template <class T> void FibHeap<T>::renewDegree(FibNode<T> *parent, int degree) {
-    if (parent->degree == 0) return;
     parent->degree -= degree;
-    if (parent-> parent != nullptr)
+    if ((parent-> parent != nullptr) && (parent->child->degree == parent->degree-1))
         renewDegree(parent->parent, degree);
 }
 
 // strips the node from the parent parent's child links, and make the node a member of the root list of the heap.
 template <class T> void FibHeap<T>::cut(FibNode<T> *node, FibNode<T> *parent) {
     removeNode(node);
-    renewDegree(parent, node->degree);
+    if (node->degree == node->parent->degree-1) renewDegree(parent, node->degree);
     // node has no brothers
     if (node == node->right)
         parent->child = nullptr;
@@ -422,10 +421,10 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
         return ;
     do
     {
-        if (direction == 1)
-            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
-        else
-            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+        if (direction == 1){
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;}
+        else{
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;}
 
         if (node->child != NULL)
             print(node->child, node, 1, day);

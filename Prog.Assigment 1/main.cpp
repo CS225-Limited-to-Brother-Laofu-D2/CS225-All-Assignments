@@ -76,7 +76,7 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<person*> Central_queue){
+int report_monthly (int num_appoint,int* reg, double av_time, int last_month_number, int last_month_withdraw){
     //number of registered people
     cout<<"The number of registered people is: "<<*reg<<endl;
     //number of treatment appointments
@@ -85,7 +85,8 @@ int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<
     cout<<"The average waiting time is: "<<av_time<<endl;
     //number of withdraw people
     //number of waiting people
-    Central_queue.MonthlyReport();
+    cout<<"The whole number of person in the Centralized Queue"<<" "<<last_month_number<<endl;
+    cout<<"The whole number of person who had withdrawed"<<" "<<last_month_withdraw<<endl;
   
     
  cout<<"Monthly Report is done"<<endl;   
@@ -104,6 +105,8 @@ int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<
 int main()
 {
     int sum_morning_afternoon = 200;
+    int last_month_number = 0;
+    int last_month_withdraw = 0; 
     // Create two local queues.
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*>* localqueue_1;
@@ -376,6 +379,7 @@ int main()
                 //how many people have deadline today
             int num_ddl=0;
             Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day, ddl_queue);
+            cout<<"size ============"<<Central_queue.fib_heap->keyNum<<endl;
             while(!ddl_queue->empty())
             {
                 person* ddl_person = ddl_queue->front();
@@ -440,12 +444,12 @@ int main()
                 cout<<"\n"<<endl;
                 cout<<"*******MONTHLY REPORT*******"<<endl;
                 double av_time=time_total/30;
-                report_monthly (appoint_count,register_counter,av_time,Central_queue);
+                last_month_number = Central_queue.fib_heap->keyNum - last_month_number;
+                last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
+                report_monthly (appoint_count,register_counter,av_time,last_month_number,last_month_withdraw);
                 appoint_count = 0;
                 *register_counter = 0;
                 av_time = 0;
-                Central_queue.fib_heap->keyNum = 0;
-                Central_queue.fib_heap->withdraw_number = 0;
             }
         }
     }

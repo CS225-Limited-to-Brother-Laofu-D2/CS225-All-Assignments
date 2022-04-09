@@ -56,13 +56,12 @@ template <class T> void FibHeap<T>::insert(FibNode<T> *node) {
     if (node == nullptr) return;
     // check whether there is any node in the fibheap
     // if so then insert the first node
-    if (min == nullptr) min = node;
+    if (keyNum == 0) min = node;
     else {
         addNode(node, min);
         if(comparePriority(min, node) == 1) min = node;
     }
     keyNum++;
-    return;
 }
 
 // merge Other into the current heap
@@ -207,9 +206,10 @@ template <class T> FibNode<T> *FibHeap<T>::popMin() {
         addNode(child, min);
         child->parent = nullptr;
     }
-
+    
     // remove m from the root list
     removeNode(move);
+    
     // if m is the only node in the heap, set the smallest node of the heap to NULL
     // otherwise, set the smallest node of the heap to a non-empty node (m->right), and then adjust it.
     if (move->right == move)
@@ -235,6 +235,7 @@ template <class T> bool FibHeap<T>::minimum(T *ptr) {
 
 // update degrees
 template <class T> void FibHeap<T>::renewDegree(FibNode<T> *parent, int degree) {
+    if (parent->degree == 0) return;
     parent->degree -= degree;
     if (parent-> parent != nullptr)
         renewDegree(parent->parent, degree);
@@ -391,7 +392,7 @@ template <class T> FibNode<T>* FibHeap<T>::id_search(FibNode<T> *root, person* l
 // remove the node
 template <class T> void FibHeap<T>::remove(FibNode<T> *node) {
     // set the key of the node to be the min
-    int p = min->loc->profession;
+    int p = min->loc->profession-1;
     int original = node->loc->profession;
     decreaseProfession(node, p-1);
     popMin();

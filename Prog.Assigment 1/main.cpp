@@ -475,7 +475,6 @@ int main()
                         break;
                 }
             }
-            cout<<"here"<<endl;
             //if not the first day, then we need to update the status of people get treated in previous day
             if(day>1){
                 appointment *yesterday;
@@ -498,6 +497,15 @@ int main()
                 last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
                 report_monthly (appoint_count,register_counter,av_time,last_month_number,last_month_withdraw,day/30);
                 *register_counter = 0;
+            }
+            if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())
+            {
+                cout<<"******************************************"<<endl;
+                cout<<"All patients treated, program terminated."<<endl;
+                cout<<"******************************************"<<endl;
+                cout<<"****************End Day "<<day<<"**************"<<endl;
+                cout<<"******************************************"<<endl;
+                return 1;
             }
         }
     }

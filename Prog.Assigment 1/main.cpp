@@ -28,8 +28,9 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"This is weekly report for week "<<week<<"!\n";
     cout<<"Which category do you want to sort?\n";
     cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
+    cout<<"If you DONOT want to sort, please also choose one from 1,2,3"<<endl;
     cin>>category;
-    cout << "Use what sort to output?"<<endl;
+    cout << "Next, use what sort to output?"<<endl;
     cout << "1. Sort by name"<<endl;
     cout << "2. Sort by profession category"<<endl;
     cout << "3. Sort by age group"<<endl;
@@ -44,6 +45,8 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
             break;
         case 3:
             agesort(category,appoint_daily,week,Central_queue, everyone_loc);
+            break;
+        default:
             break;
     }
     //Treated people given by appointments so far
@@ -275,9 +278,9 @@ int main()
                     int new_profession;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
-                    //person *one=local_register[op2-1];
-                    //FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, one, op2);
-                    if(typeid(op2) != typeid(int) || op2 <= 0 /*|| node == nullptr*/)
+                    person *one=local_register[op2-1];
+                    FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, one, op2);
+                    if(typeid(op2) != typeid(int) || op2 <= 0 || node == nullptr)
                     {
                         cout<<"Please enter the correct id"<<endl;
                         break;
@@ -285,34 +288,32 @@ int main()
                     //update profession and change priority
                     cout<<"Please enter the profession you want to change"<<endl;
                     cin>>new_profession;
-                    //Central_queue.fib_heap->updateProfession(node, new_profession);
+                    Central_queue.fib_heap->updateProfession(node, new_profession);
                     if(typeid(new_profession) != typeid(int) || new_profession <= 0 || new_profession >= 9)
                     {
                         cout<<"Please enter the correct profession number"<<endl;
                         break;
-                    }
-
-
-
-                    break;
+                    }break;
                 case 2:
                     int new_risk;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
-                    //person *two=local_register[op2-1];
-                    //update risk status and change priority
-                    cin>>new_risk;
-                    if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3)
-                    {
-                        cout<<"Please enter the correct risk type"<<endl;
-                        break;
-                    }
-                    //person* risk_changing = Central_queue.change_risk(two, new_risk);
-                    if(typeid(op2) != typeid(int) || op2 <= 0 /*|| risk_changing == nullptr*/)
+                    person *two=local_register[op2-1];
+                    FibNode<person*>* node = Central_queue.fib_heap->id_search(Central_queue.fib_heap->min, two, op2);
+                    if(typeid(op2) != typeid(int) || op2 <= 0 || node == nullptr)
                     {
                         cout<<"Please enter the correct id"<<endl;
                         break;
                     }
+                    //update risk status and change priority
+                    cout<<"Please enter the risk you want to change"<<endl;
+                    cin>>new_risk;
+                    if(typeid(new_risk) != typeid(int) || new_risk < 0 || new_risk > 3 )
+                    {
+                        cout<<"Please enter the correct risk type"<<endl;
+                        break;
+                    }
+                    person* risk_changing = Central_queue.change_risk(two, new_risk);
                     break;
                 case 3:
                     cout<<"Please enter the ID of the patient"<<endl;
@@ -323,9 +324,7 @@ int main()
                         cout<<"Please enter the correct id"<<endl;
                         break;
                     }
-                    local_register[op2 - 1]->if_withdrawed = true;
-
-                    //withdraw from centralized queue
+                    local_register[op2 - 1]->if_withdrawed = true;//withdraw from centralized queue
                     break;
                 case 4:
                     cout<<"Please enter the ID of the patient"<<endl;

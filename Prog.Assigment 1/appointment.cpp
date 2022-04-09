@@ -74,6 +74,7 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
     case 3:
         len=Central_queue.fib_heap->keyNum;
         break;
+
     }
     person **temp=new person*[len];
     for(int i=0;i<len;i++){
@@ -142,6 +143,7 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
     case 3:
         len=Central_queue.fib_heap->keyNum;
         break;
+
     }
     person **temp=new person*[len];
     for(int i=0;i<len;i++){
@@ -210,6 +212,7 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
     case 3:
         len=Central_queue.fib_heap->keyNum;
         break;
+
     }
     person **temp=new person*[len];
     for(int i=0;i<len;i++){

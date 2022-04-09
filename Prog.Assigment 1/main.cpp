@@ -441,6 +441,9 @@ int main()
                 cout<<"*******MONTHLY REPORT*******"<<endl;
                 double av_time=time_total/30;
                 report_monthly (appoint_count,register_counter,av_time,Central_queue);
+                appoint_count = 0;
+                *register_counter = 0;
+                av_time = 0;
                 Central_queue.fib_heap->keyNum = 0;
                 Central_queue.fib_heap->withdraw_number = 0;
             }

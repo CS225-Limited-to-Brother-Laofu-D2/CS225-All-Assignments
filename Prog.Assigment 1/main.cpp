@@ -359,10 +359,22 @@ int main()
         if(morning_afternoon == 1) // Morning
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue);
+            if(register_process == 1500)
+            {
+                cout<<"All people registered processed, program terminated."<<endl;
+                cout<<"End Day "<<day<<endl;
+                return 1;
+            }
         }
         if(morning_afternoon == 0) // Afternoon
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);
+            if(register_process == 1500)
+            {
+                cout<<"All people registered processed, program terminated."<<endl;
+                cout<<"End Day "<<day<<endl;
+                return 1;
+            }        
         }
 
         if(morning_afternoon == 0)

@@ -96,6 +96,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             (*register_counter)++;
             cout<<*register_counter<<endl;
             register_process++;
+            if(register_process == 1500)
+            {
+                break;
+            }
         }
         else
         {
@@ -105,6 +109,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
                 localqueue_1_medium_risk->push(person_now_process);
                 counter--; // We didn't push people into queue this time.
                 register_process++;
+                if(register_process == 1500)
+                {
+                    break;
+                }
             }
             else
             {
@@ -113,6 +121,10 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
                     localqueue_1_high_risk->push(person_now_process);
                     counter--; // We didn't push people into queue this time.
                     register_process++;
+                    if(register_process == 1500)
+                    {
+                        break;
+                    }
                 }
                 else
                 {

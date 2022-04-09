@@ -169,6 +169,8 @@ template <class T> void FibHeap<T>::consolidate() {
             link(y, x);    // link y to x
             cons[degree] = nullptr;
             degree++;
+            cout<<"max"<<this->maxDegree<<endl;
+            cout<<degree<<endl;
         }
         cons[degree] = x;
     }
@@ -237,16 +239,20 @@ template <class T> bool FibHeap<T>::minimum(T *ptr) {
 
 // update degrees
 template <class T> void FibHeap<T>::renewDegree(FibNode<T> *parent, int degree) {
-    if (!((parent-> parent != nullptr) && (parent->child->degree == parent->degree-1))) return;
-        parent->degree -= degree;
-        cout<<parent->degree<<endl;
-        renewDegree(parent->parent, degree);
+    if ((parent == nullptr) || (degree != parent->degree-1)) return;
+    parent->degree -= degree;
+    cout<<parent->degree<<endl;
+    if (parent->parent != nullptr) renewDegree(parent->parent, degree);
+    /*parent->degree -= degree;
+    if (parent-> parent != NULL)
+        renewDegree(parent->parent, degree);*/
 }
 
 // strips the node from the parent parent's child links, and make the node a member of the root list of the heap.
 template <class T> void FibHeap<T>::cut(FibNode<T> *node, FibNode<T> *parent) {
     removeNode(node);
-    if (node->degree == node->parent->degree-1) renewDegree(parent, node->degree);
+    if (node->degree == node->parent->degree-1) 
+        renewDegree(parent, node->degree);
     // node has no brothers
     if (node == node->right)
         parent->child = nullptr;

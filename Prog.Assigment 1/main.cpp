@@ -362,11 +362,11 @@ int main()
         }
         if(morning_afternoon == 0) // Afternoon
         {
-            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);
+            register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue);   
         }
 
         if(morning_afternoon == 0)
-        {   cout<<"fuck"<<endl;
+        {   
             if( day % 30 == 1){
                 appoint_count=0;
                 time_total=0;

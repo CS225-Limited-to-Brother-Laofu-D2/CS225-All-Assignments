@@ -272,9 +272,7 @@ int main()
                 cout<<"4.re-register a patient that has withdrawed"<<endl;
                 cout<<"Press anything but 1,2,3,4 to continue without any operation"<<endl;
                 cin>>op1;
-                switch (op1)
-                {
-                case 1:
+                if (op1 == 1){
                     int new_profession;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
@@ -294,7 +292,8 @@ int main()
                         cout<<"Please enter the correct profession number"<<endl;
                         break;
                     }break;
-                case 2:
+                }
+                else if (op1 == 2){
                     int new_risk;
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
@@ -314,8 +313,8 @@ int main()
                         break;
                     }
                     person* risk_changing = Central_queue.change_risk(two, new_risk);
-                    break;
-                case 3:
+                    break;}
+                else if (op1 == 3){
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
 
@@ -325,8 +324,8 @@ int main()
                         break;
                     }
                     Central_queue.withdraw_heap(local_register[op2 - 1]);//withdraw from centralized queue
-                    break;
-                case 4:
+                    break;}
+                else if (op1 == 4){
                     cout<<"Please enter the ID of the patient"<<endl;
                     cin>>op2;
 
@@ -351,8 +350,6 @@ int main()
                         cout<<"This patient is either not withdrawed yet or not registered yet"<<endl;
                         break;
                     }
-                default:
-                    break;
                 }
             }while(op1 == 1 || op1 == 2 || op1 == 3);
         }

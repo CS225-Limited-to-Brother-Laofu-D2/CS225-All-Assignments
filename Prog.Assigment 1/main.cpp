@@ -58,16 +58,17 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
         }
     }
     cout<<"\n"<<endl;
+
     //Waiting people with appointments (lists from three hospitals)
-    cout<<"Waiting people with appointments this week"<<endl;
+    cout<<"Waiting people with appointments at the end of this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
     appointment *now_day=appoint_daily[begin_day+6];
     for(int j=0;j<15;j++){
         person *reported=now_day->day_treat[j];
         cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
     }
-
     cout<<"\n";
+
     //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
     cout<<"Queueing poeple without appointments this week"<<endl;
     Central_queue.WeeklyReport(Day);
@@ -80,7 +81,7 @@ int report_monthly (int num_appoint,int* reg, double av_time, int last_month_num
     //number of registered people
     cout<<"The number of registered people is: "<<*reg<<endl;
     //number of treatment appointments
-    cout<<"The number of waiting people is: "<<num_appoint<<endl;
+    cout<<"The number of people with appointement this month is: "<<num_appoint<<endl;
     //average waiting time
     cout<<"The average waiting time is: "<<av_time<<endl;
     //number of withdraw people
@@ -372,11 +373,10 @@ int main()
                 time_total=0;
             }
             appointment *today;
-            today=appoint_daily[day];
+            today=appoint_daily[day-1];
             //how many people have been treated today in total
             int count=0;
-            //for every person
-                //how many people have deadline today
+            //how many people have deadline today
             int num_ddl=0;
             Central_queue.fib_heap->pop_ddl(Central_queue.fib_heap->min,day, ddl_queue);
             cout<<"size ============"<<Central_queue.fib_heap->keyNum<<endl;
@@ -386,9 +386,11 @@ int main()
                 num_ddl++;
                 if(num_ddl<=15){
                     set_appointment(ddl_person,today,day);
-                    num_ddl++;
                     today->day_treat[count++]=ddl_person;
                 }else{
+                    ddl_person->if_queueing=false;
+                    ddl_person->if_treated=false;
+                    ddl_person->if_appointed=true;
                     cout<<"the 3 local hospitals today have been fully occupied\n";
                     cout<<"Move the person with deadline today to another hospital in the city town\n";
                 }
@@ -430,7 +432,7 @@ int main()
                 appointment *yesterday;
                 yesterday=appoint_daily[day-2];
                 for(int j=0;j<15;j++){
-                    person *reported=today->day_treat[j];
+                    person *reported=yesterday->day_treat[j];
                     reported->if_treated=true;
                     reported->if_appointed=false;
                     reported->if_queueing=false;

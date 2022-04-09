@@ -8,11 +8,11 @@ int appointment::get_num(){
 }
 
 void appointment::set_hos(int order,int num){
-    each_hos_filled[order]=num;
+    each_hos_filled[order-1]=num;
 }
 
 int appointment::get_hos(int order){
-    return each_hos_filled[order];
+    return each_hos_filled[order-1];
 }
 
 appointment::appointment(/* args */)
@@ -28,6 +28,37 @@ appointment::appointment(/* args */)
     }
 }
 
+void set_appointment(person *one,appointment *day,int day_now){
+    int pos_left=day->get_num();
+    if(pos_left==0){
+        cout<<"the hospitals have been fully occupied today,try tomorrow!\n";
+        return;  
+    }
+    int best=one->preferred_hos1;
+    int good=one->preferred_hos2;
+    int fair=one->preferred_hos3;
+    one->treated_date=day_now+1;
+    if(day->get_hos(best)<5){
+        one->apponitment_loc=best;
+        int x=day->get_hos(best);
+        one->treated_order=x+1;
+        day->set_hos(best,x+1);
+    }else if(day->get_hos(good)<5){
+        one->apponitment_loc=good;
+        int x=day->get_hos(good);
+        one->treated_order=x+1;
+        day->set_hos(good,x+1);
+    }else{
+        one->apponitment_loc=fair;
+        int x=day->get_hos(fair);
+        one->treated_order=x+1;
+        day->set_hos(fair,x+1);
+    }
+    one->if_queueing=false;
+    one->if_treated=false;
+    one->if_appointed=true;
+    day->set_num(pos_left-1);
+}
 
 void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
@@ -242,36 +273,3 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
     }
 }
 
-
-
-void set_appointment(person *one,appointment *day,int day_now){
-    int pos_left=day->get_num();
-    if(pos_left==0){
-        cout<<"the hospitals have been fully occupied today,try tomorrow!\n";
-        return;  
-    }
-    int best=one->preferred_hos1;
-    int good=one->preferred_hos2;
-    int fair=one->preferred_hos3;
-    one->treated_date=day_now+1;
-    if(day->get_hos(best)<5){
-        one->apponitment_loc=best;
-        int x=day->get_hos(best);
-        one->treated_order=x+1;
-        day->set_hos(best,x+1);
-    }else if(day->get_hos(good)<5){
-        one->apponitment_loc=good;
-        int x=day->get_hos(good);
-        one->treated_order=x+1;
-        day->set_hos(good,x+1);
-    }else{
-        one->apponitment_loc=fair;
-        int x=day->get_hos(fair);
-        one->treated_order=x+1;
-        day->set_hos(fair,x+1);
-    }
-    one->if_queueing=false;
-    one->if_treated=false;
-    one->if_appointed=true;
-    day->set_num(pos_left-1);
-}

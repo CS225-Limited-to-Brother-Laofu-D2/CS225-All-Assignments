@@ -63,6 +63,7 @@ template <class T> void FibHeap<T>::insert(FibNode<T> *node) {
         if(comparePriority(min, node) == 1) min = node;
     }
     keyNum++;
+    consolidate();
 }
 
 // merge Other into the current heap

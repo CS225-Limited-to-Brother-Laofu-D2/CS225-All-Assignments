@@ -66,10 +66,10 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
     int len;
     switch (categroy){
     case 1:
-        len=15;
+        len=15*6;
         break;
     case 2:
-        len=15*6;
+        len=15;
         break;
     case 3:
         len=Central_queue.fib_heap->keyNum;
@@ -80,30 +80,27 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
        temp[i]=new person; 
     }
     // store and pop every element from the queue
-    for (int i = 0; i < len; ++i)
-    {
-        if(categroy==1){
-            appointment *temp_appoint=appoint_daily[7*week];
-            for(int j=0;j<15;j++){
-                temp[i]=temp_appoint->day_treat[j];
+    if(categroy==2){
+        appointment *temp_appoint=appoint_daily[7*week-1];
+        for(int j=0;j<15;j++){
+            temp[j]=temp_appoint->day_treat[j];
+        }
+    }else if(categroy==1){
+        int begin_day=(week-1)*7;
+        for(int j=0;j<=5;j++){
+            appointment *temp_appoint=appoint_daily[begin_day+j];
+            for(int k=0;k<15;k++){
+                temp[j*15+k]=temp_appoint->day_treat[k];
             }
-        }else if(categroy==2){
-            int begin_day=(week-1)*7;
-            for(int j=0;j<=5;j++){
-                for(int k=0;k<15;k++){
-                    appointment *temp_appoint=appoint_daily[begin_day+j];
-                    temp[j*15+k]=temp_appoint->day_treat[k];
-                }
-            }
-        }else if(categroy==3){
-            int begin=0;
-            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
-            while(!everyone_loc->empty())
-            {
-                person* one_person= everyone_loc->front();
-                temp[begin++]=one_person;
-                everyone_loc->pop();
-            }
+        }
+    }else if(categroy==3){
+        int begin=0;
+        Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+        while(!everyone_loc->empty())
+        {
+            person* one_person= everyone_loc->front();
+            temp[begin++]=one_person;
+            everyone_loc->pop();
         }
     }
 
@@ -117,7 +114,7 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
             person *p2 = temp[j];
 
             // if p1 larger than p2, swap them
-            if (p1->age_group < p2->age_group)
+            if (p1->age_group > p2->age_group)
             {
                 max=j;
             }
@@ -127,20 +124,20 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
         temp[max] = tmp_tmp;
     }
     for(int i=0;i<len;i++){
-        cout<<"the person with id:"<<temp[i]->id<<"is "<<temp[i]->age<<" years old!\n";
+        cout<<"the person with id:"<<temp[i]->id<<"is in age group: "<<temp[i]->age_group<<"\n";
     }
 }
 
 void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
-    // get the length of the queue p
+     // get the length of the queue p
     int len;
     switch (categroy){
     case 1:
-        len=15;
+        len=15*6;
         break;
     case 2:
-        len=15*6;
+        len=15;
         break;
     case 3:
         len=Central_queue.fib_heap->keyNum;
@@ -151,30 +148,27 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
        temp[i]=new person; 
     }
     // store and pop every element from the queue
-    for (int i = 0; i < len; ++i)
-    {
-        if(categroy==1){
-            appointment *temp_appoint=appoint_daily[7*week];
-            for(int j=0;j<15;j++){
-                temp[i]=temp_appoint->day_treat[j];
+    if(categroy==2){
+        appointment *temp_appoint=appoint_daily[7*week-1];
+        for(int j=0;j<15;j++){
+            temp[j]=temp_appoint->day_treat[j];
+        }
+    }else if(categroy==1){
+        int begin_day=(week-1)*7;
+        for(int j=0;j<=5;j++){
+            appointment *temp_appoint=appoint_daily[begin_day+j];
+            for(int k=0;k<15;k++){
+                temp[j*15+k]=temp_appoint->day_treat[k];
             }
-        }else if(categroy==2){
-            int begin_day=(week-1)*7;
-            for(int j=0;j<=5;j++){
-                for(int k=0;k<15;k++){
-                    appointment *temp_appoint=appoint_daily[begin_day+j];
-                    temp[j*15+k]=temp_appoint->day_treat[k];
-                }
-            }
-        }else if(categroy==3){
-            int begin=0;
-            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
-            while(!everyone_loc->empty())
-            {
-                person* one_person= everyone_loc->front();
-                temp[begin++]=one_person;
-                everyone_loc->pop();
-            }
+        }
+    }else if(categroy==3){
+        int begin=0;
+        Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+        while(!everyone_loc->empty())
+        {
+            person* one_person= everyone_loc->front();
+            temp[begin++]=one_person;
+            everyone_loc->pop();
         }
     }
 
@@ -188,7 +182,7 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
             person *p2 = temp[j];
 
             // if p1 larger than p2, swap them
-            if (p1->name< p2->name)
+            if (p1->name > p2->name)
             {
                 max=j;
             }
@@ -198,20 +192,20 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
         temp[max] = tmp_tmp;
     }
     for(int i=0;i<len;i++){
-        cout<<"the person with id:"<<temp[i]->id<<"is name "<<temp[i]->name<<"\n";
+        cout<<"the person with id:"<<temp[i]->id<<"has name: "<<temp[i]->name<<"\n";
     }
 }
 
 void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Queue<person*> Central_queue, queue<person*>* everyone_loc)
 {
-    // get the length of the queue p
+     // get the length of the queue p
     int len;
     switch (categroy){
     case 1:
-        len=15;
+        len=15*6;
         break;
     case 2:
-        len=15*6;
+        len=15;
         break;
     case 3:
         len=Central_queue.fib_heap->keyNum;
@@ -222,30 +216,27 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
        temp[i]=new person; 
     }
     // store and pop every element from the queue
-    for (int i = 0; i < len; ++i)
-    {
-        if(categroy==1){
-            appointment *temp_appoint=appoint_daily[7*week];
-            for(int j=0;j<15;j++){
-                temp[i]=temp_appoint->day_treat[j];
+    if(categroy==2){
+        appointment *temp_appoint=appoint_daily[7*week-1];
+        for(int j=0;j<15;j++){
+            temp[j]=temp_appoint->day_treat[j];
+        }
+    }else if(categroy==1){
+        int begin_day=(week-1)*7;
+        for(int j=0;j<=5;j++){
+            appointment *temp_appoint=appoint_daily[begin_day+j];
+            for(int k=0;k<15;k++){
+                temp[j*15+k]=temp_appoint->day_treat[k];
             }
-        }else if(categroy==2){
-            int begin_day=(week-1)*7;
-            for(int j=0;j<=5;j++){
-                for(int k=0;k<15;k++){
-                    appointment *temp_appoint=appoint_daily[begin_day+j];
-                    temp[j*15+k]=temp_appoint->day_treat[k];
-                }
-            }
-        }else if(categroy==3){
-            int begin=0;
-            Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
-            while(!everyone_loc->empty())
-            {
-                person* one_person= everyone_loc->front();
-                temp[begin++]=one_person;
-                everyone_loc->pop();
-            }
+        }
+    }else if(categroy==3){
+        int begin=0;
+        Central_queue.get_everyone_loc(Central_queue.fib_heap->min, everyone_loc);
+        while(!everyone_loc->empty())
+        {
+            person* one_person= everyone_loc->front();
+            temp[begin++]=one_person;
+            everyone_loc->pop();
         }
     }
 
@@ -259,7 +250,7 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
             person *p2 = temp[j];
 
             // if p1 larger than p2, swap them
-            if (p1->profession < p2->profession)
+            if (p1->profession > p2->profession)
             {
                 max=j;
             }
@@ -269,7 +260,7 @@ void profsort(int categroy,appointment **appoint_daily,int week, Centralized_Que
         temp[max] = tmp_tmp;
     }
     for(int i=0;i<len;i++){
-        cout<<"the person with id:"<<temp[i]->id<<"is in profession category"<<temp[i]->profession<<"\n";
+        cout<<"the person with id:"<<temp[i]->id<<"is in profession group:"<<temp[i]->profession<<"\n";
     }
 }
 

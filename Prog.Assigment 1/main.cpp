@@ -249,7 +249,7 @@ int main()
     *register_counter = 0;
     int appoint_count=0; // Used for monthly report.
     double time_total=0;
-    for( k = 1 ; k <= sum_morning_afternoon ; k++)
+    for( k = 1 ; k <= sum_morning_afternoon +50 ; k++)
     {
         // Main loop here.
         int day = (k + 1) / 2; // Ceiling
@@ -395,7 +395,8 @@ int main()
                 ddl_queue->pop();
             }
             int pos_left=today->get_num();
-            for(;pos_left>0;pos_left--){
+            for(;pos_left>0 && !Central_queue.fib_heap->ifempty();pos_left--){
+                cout<<"here"<<endl;
                 person *fib=Central_queue.record_out();
                 set_appointment(fib,today,day);
                 today->day_treat[count++]=fib;

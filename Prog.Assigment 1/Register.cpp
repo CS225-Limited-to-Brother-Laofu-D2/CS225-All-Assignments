@@ -52,7 +52,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         medium_person_process->if_queueing = true;
         medium_person_process->register_day = day;
         medium_person_process->ddl_day = day + 20;
-        *register_counter++;
+        (*register_counter)++;
         counter++;
     }
     if(Central_queue.fib_heap->ifempty()) // In this case, we can process with the people with high risk.
@@ -65,7 +65,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             high_person_process->if_queueing = true;
             high_person_process->register_day = day;
             high_person_process->ddl_day = day + 20;
-            *register_counter++;
+            (*register_counter)++;
             counter++;
         }
     }
@@ -81,7 +81,7 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         re_register_person_process->if_withdrawed = false;
         re_register_person_process->register_day = day;
         re_register_person_process->ddl_day = day + 20;
-        *register_counter++;
+        (*register_counter)++;
         counter++;
     }
     for(/*nothing here*/; counter <= 9 ; counter++)
@@ -93,7 +93,8 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
             person_now_process->if_queueing = true;
             person_now_process->register_day = day;
             person_now_process->ddl_day = day + 20; // We suppoose the ddl is 20 days
-            *register_counter++;
+            (*register_counter)++;
+            cout<<*register_counter<<endl;
             register_process++;
         }
         else
@@ -128,5 +129,6 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
         localqueue_1->pop();
         Central_queue.record_in(person_push_into);
     }
+    
     return register_process;
 }

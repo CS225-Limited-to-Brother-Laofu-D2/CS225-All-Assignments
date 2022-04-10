@@ -506,6 +506,7 @@ int main()
                 cout<<"******************************************"<<endl;
                 cout<<"****************End Day "<<day<<"**************"<<endl;
                 cout<<"******************************************"<<endl;
+                break;
             }
         }
     }
@@ -517,6 +518,11 @@ int main()
         cout<<"Which people do you want to know?\n Enter his id: ";
         int id;
         cin>>id;
+        if(id > 1500 || id <= 0)
+        {
+            cout<<"Please enter a vaild id."<<endl;
+            break;
+        }
         person *treated =local_register[id-1];
         if(treated->if_treated_locally==true){
             cout<<"The person with id:"<<treated->id<<" was treated on day:"<<treated->treated_date<<", in hospital:";

@@ -425,7 +425,6 @@ int main()
             //how many people have deadline today
             int num_ddl=0;
             Central_queue.fib_heap->pop_ddl(ddl_queue, day);
-            cout<<"size ============"<<Central_queue.fib_heap->keyNum<<endl;
             while(!ddl_queue->empty())
             {
                 person* ddl_person = ddl_queue->front();
@@ -442,7 +441,7 @@ int main()
                     ddl_person->treated_date=day+1;
                     ddl_person->if_treated_locally=false;
                     cout<<"the 3 local hospitals today have been fully occupied\n";
-                    cout<<"Move the person with deadline today to another hospital in the city town\n";
+                    cout<<"Move the person (id "<<ddl_person->id<<") with deadline today to another hospital in the city town\n";
                 }
                 ddl_queue->pop();
             }

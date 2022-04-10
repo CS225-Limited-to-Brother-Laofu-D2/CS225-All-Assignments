@@ -28,26 +28,30 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"This is weekly report for week "<<week<<"!\n";
     cout<<"Which category do you want to sort?\n";
     cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
-    cout<<"If you DO NOT want to sort, please also choose one from 1,2,3"<<endl;
+    cout<<"If you DO NOT want to sort, please choose other than 1,2,3."<<endl;
     cin>>category;
-    cout << "Next, use what sort to output?"<<endl;
-    cout << "1. Sort by name"<<endl;
-    cout << "2. Sort by profession category"<<endl;
-    cout << "3. Sort by age group"<<endl;
-    cout << "Type anything but 1,2,3: Without any sort"<<endl;
-    cin>>op;
-    switch(op){
-        case 1:
-            namesort(category,appoint_daily,week, Central_queue, everyone_loc);
-            break;
-        case 2:
-            profsort(category,appoint_daily,week,Central_queue, everyone_loc);
-            break;
-        case 3:
-            agesort(category,appoint_daily,week,Central_queue, everyone_loc);
-            break;
-        default:
-            break;
+    if(category==1 || category==2 ||category==3){
+        cout << "Next, use what sort to output?"<<endl;
+        cout << "1. Sort by name"<<endl;
+        cout << "2. Sort by profession category"<<endl;
+        cout << "3. Sort by age group"<<endl;
+        cout << "Type anything but 1,2,3: Without any sort"<<endl;
+        cin>>op;
+        switch(op){
+            case 1:
+                namesort(category,appoint_daily,week, Central_queue, everyone_loc);
+                break;
+            case 2:
+                profsort(category,appoint_daily,week,Central_queue, everyone_loc);
+                break;
+            case 3:
+                agesort(category,appoint_daily,week,Central_queue, everyone_loc);
+                break;
+            default:
+                break;
+        }
+    }else{
+        cout<<"***Output without sort.***\n";
     }
     //Treated people given by appointments so far
     cout<<"Treated people this week"<<endl;

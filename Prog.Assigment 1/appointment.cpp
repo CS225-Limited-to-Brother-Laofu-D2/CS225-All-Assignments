@@ -126,7 +126,7 @@ void agesort(int categroy,appointment **appoint_daily,int week, Centralized_Queu
         temp[max] = tmp_tmp;
     }
     for(int i=0;i<len;i++){
-        cout<<"the person with id:"<<temp[i]->id<<"is in age group: "<<temp[i]->age_group<<"\n";
+        cout<<"the person with id:"<<temp[i]->id<<" is in age group: "<<temp[i]->age_group<<"\n";
     }
 }
 
@@ -195,7 +195,7 @@ void namesort(int categroy,appointment **appoint_daily,int week, Centralized_Que
         temp[max] = tmp_tmp;
     }
     for(int i=0;i<len;i++){
-        cout<<"the person with id:"<<temp[i]->id<<"has name: "<<temp[i]->name<<"\n";
+        cout<<"the person with id:"<<temp[i]->id<<" has name: "<<temp[i]->name<<"\n";
     }
 }
 

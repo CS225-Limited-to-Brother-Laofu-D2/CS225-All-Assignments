@@ -154,7 +154,42 @@ template<class T> void pair<T>::print_pairs(){
 //     and returns the element t_0.
 template<class T> T fifo<T>::pop_vip(void)
 {
-    for()
+    int minimal_n;
+    pair<T> temp;
+    pair<T> ret;
+    int length = this->getlength();
+    for(int i = 1 ; i <= length ; i++)
+    {
+        temp = this->popfront();
+        if(i == 1)
+        {
+            minimal_n = temp.get_n();
+        }
+        else
+        {
+            if(temp.get_n() < minimal_n)
+            {
+                minimal_n = temp.get_n();
+            }
+        }
+        this->pushback(temp);
+    }
+    // Now we get the minimal n.
+    for(int i = 1 ; i <= length ; i++)
+    {
+        temp = this->popfront();
+        if(temp.get_n() == minimal_n)
+        {
+            ret = temp;
+            continue;
+        }
+        else
+        {
+            this->pushback(temp);
+            continue;
+        }
+    }
+    return ret.get_t();
 }
  
 
@@ -170,6 +205,7 @@ int main(){
     cout << ret1 << endl;
     cout << "Expected Output: true (1), the queue should be empty." << endl;
     cout << f1.isempty() << endl;
+
  
     //test #2
     //[(3,9),(0,7),(2,8),(5,3),(7,6),(8,5),(2,1),(9,4),(7,2),(10,0)]

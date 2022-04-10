@@ -113,6 +113,8 @@ int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<
 
 int main()
 {
+    cout<<endl<<"Computing Program I--CS 225--Group D2"<<endl;
+    cout<<"All rights reserved"<<endl<<endl;
     int sum_morning_afternoon = 200;
     int last_month_number = 0;
     int last_month_withdraw = 0; 

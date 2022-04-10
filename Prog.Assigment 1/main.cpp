@@ -513,7 +513,7 @@ int main()
             }
         }
     }
-    cout<<"\n Do you want some info about the treating details about some people?\n ";
+    cout<<"Do you want some info about the treating details about some people?\n";
     cout<<"Enter 1 for yes, 0 for no\n";
     int want;
     cin>>want;

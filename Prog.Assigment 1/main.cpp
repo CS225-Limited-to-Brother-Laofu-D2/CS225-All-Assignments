@@ -28,7 +28,7 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"This is weekly report for week "<<week<<"!\n";
     cout<<"Which category do you want to sort?\n";
     cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
-    cout<<"If you DONOT want to sort, please also choose one from 1,2,3"<<endl;
+    cout<<"If you DO NOT want to sort, please also choose one from 1,2,3"<<endl;
     cin>>category;
     cout << "Next, use what sort to output?"<<endl;
     cout << "1. Sort by name"<<endl;
@@ -51,7 +51,7 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     }
     //Treated people given by appointments so far
     cout<<"Treated people this week"<<endl;
-    cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
+    cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 
     int begin_day=(week-1)*7;
     for(int i=0;i<=5;i++){
@@ -61,11 +61,11 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
             cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
         }
     }
-    cout<<"\n"<<endl;
+    cout<<"\n";
 
     //Waiting people with appointments (lists from three hospitals)
     cout<<"Waiting people with appointments at the end of this week"<<endl;
-    cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+    cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
     appointment *now_day=appoint_daily[begin_day+6];
     for(int j=0;j<15-now_day->get_num();j++){
         person *reported=now_day->day_treat[j];
@@ -112,7 +112,7 @@ int main()
     int sum_morning_afternoon = 200;
     int last_month_number = 0;
     int last_month_withdraw = 0; 
-    // Create two local queues.
+    // Create two local queues with their appendix queues.
     // These two local queues per day store 10 people each, i.e., total 20 people a day.
     queue<person*>* localqueue_1;
     localqueue_1 = new queue<person*>;
@@ -135,7 +135,7 @@ int main()
     queue<person*>* new_risk_queue;
     new_risk_queue = new queue<person*>;
     
-
+    // Centralized queue is not a pointer.
     Centralized_Queue<person*> Central_queue;
     
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
@@ -236,12 +236,12 @@ int main()
         local_register[index]->preferred_hos3 = atoi(patient_info[12].c_str());
     }
 
-
+    registry1.close();// File process done.
     
     // Appointment array initialize.
     appointment** appoint_daily;
-    appoint_daily = new appointment*[150];
-    for(int i=0;i<150;i++){
+    appoint_daily = new appointment*[125];
+    for(int i=0;i<125;i++){
         appoint_daily[i]=new appointment;
     }
     // Initialize end.
@@ -271,7 +271,7 @@ int main()
             two = new person;
             FibNode<person*>* node;
             person* risk_changing;
-            risk_changing = new person;
+            risk_changing = new person; // Initalize for switch done.
             do
             {   
                 cout<<"Please choose the operation you want:"<<endl;

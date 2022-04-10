@@ -57,6 +57,7 @@ void set_appointment(person *one,appointment *day,int day_now){
     one->if_queueing=false;
     one->if_treated=false;
     one->if_appointed=true;
+    one->if_treated_locally=true;
     day->set_num(pos_left-1);
 }
 

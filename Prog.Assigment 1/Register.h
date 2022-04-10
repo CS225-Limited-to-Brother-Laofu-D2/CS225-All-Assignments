@@ -52,6 +52,7 @@ class person
         bool if_queueing;
         bool if_withdrawed;
         bool if_re_registered;
+        bool if_treated_locally;
         //Special situations
         int ddl_day;
         int wait_before_in_queue; // Only for medium risk.

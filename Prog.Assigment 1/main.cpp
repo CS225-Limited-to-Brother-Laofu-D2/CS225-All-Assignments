@@ -440,6 +440,7 @@ int main()
                     ddl_person->if_treated=false;
                     ddl_person->if_appointed=true;
                     ddl_person->treated_date=day+1;
+                    ddl_person->if_treated_locally=false;
                     cout<<"the 3 local hospitals today have been fully occupied\n";
                     cout<<"Move the person with deadline today to another hospital in the city town\n";
                 }
@@ -501,16 +502,34 @@ int main()
             if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())
             {
                 cout<<"******************************************"<<endl;
-                cout<<"All patients treated, program terminated."<<endl;
+                cout<<"All patients are treated! Congratulations !"<<endl;
                 cout<<"******************************************"<<endl;
                 cout<<"****************End Day "<<day<<"**************"<<endl;
                 cout<<"******************************************"<<endl;
-                return 1;
             }
         }
     }
-        
-return 0;
+    cout<<"\n Do you want some info about the treating details about some people?\n ";
+    cout<<"Enter 1 for yes, 0 for no\n";
+    int want;
+    cin>>want;
+    while(want==1){
+        cout<<"Which people do you want to know?\n Enter his id: ";
+        int id;
+        cin>>id;
+        person *treated =local_register[id-1];
+        if(treated->if_treated_locally==true){
+            cout<<"The person with id:"<<treated->id<<" was treated on day:"<<treated->treated_date<<", in hospital:";
+            cout<<treated->apponitment_loc<<", in the time slots:"<<treated->treated_time<<"\n";
+        }else{
+            cout<<"This person has been moved to the downtown, not treated in the 3 local hospital.\n";
+        }
+        cout<<"Do you want to know about other people?\n";
+        cout<<"Enter 1 for yes, 0 for no\n";
+        cin>>want;
+    }
+    cout<<"*******Program terminated !********\n";
+    return 0;
 }
 
     

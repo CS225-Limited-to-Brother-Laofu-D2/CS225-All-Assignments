@@ -80,7 +80,7 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     return 0;
 }
 //monthly report:Number of registered people; Number of waiting people (already in register); Number of appointments
-int report_monthly (int num_appoint,int* reg, double av_time, int last_month_number, int last_month_withdraw,int month){
+int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<person*> Central_queue, int last_month_withdraw,int month){
     cout<<"This is the monthly report for month "<<month<<"!\n";
     //number of registered people
     cout<<"The number of registered people is: "<<*reg<<endl;
@@ -90,7 +90,7 @@ int report_monthly (int num_appoint,int* reg, double av_time, int last_month_num
     cout<<"The average waiting time is: "<<av_time<<endl;
     //number of withdraw people
     //number of waiting people
-    cout<<"The whole number of person in the Centralized Queue"<<" "<<last_month_number<<endl;
+    cout<<"The whole number of person in the Centralized Queue"<<" "<<Central_queue.fib_heap->keyNum<<endl;
     cout<<"The whole number of person who had withdrawed"<<" "<<last_month_withdraw<<endl;
   
     
@@ -496,7 +496,7 @@ int main()
                 double av_time=time_total/appoint_count;
                 last_month_number = Central_queue.fib_heap->keyNum - last_month_number;
                 last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
-                report_monthly (appoint_count,register_counter,av_time,last_month_number,last_month_withdraw,day/30);
+                report_monthly (appoint_count,register_counter,av_time,Central_queue,last_month_withdraw,day/30);
                 *register_counter = 0;
             }
             if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())

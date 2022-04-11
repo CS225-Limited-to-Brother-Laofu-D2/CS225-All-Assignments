@@ -66,11 +66,11 @@ template<class T> void Stacks<T>::allocate(void)
     T *newarray = new T[newsize];
     for (int i = 0; i < numitems1; ++i)
     {
-        newarray[i] = reprarray[i];
+        newarray[i+1] = reprarray[i+1];
     }
     for (int i = maxsize - numitems2; i < maxsize; i++)
     {
-        newarray[i + maxsize] = reprarray[i];
+        newarray[i + maxsize+1] = reprarray[i+1];
     }
     delete[] reprarray;
     reprarray = newarray;
@@ -103,11 +103,11 @@ template<class T> void Stacks<T>::deallocate(void)
     T *newarray = new T[newsize];
     for (int i = 0; i < numitems1; ++i)
     {
-        newarray[i] = reprarray[i];
+        newarray[i+1] = reprarray[i+1];
     }
     for (int i = maxsize - numitems2; i < maxsize; i++)
     {
-        newarray[i] = reprarray[i + maxsize];
+        newarray[i+1] = reprarray[i + maxsize+1];
     }
     delete[] reprarray;
     reprarray = newarray;
@@ -119,7 +119,7 @@ template<class T> T Stacks<T>::top1(void)
 {
     // This function needs to be implemented
     if (numitems1 > 0)
-        return reprarray[numitems1 - 1];
+        return reprarray[numitems1];
     else
     {
         cout << "The stack1 is empty.";
@@ -144,7 +144,7 @@ template<class T> T Stacks<T>::pop1(void)
     // This function needs to be implemented
     if (numitems1 > 0)
     {
-        T result = reprarray[numitems1 - 1];
+        T result = reprarray[numitems1];
         if ((numitems1 + numitems2 <= maxsize / 4) && (maxsize > minsize))
             deallocate();
         --numitems1;
@@ -162,7 +162,7 @@ template<class T> T Stacks<T>::pop2(void)
     // This function needs to be implemented
     if (numitems2 > 0)
     {
-        T result = reprarray[maxsize - numitems2];
+        T result = reprarray[maxsize - numitems2 +1];
         if ((numitems1 + numitems2 <= maxsize / 4) && (maxsize > minsize))
             deallocate();
         --numitems2;
@@ -178,9 +178,9 @@ template<class T> T Stacks<T>::pop2(void)
 template<class T> void Stacks<T>::push1(T item)
 {
     // This function needs to be implemented
-    if (numitems1 + numitems2 == maxsize)
+    if (numitems1 + numitems2 >= maxsize)
         allocate();
-    reprarray[numitems1] = item;
+    reprarray[numitems1+1] = item;
     ++numitems1;
     return;
 }
@@ -188,9 +188,9 @@ template<class T> void Stacks<T>::push1(T item)
 template<class T> void Stacks<T>::push2(T item)
 {
     // This function needs to be implemented
-    if (numitems1 + numitems2 == maxsize)
+    if (numitems1 + numitems2 >= maxsize)
         allocate();
-    reprarray[maxsize - numitems2 -1] = item;
+    reprarray[maxsize - numitems2] = item;
     ++numitems2;
     return;
 }
@@ -216,14 +216,16 @@ template<class T> bool Stacks<T>::isempty2(void)
 template<class T> void Stacks<T>::display(void)
 {
     // This function needs to be implemented
-    /*cout << "The stack elements from top to bottom are:\n";
-    for (int i = numitems1; i > 0; --i)
+    cout << "The stack elements from top to bottom are:\n";
+    cout<<"Stack1\n";
+    for(int i = numitems1 ; i >= 1 ; i--)
     {
-        cout << reprarray[i-1] <<"\n";
+        cout<<reprarray[i]<<"\n";
     }
-    for (int i = numitems2; i < maxsize; i++)
+    cout<<"Stack2\n";
+    for(int i = maxsize -numitems2 + 1 ; i <= maxsize  ; i++)
     {
-        cout << reprarray[i-1] <<"\n";
+        cout<<reprarray[i]<<"\n";
     }
-    */
+    
 }

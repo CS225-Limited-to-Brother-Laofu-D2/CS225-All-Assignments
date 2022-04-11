@@ -66,7 +66,7 @@ template<class T> void Stacks<T>::allocate(void)
     T *newarray = new T[newsize];
     for (int i = 0; i < numitems1 + numitems2; ++i)
     {
-        newarray[i] = reprarray[i];
+        newarray[i+1] = reprarray[i+1];
     }
     delete[] reprarray;
     reprarray = newarray;
@@ -99,7 +99,7 @@ template<class T> void Stacks<T>::deallocate(void)
     T *newarray = new T[newsize];
     for (int i = 0; i < numitems1 + numitems2; ++i)
     {
-        newarray[i] = reprarray[i];
+        newarray[i+1] = reprarray[i+1];
     }
     delete[] reprarray;
     reprarray = newarray;

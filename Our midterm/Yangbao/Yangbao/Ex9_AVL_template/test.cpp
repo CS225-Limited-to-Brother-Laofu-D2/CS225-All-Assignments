@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
-#include "avl.cpp"
+#include "avl_template.cpp"
 using std::cout;
 using std::cin;
 

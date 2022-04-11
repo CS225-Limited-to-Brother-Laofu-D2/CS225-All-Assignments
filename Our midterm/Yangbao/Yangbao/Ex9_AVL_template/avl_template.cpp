@@ -568,4 +568,9 @@ template<class T> void AVL<T>::_display(avlnode<T> * pt)
 template<class T> T AVL<T>::median(void)
 {
     /* This function needs to be implemented */
+    int pt = this->root;
+    if(pt != 0)
+    {
+
+    }
 }

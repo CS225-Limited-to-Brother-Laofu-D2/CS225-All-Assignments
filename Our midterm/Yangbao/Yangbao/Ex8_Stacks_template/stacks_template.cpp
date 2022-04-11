@@ -64,9 +64,13 @@ template<class T> void Stacks<T>::allocate(void)
     // This function needs to be modified
     int newsize = 2 * maxsize;
     T *newarray = new T[newsize];
-    for (int i = 0; i < numitems1 + numitems2; ++i)
+    for (int i = 0; i < numitems1; ++i)
     {
         newarray[i] = reprarray[i];
+    }
+    for(int i = 1 ; i <= numitems2; i++)
+    {
+        newarray[newsize-i+1] = reprarray[maxsize - i+1 ];
     }
     delete[] reprarray;
     reprarray = newarray;

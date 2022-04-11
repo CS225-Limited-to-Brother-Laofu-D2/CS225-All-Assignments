@@ -8,14 +8,14 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
-#include "dfifo.cpp"
+#include "fifo_template.cpp"
 using std::cout;
 using std::cin;
 
 int main()
 {
     // Test 1
-    Dfifo<int> queue1 = Dfifo<int>();
+    fifo<int> queue1 = fifo<int>();
     queue1.pushback(0);
     queue1.pushback(-4);
     queue1.pushback(1);
@@ -40,7 +40,7 @@ int main()
     queue1.display();
     cout << "\n";
     // Test 2
-    Dfifo<int> queue2 = Dfifo<int>();
+    fifo<int> queue2 = fifo<int>();
     queue2.pushback(30);
     queue2.pushback(42);
     queue2.pushback(55);

@@ -147,6 +147,18 @@ template<class T> void fifo<T>::deallocate(void)
 template<class T> void fifo<T>::reverse(void)
 {
     /* This function needs to be implemented. It may be necessary to make changes to other member functions as well. */
+    int length = this->getlength();
+    T* temp_array = new T[length];
+    for(int i = 1 ; i <= length ; i++)
+    {
+        T temp = this->popfront();
+        temp_array[i] = temp;
+    }
+    for(int i = length ; i >= 1 ; i--)
+    {
+        //cout<<"2\n";
+        this->pushback(temp_array[i]);
+    }
 }
 
 template<class T> void fifo<T>::display(void)

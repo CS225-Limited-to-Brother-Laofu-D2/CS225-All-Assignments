@@ -160,7 +160,7 @@ template<class T> T Stacks<T>::pop1(void)
 template<class T> T Stacks<T>::pop2(void)
 {
     // This function needs to be implemented
-    if (numitems1 > 0)
+    if (numitems2 > 0)
     {
         T result = reprarray[maxsize - numitems2];
         if ((numitems1 + numitems2 <= maxsize / 4) && (maxsize > minsize))
@@ -216,7 +216,7 @@ template<class T> bool Stacks<T>::isempty2(void)
 template<class T> void Stacks<T>::display(void)
 {
     // This function needs to be implemented
-    cout << "The stack elements from top to bottom are:\n";
+    /*cout << "The stack elements from top to bottom are:\n";
     for (int i = numitems1; i > 0; --i)
     {
         cout << reprarray[i-1] <<"\n";
@@ -225,5 +225,5 @@ template<class T> void Stacks<T>::display(void)
     {
         cout << reprarray[i-1] <<"\n";
     }
-    
+    */
 }

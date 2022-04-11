@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <cstdlib>
-#include "dfifo.cpp"
+#include "dfifo_template.cpp"
 using std::cout;
 using std::cin;
 

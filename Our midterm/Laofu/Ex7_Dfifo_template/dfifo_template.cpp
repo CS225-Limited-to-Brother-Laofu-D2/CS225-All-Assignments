@@ -106,6 +106,22 @@ template<class T> bool Dfifo<T>::isempty(void)
 template<class T> void Dfifo<T>::reverse(void)
 {
     // This function needs to be implemented.
+    node<T> *cur;
+    node<T> *next;
+    node<T> *prev;
+    cur = dummy;
+    
+    do{
+        next = cur->getnext();
+        prev = cur->getprevious();
+
+        cur->setnext(prev);
+        cur->setprevious(next);
+
+        cur = next;
+    }while (cur != dummy);
+
+    return ;
 }
 
 template<class T> void Dfifo<T>::display(void)

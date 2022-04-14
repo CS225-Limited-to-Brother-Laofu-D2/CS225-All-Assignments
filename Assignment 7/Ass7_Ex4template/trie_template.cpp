@@ -266,7 +266,7 @@ template<class T> bool trie<T>::contains(trienode<T> *pt, AList<T> list)
         list.remove(1);
         return contains(pt->getfollow(),list);
     }
-    if(list.getlength() != 1 && key != pt->getdata())
+    if(key != pt->getdata())
     {
         return contains(pt->getnext(),list);
     }
@@ -461,40 +461,50 @@ template<class T> void trie<T>::correct3(AList<T> list)
         cout<<"This word is already in the dictionary."<<"\n";
     }
     else
-    {
-        int diff = 0;
-        bool if_added_in_this_level = false;
-        AList<T> temp;
-        for(int i = 1 ; i <= list.getlength() ; i++)
+    {   
+        cout<<"Prefix or one symbol extension difference is not considered, please use correct1 and correct2 function for that.\n";
+        // Compare every possible 1 symbol dif in this dictionary.
+        int length = list.getlength();
+        bool found = false;
+        for(int i = 1 ; i <= length ; i++)
         {
-            temp.append(list.getitem(i));
+            T temp = list.getitem(i);
+            T symbol = 'a';
+            for(int k = 0 ; k <= 25 ; k++)
+            {
+                T p = symbol + k;
+                //cout<<p<<"\n";
+                list.setitem(i,p); // search from a to Z.p, for example, we want find "word", then we first search from "aord" to "Zord"
+                if(intrie(list) == true)
+                {
+                    found = true;
+                    cout<<"A possible one difference word is ";
+                    for(int counter = 1; counter <= list.getlength() ; counter++)
+                    {
+                        cout<<list.getitem(counter);
+                    }
+                    cout<<"\n";
+                }
+                if(k == 25)
+                {
+                    k = -1;
+                    if(symbol == 'A')
+                    {
+                        break;
+                    }
+                    symbol = 'A';
+                }
+            }
+            symbol = 'a';
+            list.setitem(i,temp); // Restore it. say, back to "word"
         }
-        trienode<T> *pt = start;
-        while(pt != nullptr) // We need to find whether there's a one symbol extension.
+        if(found == true)
         {
-            T key = list.getitem(1);
-            if(pt->data != key)
-            {
-                if(if_added_in_this_level = false)
-                {
-                    if_added_in_this_level = true;
-                    diff++;
-                }
-                if(diff >= 2)
-                {
-                    break;
-                }
-                pt = pt->getnext();
-                continue;
-            }
-            if(pt->data == key)
-            {
-                if_added_in_this_level = false;
-                list.remove(1);
-                pt = pt->getfollow();
-                continue;
-            }
+            return;
         }
-        cout<<"No such word from the dictionary that differ from the given word (not found in the dictionary) by exactly one symbol.\n";
+        else
+        {
+           cout<<"No such word from the dictionary that differ from the given word (not found in the dictionary) by exactly one symbol.\n"; 
+        }
     }
 }

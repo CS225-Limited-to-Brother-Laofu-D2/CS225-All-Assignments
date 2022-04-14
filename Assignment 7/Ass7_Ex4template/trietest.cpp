@@ -30,6 +30,7 @@ int main()
     AList<char> laofu = AList<char>(10);
     AList<char> laofu2 = AList<char>(10);
     AList<char> laofu3 = AList<char>(10);
+    AList<char> Chaoren = AList<char>(10);
     // Enter your dictionary words
     mylist1.append('e');
     mylist1.append('n');
@@ -94,6 +95,11 @@ int main()
     laofu3.append('e');
     laofu3.append('e');
     laofu3.append('d');
+    Chaoren.append('w');
+    Chaoren.append('o');
+    Chaoren.append('r');
+    Chaoren.append('d');
+    Chaoren.append('k');
     mytrie.insert(YayItsThunder);
     mytrie.insert(YayItsThunder2);
     mytrie.insert(YayItsThunder3);
@@ -139,5 +145,6 @@ int main()
     mylist8.append('s');
     mytrie.correct3(mylist7);
     mytrie.correct3(mylist8);
+    mytrie.correct3(Chaoren);
     return 0;
 }

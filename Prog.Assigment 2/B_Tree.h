@@ -1,7 +1,7 @@
 #ifndef BTREE_H
 #define BTREE_H
 using namespace std;
-//#include ""//The tuple head file
+#include "Tuple.h"//The class head file
 
 
 static const int m = 3;  
@@ -14,15 +14,16 @@ static const int child_min = key_min + 1;
 
 class BTreeNode
 {
-    friend class BTree;
+ 
 public:
-	  BTnode(void);
+	BTreeNode(int _t, bool _leaf);//Constructor
+    friend class BTree;
 private:
-    bool isleaf;
-    int keyNum;
-    BTnode* parent;
-    BTnode* pchild[child_max];
-    Tuple* keyvalue[key_max];
+    bool leaf;// True if it is a leaf
+    int keyNum;//current number of keys
+    BTreeNode* parent;
+    BTreeNode* C[child_max];
+    Tuple* keyvalue[key_max];// An array of keys
 };
  
 
@@ -31,21 +32,21 @@ class BTree
 public:
     BTree();
     bool _insert(Tuple* value);
-    void SplitBlock(BTnode* node_parent,int child_index,BTnode* node_child);
-    void Notfull_insert(BTnode* node,Tuple* value);
+    void SplitBlock(BTreeNode* node_parent,int child_index,BTreeNode* node_child);
+    void Notfull_insert(BTreeNode* node,Tuple* value);
     bool contain(Tuple* value);
 
-    void _printpoint(BTnode* node,int count);
+    void _printpoint(BTreeNode* node,int count);
     void printpoint(void);
 
     bool _delete(Tuple* value);
-    BTnode* _find(BTnode* node,Tuple* value);
-    void MergeBlock(BTnode* node_parent,int child_index);
-    Tuple* getprev(BTnode* node);
-    Tuple* getnext(BTnode* node);
-    void BTree_deletebalance(BTnode* node,Tuple* value);
+    BTreeNode* _find(BTreeNode* node,Tuple* value);
+    void MergeBlock(BTreeNode* node_parent,int child_index);
+    Tuple* getprev(BTreeNode* node);
+    Tuple* getnext(BTreeNode* node);
+    void BTree_deletebalance(BTreeNode* node,Tuple* value);
 
 private:
-	  BTnode* root;
+	  BTreeNode* root;
 };
 #endif

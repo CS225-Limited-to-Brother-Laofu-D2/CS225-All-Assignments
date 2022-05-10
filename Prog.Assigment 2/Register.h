@@ -65,4 +65,55 @@ class person
 // Or return -1 means failure.
 //int local_queue_push_pop(int k , int* register_counter, int register_process , person** input_array , Centralized_Queue<person*> Central_queue , queue<person*>* localqueue_1 , queue<person*>* localqueue_1_medium_risk , queue<person*>* localqueue_1_high_risk , queue<person*>* re_register_queue);
 
+
+//The next four class are designed for the database, i.e., B+ and B tree.
+class person_specific
+{
+    public:
+        int id;
+        string name;
+        int profession;
+        string birth;
+        int age;
+        int age_group;
+        string address;
+        int phone;
+        string wechat;
+        string email;
+        int preferred_hos1; 
+        int preferred_hos2;
+        int preferred_hos3;
+};
+
+class medical_status
+{
+    public:
+        int risk;
+        int ddl_day;    
+};
+
+class registeration
+{
+    public:
+        int register_order;
+        int register_day;
+        bool if_queueing;
+        bool if_withdrawed;
+        bool if_re_registered;
+        int wait_before_in_queue;
+        int wait_re_register;
+};
+
+class treatment
+{
+    public:
+        int apponitment_loc;
+        int treated_order;
+        int treated_date;
+        string treated_time;
+        bool if_treated;
+        bool if_appointed;
+        bool if_treated_locally;
+};
+
 #endif

@@ -240,6 +240,7 @@ int main()
         local_register[index]->preferred_hos1 = atoi(patient_info[10].c_str());
         local_register[index]->preferred_hos2 = atoi(patient_info[11].c_str());
         local_register[index]->preferred_hos3 = atoi(patient_info[12].c_str());
+        local_register[index]->treatment_type = atoi(patient_info[13].c_str());
     }
 
     registry1.close();// File process done.

@@ -57,6 +57,8 @@ class person
         int ddl_day;
         int wait_before_in_queue; // Only for medium risk.
         int wait_re_register;
+        //Added
+        int treatment_type;
         person(void);
         
 };
@@ -89,6 +91,7 @@ class medical_status
 {
     public:
         int risk;
+        int treatment_type;
         int ddl_day;    
 };
 

@@ -1,379 +1,556 @@
+#pragma once
+#include "B_Tree.h"
+using namespace std;
 
-
-
-#include "B_tree.h"
-
-
-BTreeNode::BTreeNode(void)
+template <typename T>
+BTree<T>::BTree(int x)
 {
-    keyNum = 0;
-    parent = nullptr;
-    leaf = true;
-	int i;
-	for (i = 0;i < child_max;i++)
-	{
-		pchild[i] = nullptr;
-	}
-	for (i = 0;i < key_max;i++)
-	{
-		keyvalue[i] = 0; // this is the nullptr is made for the Tuple*, it is value
-	}
+    min_degree = x;
+    key_num = 0;
+    root = createEmptyNode();
 }
 
-
-BTree::BTree(void)
+template <typename T>
+BTree<T>::~BTree()
 {
-   root = nullptr;
-   return;
+    freeAll(root);
 }
 
-
-bool BTree::_insert(Tuple* value)
+template <typename T>
+bool BTree<T>::contain(T key) const
 {
-   if (contain(value))
-   {
-      return false;
-   }
-   else
-   {
-      if (root == nullptr)
-      {
-      	root = new BTreeNode();
-      }
-      if (root->keyNum == key_max)
-      {
-         BTreeNode* newnode = new BTreeNode();
-         newnode->pchild[0] = root;
-         newnode->leaf = false;
-         SplitBlock(newnode,0,root);
-         root = newnode;
-      }
-      Notfull_insert(root,value);
-      return true;
-   }
-}
- 
-void BTree::SplitBlock(BTreeNode* node_parent,int child_index,BTreeNode* node_child)
-{
-   BTreeNode* node_right = new BTreeNode();
-   node_right->leaf = node_child->leaf;
-   node_right->keyNum = key_min;
-   int i;
-
-   for (i = 0;i < key_min;i++)
-   {
-      node_right->keyvalue[i] = node_child->keyvalue[i+child_min];
-   }
-   if (!node_child->leaf)
-   {
-      for (i = 0;i < child_min;i++)
-      {
-         node_right->pchild[i] = node_child->pchild[i+child_min];
-         node_child->pchild[i+child_min]->parent = node_right->pchild[i];
-      }
-   }
-   node_child->keyNum = key_min;
-   for (i = node_parent->keyNum;i > child_index;i--)
-   {
-      node_parent->keyvalue[i] = node_parent->keyvalue[i-1];
-      node_parent->pchild[i+1] = node_parent->pchild[i];
-      node_child->pchild[i]->parent = node_parent->pchild[i+1];
-   }
-   node_parent->keyNum++;
-   node_parent->pchild[child_index+1] = node_right;
-   node_right->parent = node_parent->pchild[child_index+1];
-   node_parent->keyvalue[child_index] = node_child->keyvalue[key_min];
-   return;
+    return nullptr != search(root, key);
 }
 
-void BTree::Notfull_insert(BTreeNode* node,Tuple* value)
+template <typename T>
+T *BTree<T>::getHandle(T key) const
 {
-   int node_keynum = node->keyNum;
-   if (node->leaf)
-   {
-      while (node_keynum > 0 && value->get_registration() < node->keyvalue[node_keynum-1]->get_registration())
-      {
-      	node->keyvalue[node_keynum] = node->keyvalue[node_keynum-1];
-      	--node_keynum;
-      }
-      	node->keyvalue[node_keynum] = value;
-      	node->keyNum++;
-   }
-   else
-   {
-      while (node_keynum > 0 && value->get_registration() < node->keyvalue[node_keynum-1]->get_registration())
-      {
-      	--node_keynum;
-      }
-      BTreeNode* node_child = node->pchild[node_keynum];
-      if (node_child->keyNum == key_max)
-      {
-      	SplitBlock(node,node_keynum,node_child);
-      	if (value->get_registration() > node->keyvalue[node_keynum]->get_registration())
-      	{
-      	  	node_child = node->pchild[node_keynum+1];
-      	}
-      }
-      Notfull_insert(node_child,value);
-   }
+    return search(root, key);
 }
 
-bool BTree::contain(Tuple* value)
+template <typename T>
+void BTree<T>::display() const
 {
-   if (_find(root,value) != nullptr) return true;
-   return false;
+
+    cout << endl
+         << "=====================INFO=====================" << endl
+         << endl;
+    // cout << "root info: " << endl;
+    // printNodeInfo(root);
+    // cout << "left info: " << endl;
+    // printNodeInfo(root->children[0]);
+    // cout << "right info: " << endl;
+    // printNodeInfo(root->children[1]);
+
+    cout << "B-Tree details (root node at left most):" << endl
+         << endl;
+
+    display(root);
+
+    cout << endl
+         << "B-Tree has " << key_num << " keys in total." << endl;
+
+    cout << endl
+         << "=====================ENDS=====================" << endl
+         << endl;
 }
 
-
-BTreeNode* BTree::_find(BTreeNode* node,Tuple* value)
+template <typename T>
+bool BTree<T>::insert(T key)
 {
-   if (node == nullptr)
-   {
-   	return nullptr;
-   }
-   else
-   {
-      int i;
-      for (i = 0; i < node->keyNum ;i++)
-   	{
-   	   if (value->get_registration() <= node->keyvalue[i]->get_registration())
-         {
-            break; 
-         }
-   	}
-      if (i < node->keyNum && value->get_registration() == node->keyvalue[i]->get_registration())
-      {
-         return node;
-      }
-      else
-      {
-         if (node->leaf) return nullptr;
-         else return _find(node->pchild[i],value);
-      }
-   }
+    // cout << "Now insert key: " << key << endl;
+    if (contain(key))
+        return false;
+
+    if (root == nullptr)
+        root = createEmptyNode();
+
+    // while searching for the position along the tree,
+    // we split every full node in time (including leaf node itself),
+    // such that every time we need to split full node,
+    // we can make sure that its parent node is not full.
+    if (root->size == 2 * min_degree - 1)
+    {
+        B_Tree_Node<T> *new_root = createEmptyNode();
+        new_root->is_leaf = false;
+        new_root->children[0] = root;
+        splitChild(new_root, 0);
+        root = new_root;
+
+        updateDepth(root);
+        // cout << "point 1" << endl;
+        // printNodeInfo(root);
+        // cout << "point 2" << endl;
+    }
+
+    bool ret = insertNonFull_recursively(root, key);
+    if (ret)
+        key_num++;
+    return ret;
 }
 
-
-bool BTree::_delete(Tuple* value)
+template <typename T>
+bool BTree<T>::remove(T key)
 {
-   if (!contain(value))
-   {
-      return false;
-   }
-   if (root->keyNum == 1)
-   {
-      if (root->leaf)
-      {
-         delete root;
-         root = nullptr;
-         return true;
-      }
-      else
-      {
-         BTreeNode* node_child1 = root->pchild[0];
-         BTreeNode* node_child2 = root->pchild[1];
-                
-         if (node_child1->keyNum == key_min && node_child2->keyNum == key_min)
-         {
-            MergeBlock(root,0);
-            delete root;
-            root = node_child1;
-         }
-      }
-   }
-   BTree_deletebalance(root,value);
+    if (key_num == 0)
+        return false;
+    bool ret = remove(root, key);
+    if (ret)
+        key_num--;
+    return ret;
+}
+
+template <typename T>
+void BTree<T>::printNodeInfo(B_Tree_Node<T> *p_node) const
+{
+    cout << endl;
+    cout << "---node info---" << endl;
+    cout << "is leaf: " << p_node->is_leaf << endl;
+    cout << "depth is: " << p_node->depth << endl;
+    cout << "key array contains: ";
+    for (int i = 0; i < p_node->size; i++)
+        cout << p_node->keys[i] << " ";
+    cout << endl;
+
+    for (int i = 0; i <= p_node->size; i++)
+    {
+        cout << i << "th child contains: ";
+        for (int j = 0; j < p_node->children[i]->size; j++)
+            cout << p_node->children[i]->keys[j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+template <typename T>
+B_Tree_Node<T> *BTree<T>::createEmptyNode()
+{
+    B_Tree_Node<T> *ret = new B_Tree_Node<T>;
+
+    ret->is_leaf = true;
+    ret->size = 0;
+    ret->depth = 0;
+    ret->keys = new T[2 * min_degree - 1];
+    ret->children = new B_Tree_Node<T> *[2 * min_degree];
+
+    return ret;
+}
+
+template <typename T>
+void BTree<T>::freeNode(B_Tree_Node<T> *p_node)
+{
+    delete[] p_node->keys;
+    delete[] p_node->children;
+    delete p_node;
+}
+
+/*template <typename T>
+int BTree<T>::findFirstNotSmaller(B_Tree_Node<T> *p_node, T a_key) const
+{
+    int i = 0;
+    for (; i < p_node->size && p_node->keys[i] < a_key; i++)
+        ;
+    return i;
+}*/
+
+/*template <typename T>
+T *BTree<T>::search(B_Tree_Node<T> *p_node, T key_to_search) const
+{
+    if (p_node == nullptr)
+        return nullptr;
+
+    int key_arr_size = p_node->size;
+    int pos = findFirstNotSmaller(p_node, key_to_search);
+    if (pos < key_arr_size && key_to_search == p_node->keys[pos])
+        return &(p_node->keys[pos]);
+    else
+    {
+        if (p_node->is_leaf)
+            return nullptr;
+        else
+            return search(p_node->children[pos], key_to_search);
+    }
+}*/
+
+template <typename T>
+void BTree<T>::freeAll(B_Tree_Node<T> *root_node)
+{
+    if (!root_node->is_leaf)
+    {
+        for (int i = 0; i <= root_node->size; i++)
+            freeAll(root_node->children[i]);
+    }
+
+    freeNode(root_node);
+}
+
+template <typename T>
+void BTree<T>::display(B_Tree_Node<T> *p_node) const
+{
+    if (p_node == nullptr)
+        return;
+
+    if (p_node->is_leaf)
+    {
+        for (int i = 0; i < p_node->size; ++i)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                cout << "------";
+            cout << "|";
+            cout << p_node->keys[i] << " " << endl;
+        }
+        return;
+    }
+
+    for (int i = 0; i <= p_node->size; ++i)
+    {
+        display(p_node->children[i]);
+        if (i != p_node->size)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                cout << "------";
+            cout << "|";
+            cout << p_node->keys[i] << " " << endl;
+        }
+    }
+
+    // if (p_node->is_leaf)
+    //     for (int i = 0; i < p_node->size; ++i)
+    //         cout << p_node->keys[i] << " ";
+    // else
+    //     for (int i = 0; i <= p_node->size; ++i)
+    //     {
+    //         display(p_node->children[i]);
+    //         if (i != p_node->size)
+    //             cout << p_node->keys[i] << " ";
+    //     }
+}
+
+template <typename T>
+void BTree<T>::updateDepth(B_Tree_Node<T> *p_node)
+{
+    if (p_node == nullptr || p_node->is_leaf)
+        return;
+
+    int max_depth = -1;
+    for (int i = 0; i <= p_node->size; i++)
+    {
+        if (p_node->children[i]->depth > max_depth)
+            max_depth = p_node->children[i]->depth;
+    }
+
+    p_node->depth = max_depth + 1;
+}
+
+template <typename T>
+T BTree<T>::getPred(B_Tree_Node<T> *p_node, int index) const
+{
+    B_Tree_Node<T> *cursor = p_node->children[index];
+    while (!cursor->is_leaf)
+        cursor = cursor->children[cursor->size];
+    return cursor->keys[cursor->size - 1];
+}
+
+template <typename T>
+T BTree<T>::getSucc(B_Tree_Node<T> *p_node, int index) const
+{
+    B_Tree_Node<T> *cursor = p_node->children[index + 1];
+    while (!cursor->is_leaf)
+        cursor = cursor->children[0];
+    return cursor->keys[0];
+}
+
+template <typename T>
+bool BTree<T>::insertToNode(B_Tree_Node<T> *p_node, T new_key)
+{
+    int pos = findFirstNotSmaller(p_node, new_key);
+    if (new_key == p_node->keys[pos])
+        return false; // repeated key is not allowed
+
+    for (int i = p_node->size; i > pos; i--)
+    {
+        p_node->keys[i] = p_node->keys[i - 1];
+        if (!p_node->is_leaf)
+        {
+            p_node->children[i + 1] = p_node->children[i];
+        }
+    }
+
+    p_node->keys[pos] = new_key;
+    p_node->size++;
     return true;
 }
 
-
-void BTree::MergeBlock(BTreeNode* node_parent,int child_index)
+template <typename T>
+void BTree<T>::splitChild(B_Tree_Node<T> *parent, int full_child_index)
 {
-   BTreeNode* node_child1 = node_parent->pchild[child_index];
-   BTreeNode* node_child2 = node_parent->pchild[child_index+1];
-   
-   node_child1->keyvalue[key_min] = node_parent->keyvalue[child_index];
-   node_child1->keyNum = key_max;
-   int i;
-   for (i = 0;i < key_min;i++)
-   {
-      node_child1->keyvalue[child_min+i] = node_child2->keyvalue[i];
-   }
-   
-   if (!node_child1->leaf)
-   {
-      for (i = 0; i < child_min;i++)
-      {
-         node_child1->pchild[i+child_min] = node_child2->pchild[i];
-      }
-   }
+    // cout << "split..." << endl;
+    // cout << "min degree is: " << min_degree << endl;
+    B_Tree_Node<T> *full_child = parent->children[full_child_index];
 
-   node_parent->keyNum--;
-   for (i = child_index;i <  node_parent->keyNum;i++)
-   {
-      node_parent->keyvalue[i] = node_parent->keyvalue[i+1];
-       
-      node_parent->pchild[i+1] = node_parent->pchild[i+2];
-   }
-   delete node_child2;
-   node_child2 = nullptr;
+    // cout << "full child is: ";
+    // for (int i = 0; i < 2 * min_degree - 1; i++)
+    //     cout << full_child->keys[i] << " ";
+    // cout << endl;
+
+    // create a new node
+    B_Tree_Node<T> *sibling = createEmptyNode();
+    sibling->is_leaf = full_child->is_leaf;
+
+    // copy node data
+    for (int i = 0; i <= min_degree - 1; i++)
+    {
+        if (i < min_degree - 1)
+        {
+            sibling->keys[i] = full_child->keys[i + min_degree];
+        }
+        if (!full_child->is_leaf)
+            sibling->children[i] = full_child->children[i + min_degree];
+    }
+
+    full_child->size = sibling->size = min_degree - 1;
+    updateDepth(sibling);
+
+    // insert middle key to parent
+    insertToNode(parent, full_child->keys[min_degree - 1]);
+
+    // connect sibling to parent
+    parent->children[full_child_index + 1] = sibling;
+
+    // cout << "full child becomes: ";
+    // for (int i=0;i<full_child->size;i++)
+    //     cout << full_child->keys[i] << " ";
+    // cout << endl;
+
+    // cout << "sibling becomes: ";
+    // for (int i=0;i<sibling->size;i++)
+    //     cout << sibling->keys[i] << " ";
+    // cout << endl;
+
+    // cout << "end split." << endl;
 }
 
-Tuple* BTree::getprev(BTreeNode* node)
+template <typename T>
+void BTree<T>::mergeChildren(B_Tree_Node<T> *parent, int merge_index)
 {
-   while (!node->leaf)
-   {
-      node = node->pchild[node->keyNum];
-   }
-   node->keyNum--;
-   return node->keyvalue[node->keyNum-1];
+    B_Tree_Node<T> *left_child = parent->children[merge_index];
+    B_Tree_Node<T> *right_child = parent->children[merge_index + 1];
+
+    // drag down the middle key from parent
+    left_child->keys[left_child->size] = parent->keys[merge_index];
+    left_child->size++;
+
+    // copy node data
+    for (int i = 0; i <= right_child->size; i++)
+    {
+        if (i < right_child->size)
+            left_child->keys[i + left_child->size] = right_child->keys[i];
+        if (!left_child->is_leaf)
+            left_child->children[i + left_child->size] = right_child->children[i];
+    }
+    left_child->size += right_child->size;
+
+    // free right child
+    freeNode(right_child);
+
+    // update parent
+    int i = merge_index;
+    while (i < parent->size - 1)
+    {
+        parent->keys[i] = parent->keys[i + 1];
+        if (!parent->is_leaf)
+            parent->children[i + 1] = parent->children[i + 2];
+        i++;
+    }
+    parent->size--;
 }
 
-Tuple* BTree::getnext(BTreeNode* node)
+template <typename T>
+bool BTree<T>::removeFromLeaf(B_Tree_Node<T> *p_node, int remove_index)
 {
+    if (remove_index > p_node->size - 1)
+        return false;
 
-   while (!node->leaf)
-   {
-      node = node->pchild[0];
-   }
-   return node->keyvalue[0];
+    int i = remove_index;
+    while (i < p_node->size - 1)
+    {
+        p_node->keys[i] = p_node->keys[i + 1];
+        i++;
+    }
+
+    p_node->size--;
+
+    if (p_node->size == 0)
+        freeNode(p_node);
+
+    return true;
 }
 
-void BTree::BTree_deletebalance(BTreeNode* node,Tuple* value)
+template <typename T>
+bool BTree<T>::removeFromNonLeaf(B_Tree_Node<T> *&p_node, int remove_index) // reference or not???
 {
-   int i;
-     
-   for(i = 0;i < node->keyNum && value->get_registration() > node->keyvalue[i]->get_registration();i++)
-   {}
-     
-   if (i < node->keyNum && value->get_registration() == node->keyvalue[i]->get_registration())
-   {
-      
-      if (node->leaf)
-      {
-         node->keyNum--;
-           
-         for (;i < node->keyNum;i++)
-         {
-            node->keyvalue[i] = node->keyvalue[i+1];
-         }
-         return;
-      }
-      else
-      {
-          
-         BTreeNode* node_left = node->pchild[i];
-          
-         BTreeNode* node_right = node->pchild[i+1];
-         if (node_left->keyNum >= child_min)
-         {
-            Tuple* prev_replace = getprev(node_left);
-             
-            BTree_deletebalance(node_left,prev_replace);
-             
-            node->keyvalue[i] = prev_replace;
-            return;
-         }
-         else if (node_right->keyNum >= child_min)
-         {
-            Tuple* next_replace = getnext(node_right);
-        
-            BTree_deletebalance(node_right,next_replace);
-           
-            node->keyvalue[i] = next_replace;
-            return;
-         }
-         else
-         {
-            
-         MergeBlock(node,i);
-           
-         BTree_deletebalance(node_left,value);
-         }
-      }
-   }
-   else
-   {
-       
-      BTreeNode* node_child = node->pchild[i];
-      BTreeNode*  node_left = nullptr;
-      BTreeNode*  node_right = nullptr;
-      if (node_child->keyNum == key_min)
-      {  
-          
-         if (i >0)
-         {
-            node_left = node->pchild[i-1];
-         }
-         if (i <= node->keyNum-1)
-         {
-            node_right = node->pchild[i+1];
-         }
-         int j;
-           
-         if (node_left && node_left->keyNum >= child_min)
-         {   
-                
-            for (j = node_child->keyNum;j > 0; j--)
-            {
-               node_child->keyvalue[j] = node_child->keyvalue[j-1];
-            }
-            node_child->keyvalue[0] = node->keyvalue[i-1];
-               
-            if (!node_left->leaf)
-            {
-                
-               for (j = node_child->keyNum+1;j > 0;j--)
-               {
-                  node_child->pchild[j-1]->parent = node_child->pchild[j]->parent;
-                  node_child->pchild[j] = node_child->pchild[j-1];
- 
-               }
-               node_left->pchild[node_left->keyNum]->parent =  node_child->pchild[0];
-               node_child->pchild[0] = node_left->pchild[node_left->keyNum];
-            }
-            node_child->keyNum++;
-            node->keyvalue[i-1] = node_left->keyvalue[node_left->keyNum-1];
-            node_left->keyNum--;
-         }
-         else if (node_right && node_right->keyNum >= child_min)
-         {
-               
-            node_child->keyvalue[node_child->keyNum] = node->keyvalue[i];
-            node_child->keyNum++;
-               
-            node->keyvalue[i] = node_right->keyvalue[0];
-            node_right->keyNum--;
-               
-            for (j = 0;j < node_right->keyNum;j++)
-            {
-               node_right->keyvalue[j] = node_right->keyvalue[j+1];
-            }
-            if (!node_right->leaf)
-            {
-               node_right->pchild[0]->parent = node_child->pchild[node_child->keyNum]->parent;
-               node_child->pchild[node_child->keyNum] = node_right->pchild[0];
-               for (j = 0;j < node_right->keyNum+1;j++)
-               {
-                  node_right->pchild[j+1]->parent = node_right->pchild[j]->parent;
-                  node_right->pchild[j] = node_right->pchild[j+1];
- 
-               }
-                 
-            }
-         }
-         else if (node_left)
-         {
-            
-            MergeBlock(node,i-1);
-           
-            node_child = node_left;
-         }
-         else if (node_right)
-         {
-            
-            MergeBlock(node,i);
-         }
-      }
-      BTree_deletebalance(node_child,value);
-   }
+    T remove_key = p_node->keys[remove_index];
+    B_Tree_Node<T> *left_child = p_node->children[remove_index];
+    B_Tree_Node<T> *right_child = p_node->children[remove_index + 1];
+
+    if (left_child->size >= min_degree)
+    {
+        T pred = getPred(p_node, remove_index);
+        p_node->keys[remove_index] = pred;
+        return remove(p_node->children[remove_index], pred);
+    }
+    else if (right_child->size >= min_degree)
+    {
+        T succ = getSucc(p_node, remove_index);
+        p_node->keys[remove_index] = succ;
+        return remove(p_node->children[remove_index + 1], succ);
+    }
+    else
+    {
+        mergeChildren(p_node, remove_index);
+        if (p_node->size == 0)
+        {
+            B_Tree_Node<T> *temp = p_node;
+            p_node = p_node->children[0];
+            freeNode(temp);
+        }
+        return remove(p_node, remove_key);
+    }
+}
+
+template <typename T>
+void BTree<T>::borrowFromLeft(B_Tree_Node<T> *parent, int borrow_child_index)
+{
+    B_Tree_Node<T> *poor_child = parent->children[borrow_child_index];
+    B_Tree_Node<T> *left_sibling = parent->children[borrow_child_index - 1];
+
+    // shift poor child
+    for (int i = poor_child->size; i >= 0; i--)
+    {
+        if (i > 0)
+            poor_child->keys[i] = poor_child->keys[i - 1];
+        if (!poor_child->is_leaf)
+            poor_child->children[i + 1] = poor_child->children[i];
+    }
+
+    // poor child drag key from parent
+    poor_child->keys[0] = parent->keys[borrow_child_index - 1];
+
+    // poor child drag child from sibling
+    if (!poor_child->is_leaf)
+        poor_child->children[0] = left_sibling->children[left_sibling->size];
+
+    poor_child->size++;
+
+    // parent drag from sibling
+    parent->keys[borrow_child_index - 1] = left_sibling->keys[left_sibling->size - 1];
+    left_sibling->size--;
+}
+
+template <typename T>
+void BTree<T>::borrowFromRight(B_Tree_Node<T> *parent, int borrow_child_index)
+{
+    B_Tree_Node<T> *poor_child = parent->children[borrow_child_index];
+    B_Tree_Node<T> *right_sibling = parent->children[borrow_child_index + 1];
+
+    // poor child drag key from parent
+    poor_child->keys[poor_child->size] = parent->keys[borrow_child_index];
+    poor_child->size++;
+
+    // poor child drag child from sibling
+    if (!poor_child->is_leaf)
+        poor_child->children[poor_child->size] = right_sibling->children[0];
+
+    // parent drag key from sibling
+    parent->keys[borrow_child_index] = right_sibling->keys[0];
+
+    // shift sibling
+    for (int i = 0; i <= right_sibling->size - 1; i++)
+    {
+        if (i <= right_sibling->size - 2)
+            right_sibling->keys[i] = right_sibling->keys[i + 1];
+        if (!right_sibling->is_leaf)
+            right_sibling->children[i] = right_sibling->children[i + 1];
+    }
+    right_sibling->size--;
+}
+
+template <typename T>
+void BTree<T>::fillChild(B_Tree_Node<T> *parent, int fill_child_index)
+{
+    if (fill_child_index > 0 && parent->children[fill_child_index - 1]->size >= min_degree)
+        borrowFromLeft(parent, fill_child_index);
+    else if (fill_child_index < parent->size && parent->children[fill_child_index + 1]->size >= min_degree)
+        borrowFromRight(parent, fill_child_index);
+    else
+    {
+        if (fill_child_index != parent->size)
+            mergeChildren(parent, fill_child_index);
+        else
+            mergeChildren(parent, fill_child_index - 1);
+    }
+}
+
+template <typename T>
+bool BTree<T>::remove(B_Tree_Node<T> *&p_node, T remove_key) // when to update depth???
+{
+    bool ret;
+    if (p_node->size == 0)
+        p_node = p_node->children[0];
+    // B_Tree_Node<T> *cursor = p_node;
+    int pos = findFirstNotSmaller(p_node, remove_key);
+    if (pos < p_node->size && remove_key == p_node->keys[pos])
+    {
+        if (p_node->is_leaf)
+            ret = removeFromLeaf(p_node, pos);
+        else
+            ret = removeFromNonLeaf(p_node, pos);
+    }
+    else
+    {
+        if (p_node->is_leaf)
+            return false;
+
+        bool pos_at_end = pos == p_node->size;
+        if (p_node->children[pos]->size < min_degree)
+            fillChild(p_node, pos);
+        if (pos_at_end && pos > p_node->size)
+            ret = remove(p_node->children[pos - 1], remove_key);
+        else
+            ret = remove(p_node->children[pos], remove_key);
+    }
+
+    updateDepth(p_node);
+    return ret;
+}
+
+template <typename T>
+bool BTree<T>::insertNonFull_recursively(B_Tree_Node<T> *p_node, T insert_key)
+{
+    if (p_node->is_leaf)
+        return insertToNode(p_node, insert_key);
+
+    // cout << "point 1" << endl;
+    int i = findFirstNotSmaller(p_node, insert_key);
+    if (i < p_node->size && insert_key == p_node->keys[i])
+        return false;
+
+    B_Tree_Node<T> *target_child = p_node->children[i];
+
+    // cout << "point 2" << endl;
+
+    if (target_child->size == 2 * min_degree - 1)
+    {
+        splitChild(p_node, i);
+        if (insert_key == p_node->keys[i])
+            return false;
+        if (insert_key > p_node->keys[i])
+            target_child = p_node->children[i + 1];
+    }
+
+    // cout << "point 3" << endl;
+
+    return insertNonFull_recursively(target_child, insert_key);
 }

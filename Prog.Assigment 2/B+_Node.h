@@ -3,30 +3,32 @@
 
 enum NODE_TYPE
 {
-	INTERNAL,
+    // the type of the node
+	INTERNAL,   
 	LEAF
-}; // 结点类型：内结点、叶子结点
+}; 
 enum SIBLING_DIRECTION
 {
+    // Sibling direction: left sibling, right sibling
 	LEFT,
 	RIGHT
-}; // 兄弟结点方向：左兄弟结点、右兄弟结点
+}; 
 
-const int ORDER = 5;					 	// B+树的阶（非根内结点的最小子树个数）
-const int MINNUM_KEY = ORDER - 1;		 	// 最小键值个数
-const int MAXNUM_KEY = 2 * ORDER - 1;	 	// 最大键值个数
-const int MINNUM_CHILD = MINNUM_KEY + 1; 	// 最小子树个数
-const int MAXNUM_CHILD = MAXNUM_KEY + 1; 	// 最大子树个数
-const int MINNUM_LEAF = MINNUM_KEY;		 	// 最小叶子结点键值个数
-const int MAXNUM_LEAF = MAXNUM_KEY;		 	// 最大叶子结点键值个数
+const int ORDER = 5;					 	// Order of B+ tree (minimum number of small trees of non-root nodes)
+const int MINNUM_KEY = ORDER - 1;		 	// Minimum number of keys
+const int MAXNUM_KEY = 2 * ORDER - 1;	 	// Maximum number of keys
+const int MINNUM_CHILD = MINNUM_KEY + 1; 	// Minimum number of child_trees
+const int MAXNUM_CHILD = MAXNUM_KEY + 1; 	// maximum number of child_trees
+const int MINNUM_LEAF = MINNUM_KEY;		 	// Minimum number of leaf keys
+const int MAXNUM_LEAF = MAXNUM_KEY;		 	// Maximum number of leaf keys
 
-// 结点基类
+// Node base class
 template <typename KeyType, typename DataType>
 class CNode
 {
 public:
-	CNode();
-	virtual ~CNode();
+	CNode();    // constrcutor
+	virtual ~CNode();   // destructor
 
 	NODE_TYPE getType() const;
 	void setType(NODE_TYPE type);
@@ -35,15 +37,14 @@ public:
 	KeyType getKeyValue(int i) const;
 	void setKeyValue(int i, KeyType key);
 
-	int getKeyIndex(KeyType key) const; // 找到键值在结点中存储的下标
-	// 纯虚函数，定义接口
-	virtual void removeKey(int keyIndex, int childIndex) = 0;																				  // 从结点中移除键值
-	// 分裂父亲的哪个孩子
-	virtual void split(CNode *parentNode, int childIndex) = 0;																				  // 分裂结点
-	virtual void mergeChild(CNode<KeyType, DataType> *parentNode, CNode<KeyType, DataType> *childNode, int keyIndex) = 0;					  // 合并结点
-	virtual void clear() = 0;																												  // 清空结点，同时会清空结点所包含的子树结点
-	virtual void borrowFrom(CNode<KeyType, DataType> *destNode, CNode<KeyType, DataType> *parentNode, int keyIndex, SIBLING_DIRECTION d) = 0; // 从兄弟结点中借一个键值
-	virtual int getChildIndex(KeyType key, int keyIndex) = 0;																			  // 根据键值获取孩子结点指针下标
+	int getKeyIndex(KeyType key) const; // Find the index where the key value is stored in the node
+	// Pure virtual functions that define interfaces
+	virtual void removeKey(int keyIndex, int childIndex) = 0;																				  // Removes the key value from the node
+	virtual void split(CNode *parentNode, int childIndex) = 0;																				  // Split node
+	virtual void mergeChild(CNode<KeyType, DataType> *parentNode, CNode<KeyType, DataType> *childNode, int keyIndex) = 0;					  // merge nodes
+	virtual void clear() = 0;																												  // Emptying the node also empties the subtree nodes that the node contains
+	virtual void borrowFrom(CNode<KeyType, DataType> *destNode, CNode<KeyType, DataType> *parentNode, int keyIndex, SIBLING_DIRECTION d) = 0; // Borrow a key from a sibling
+	virtual int getChildIndex(KeyType key, int keyIndex) = 0;																			      // Gets the child node pointer subscript based on the key value
 
 protected:
 	NODE_TYPE m_Type;
@@ -51,7 +52,7 @@ protected:
 	KeyType m_KeyValues[MAXNUM_KEY];
 };
 
-// 内结点
+// Internal nodes
 template <typename KeyType, typename DataType>
 class CInternalNode : public CNode<KeyType, DataType>
 {
@@ -74,25 +75,25 @@ private:
 	CNode<KeyType, DataType> *m_Childs[MAXNUM_CHILD];
 };
 
-// 叶子结点
+// leaf nodes
 template <typename KeyType, typename DataType>
 class CLeafNode : public CNode<KeyType, DataType>
 {
-	// 修改日志 TODO
-	// #1. 写pour：从overflow倒进main里，要有序！！！
-	// #2. 改insert：如果main已填充的个数 + overflow的容量 > main的容量，则插入到main里，否则插入到overflow里
-	// #3. 改getData：get任何数据前，先执行pour操作
-	// #4. 改setData：set任何数据前，先执行pour操作
-	// #5. 改getDataAddr：get任何数据的address前，先执行pour操作
-	// #6. 改split：split前，先执行pour操作
-	// #7. 改mergeChild：merge前，先执行pour操作
-	// #8. 改removeKey：remove任何数据前，先执行pour操作
-	//// #9. 改clear：clear前，先执行pour操作
-	// #10.改borrowFrom：borrow前，先执行pour操作
-	// #11.改getChildIndex：get前，先执行pour操作
-	// #12.改构造函数，初始overflow size设为0
-	// #13.写sortOverflow：把overflow数组里的key和data同时排序
-	// 14.改print，打印前先pour
+    // Modify log TODO
+    // #1. Write pour: Pour from overflow into main, in order!!
+    // #2. Insert: if main + overflow capacity > The capacity of main is inserted into main, otherwise it is inserted into Overflow
+    // #3. Change getData: before getting any data, pour
+    // #4. Pour before changing setData: set any data
+    // #5. Change getDataAddr to get the address of any data
+    // #6. Change split: Before split, pour
+    // #7. Change the mergeChild operation: Before merge, perform the pour operation
+    // #8. Change removeKey: pour before removing any data
+    // #9. Change clear: Pour before clear
+    // #8. Change removeKey: pour before removing any data
+    // #11. Pour before getChildIndex: get
+    // #12. Change the constructor to overflow size 0
+    // #13. Write sortOverflow: Sort keys and data in overflow array
+    // #14. Print, pour
 
 public:
 	CLeafNode();
@@ -116,7 +117,7 @@ public:
 	virtual void borrowFrom(CNode<KeyType, DataType> *destNode, CNode<KeyType, DataType> *parentNode, int keyIndex, SIBLING_DIRECTION d);
 	virtual int getChildIndex(KeyType key, int keyIndex);
 
-	// 和Overflow Block有关的操作
+	// Actions related to Overflow Block
 	void pour();
 	void sortOverflow();
 	void overflowInsert(KeyType key, const DataType data);
@@ -126,7 +127,7 @@ private:
 	CLeafNode<KeyType, DataType> *m_RightSibling;
 	DataType m_Data[MAXNUM_LEAF];
 
-	// 新加的Overflow Block
+	// Additional Overflow Block
 	KeyType m_keys_overflow[ORDER/2];
 	DataType m_data_overflow[ORDER/2];
 	int m_overflow_size;

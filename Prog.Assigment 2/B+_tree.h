@@ -13,7 +13,7 @@ enum COMPARE_OPERATOR
 	BE,
 	BT,
 	BETWEEN
-}; // 比较操作符：<、<=、=、>=、>、<>
+}; // Comparison operator：<、<=、=、>=、>、<>
 const int INVALID_INDEX = -1;
 
 template <typename KeyType, typename DataType>
@@ -27,34 +27,34 @@ template <typename KeyType, typename DataType>
 class CBPlusTree
 {
 public:
-	// 构造函数 & 析构函数
+	// Constructor & destructor
 	CBPlusTree();
 	~CBPlusTree();
 
-	// 接口
+	// interface
 	bool insert(KeyType key, const DataType data);
 	bool remove(KeyType key);
 	bool update(KeyType oldKey, KeyType newKey);
 
-	// 定值查询，compareOperator可以是LT(<)、LE(<=)、EQ(=)、BE(>=)、BT(>)
+	// Constant value query，compareOperator can be LT(<)、LE(<=)、EQ(=)、BE(>=)、BT(>)
 	vector<DataType> oneSideSelect(KeyType compareKey, int compareOpeartor) const;
 
-	// 范围查询，BETWEEN
+	// Range query，BETWEEN
 	vector<DataType> twoSideSelect(KeyType smallKey, KeyType largeKey) const;
 
-	// 查找是否存在
+	// search whether existence
 	bool search(KeyType key) const;
 
-	// 获取key对应data的指针
+	// Get a pointer to data for key
 	DataType *getDataHandle(KeyType key) const;
 
-	// 清空
+	// clear
 	void clear();
 
-	// 打印所有key（树的形式）
+	// Print all keys (in tree form)
 	void print() const;
 
-	// 打印所有data
+	// Print all data
 	void printData() const;
 
 private:
@@ -72,7 +72,7 @@ private:
 private:
 	CNode<KeyType, DataType> *m_Root;
 	CLeafNode<KeyType, DataType> *m_DataHead;
-	KeyType m_MaxKey; // B+树中的最大键
+	KeyType m_MaxKey; // The largest key in the B+ tree
 };
 
 #endif

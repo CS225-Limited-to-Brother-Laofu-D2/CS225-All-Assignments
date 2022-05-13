@@ -21,13 +21,13 @@ template <typename KeyType, typename DataType>
 bool CBPlusTree<KeyType, DataType>::insert(KeyType key, const DataType data)
 {
 	// cout << "check0" << endl;
-	// 是否已经存在
+	// Whether it already exists
 	if (search(key))
 	{
 		// cout << "check1" << endl;
 		return false;
 	}
-	// 找到可以插入的叶子结点，否则创建新的叶子结点
+	// Find a leaf that can be inserted, or create a new leaf
 	if (m_Root == NULL)
 	{
 		// cout << "check2" << endl;
@@ -35,15 +35,15 @@ bool CBPlusTree<KeyType, DataType>::insert(KeyType key, const DataType data)
 		m_DataHead = (CLeafNode<KeyType, DataType> *)m_Root;
 		m_MaxKey = key;
 	}
-	if (m_Root->getKeyNum() >= MAXNUM_KEY) // 根结点已满，分裂
+	if (m_Root->getKeyNum() >= MAXNUM_KEY) // The root is full, split
 	{
 		// cout << "check3" << endl;
-		CInternalNode<KeyType, DataType> *newNode = new CInternalNode<KeyType, DataType>; //创建新的根节点
+		CInternalNode<KeyType, DataType> *newNode = new CInternalNode<KeyType, DataType>; // Create a new root node
 		newNode->setChild(0, m_Root);
-		m_Root->split(newNode, 0); // 叶子结点分裂
-		m_Root = newNode;		   //更新根节点指针
+		m_Root->split(newNode, 0); // Leaf node splitting
+		m_Root = newNode;		   // Update the root node pointer
 	}
-	if (key > m_MaxKey) // 更新最大键值
+	if (key > m_MaxKey) // Update the maximum key value
 	{
 		// cout << "check4" << endl;
 		m_MaxKey = key;
@@ -55,21 +55,21 @@ bool CBPlusTree<KeyType, DataType>::insert(KeyType key, const DataType data)
 template <typename KeyType, typename DataType>
 void CBPlusTree<KeyType, DataType>::recursive_insert(CNode<KeyType, DataType> *parentNode, KeyType key, const DataType data)
 {
-	if (parentNode->getType() == LEAF) // 叶子结点，直接插入
+	if (parentNode->getType() == LEAF) // Leaf node, directly inserted
 	{
 		// cout << "here" << endl;
 		((CLeafNode<KeyType, DataType> *)parentNode)->insert(key, data);
 	}
 	else
 	{
-		// 找到子结点
+		// Find the child_Node
 		int keyIndex = parentNode->getKeyIndex(key);
-		int childIndex = parentNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
+		int childIndex = parentNode->getChildIndex(key, keyIndex); // Child node pointer index
 		CNode<KeyType, DataType> *childNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex);
-		if (childNode->getKeyNum() >= MAXNUM_LEAF) // 子结点已满，需进行分裂
+		if (childNode->getKeyNum() >= MAXNUM_LEAF) // The child_Nodes are full and need to be split
 		{
 			childNode->split(parentNode, childIndex);
-			if (parentNode->getKeyValue(childIndex) <= key) // 确定目标子结点
+			if (parentNode->getKeyValue(childIndex) <= key) // Determine the target child
 			{
 				childNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex + 1);
 			}
@@ -99,21 +99,21 @@ bool CBPlusTree<KeyType, DataType>::search(KeyType key) const
 template <typename KeyType, typename DataType>
 bool CBPlusTree<KeyType, DataType>::recursive_search(CNode<KeyType, DataType> *pNode, KeyType key) const
 {
-	if (pNode == NULL) //检测节点指针是否为空，或该节点是否为叶子节点
+	if (pNode == NULL) // Checks whether the node pointer is empty or whether the node is a leaf node
 	{
 		return false;
 	}
 	else
 	{
 		int keyIndex = pNode->getKeyIndex(key);
-		int childIndex = pNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
+		int childIndex = pNode->getChildIndex(key, keyIndex); // Child node pointer index
 		if (keyIndex < pNode->getKeyNum() && key == pNode->getKeyValue(keyIndex))
 		{
 			return true;
 		}
 		else
 		{
-			if (pNode->getType() == LEAF) //检查该节点是否为叶子节点
+			if (pNode->getType() == LEAF) // Check whether the node is a leaf node
 			{
 				return false;
 			}
@@ -135,13 +135,13 @@ template <typename KeyType, typename DataType>
 DataType *CBPlusTree<KeyType, DataType>::recursive_getDataHandle(CNode<KeyType, DataType> *pNode, KeyType key) const
 {
 	// cout << "first" << endl;
-	if (pNode == NULL) //检测节点指针是否为空，或该节点是否为叶子节点
+	if (pNode == NULL) // Checks whether the node pointer is empty or whether the node is a leaf node
 	{
 		return nullptr;
 	}
 
 	int keyIndex = pNode->getKeyIndex(key);
-	int childIndex = pNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
+	int childIndex = pNode->getChildIndex(key, keyIndex); // Child node pointer index
 
 	// cout << "second" << endl;
 	if (pNode->getType() == LEAF)
@@ -235,11 +235,11 @@ void CBPlusTree<KeyType, DataType>::printData() const
 template <typename KeyType, typename DataType>
 bool CBPlusTree<KeyType, DataType>::remove(KeyType key)
 {
-	if (!search(key)) //不存在
+	if (!search(key)) // does not exist
 	{
 		return false;
 	}
-	if (m_Root->getKeyNum() == 1) //特殊情况处理
+	if (m_Root->getKeyNum() == 1) // Special case handling
 	{
 		if (m_Root->getType() == LEAF)
 		{
@@ -262,49 +262,49 @@ bool CBPlusTree<KeyType, DataType>::remove(KeyType key)
 	return true;
 }
 
-// parentNode中包含的键值数>MINNUM_KEY
+// Number of keys contained in parentNode > MINNUM_KEY
 template <typename KeyType, typename DataType>
 void CBPlusTree<KeyType, DataType>::recursive_remove(CNode<KeyType, DataType> *parentNode, KeyType key)
 {
 	int keyIndex = parentNode->getKeyIndex(key);
-	int childIndex = parentNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
-	if (parentNode->getType() == LEAF)						   // 找到目标叶子节点
+	int childIndex = parentNode->getChildIndex(key, keyIndex); // Child node pointer index
+	if (parentNode->getType() == LEAF)						   // Find the target leaf node
 	{
 		if (key == m_MaxKey && keyIndex > 0)
 		{
 			m_MaxKey = parentNode->getKeyValue(keyIndex - 1);
 		}
-		parentNode->removeKey(keyIndex, childIndex); // 直接删除
-		// 如果键值在内部结点中存在，也要相应的替换内部结点
+		parentNode->removeKey(keyIndex, childIndex); // delet directly
+		// If the key value exists in the internal node, the internal node should be replaced accordingly
 		if (childIndex == 0 && m_Root->getType() != LEAF && parentNode != m_DataHead)
 		{
 			changeKey(m_Root, key, parentNode->getKeyValue(0));
 		}
 	}
-	else // 内结点
+	else // Internal nodes
 	{
 		cout << "call" << endl;
-		CNode<KeyType, DataType> *pChildNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex); //包含key的子树根节点
-		if (pChildNode->getKeyNum() == MINNUM_KEY)																	   // 包含关键字达到下限值，进行相关操作
+		CNode<KeyType, DataType> *pChildNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex); // The child root node containing the key
+		if (pChildNode->getKeyNum() == MINNUM_KEY)																	   // If the number of keywords in the system reaches the lower limit, perform related operations
 		{
-			CNode<KeyType, DataType> *pLeft = childIndex > 0 ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex - 1) : NULL;						 //左兄弟节点
-			CNode<KeyType, DataType> *pRight = childIndex < parentNode->getKeyNum() ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex + 1) : NULL; //右兄弟节点
-			// 先考虑从兄弟结点中借
-			if (pLeft && pLeft->getKeyNum() > MINNUM_KEY) // 左兄弟结点可借
+			CNode<KeyType, DataType> *pLeft = childIndex > 0 ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex - 1) : NULL;						 // Left sibling node
+			CNode<KeyType, DataType> *pRight = childIndex < parentNode->getKeyNum() ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex + 1) : NULL; // Right sibling node
+			// Let's think about borrowing from a sibling
+			if (pLeft && pLeft->getKeyNum() > MINNUM_KEY) // The left sibling can be borrowed
 			{
 				pChildNode->borrowFrom(pLeft, parentNode, childIndex - 1, LEFT);
 			}
-			else if (pRight && pRight->getKeyNum() > MINNUM_KEY) //右兄弟结点可借
+			else if (pRight && pRight->getKeyNum() > MINNUM_KEY) // The right sibling can be borrowed
 			{
 				pChildNode->borrowFrom(pRight, parentNode, childIndex, RIGHT);
 			}
-			//左右兄弟节点都不可借，考虑合并
-			else if (pLeft) //与左兄弟合并
+			// The left and right sibling nodes cannot be borrowed. Consider merging
+			else if (pLeft) // Merge with left brother
 			{
 				pLeft->mergeChild(parentNode, pChildNode, childIndex - 1);
 				pChildNode = pLeft;
 			}
-			else if (pRight) //与右兄弟合并
+			else if (pRight) // Merge with the right brother
 			{
 				pChildNode->mergeChild(parentNode, pRight, childIndex);
 			}
@@ -319,11 +319,11 @@ void CBPlusTree<KeyType, DataType>::changeKey(CNode<KeyType, DataType> *pNode, K
 	if (pNode != NULL && pNode->getType() != LEAF)
 	{
 		int keyIndex = pNode->getKeyIndex(oldKey);
-		if (keyIndex < pNode->getKeyNum() && oldKey == pNode->getKeyValue(keyIndex)) // 找到
+		if (keyIndex < pNode->getKeyNum() && oldKey == pNode->getKeyValue(keyIndex)) // found
 		{
 			pNode->setKeyValue(keyIndex, newKey);
 		}
-		else // 继续找
+		else // continue to search
 		{
 			changeKey(((CInternalNode<KeyType, DataType> *)pNode)->getChild(keyIndex), oldKey, newKey);
 		}
@@ -333,7 +333,7 @@ void CBPlusTree<KeyType, DataType>::changeKey(CNode<KeyType, DataType> *pNode, K
 template <typename KeyType, typename DataType>
 bool CBPlusTree<KeyType, DataType>::update(KeyType oldKey, KeyType newKey)
 {
-	if (search(newKey)) // 检查更新后的键是否已经存在
+	if (search(newKey)) // Check whether the updated key already exists
 	{
 		return false;
 	}
@@ -355,12 +355,12 @@ bool CBPlusTree<KeyType, DataType>::update(KeyType oldKey, KeyType newKey)
 template <typename KeyType, typename DataType>
 void CBPlusTree<KeyType, DataType>::remove(KeyType key, DataType &dataValue)
 {
-	if (!search(key)) //不存在
+	if (!search(key)) // does not exist
 	{
 		dataValue = INVALID_INDEX;
 		return;
 	}
-	if (m_Root->getKeyNum() == 1) //特殊情况处理
+	if (m_Root->getKeyNum() == 1) // Special case handling
 	{
 		if (m_Root->getType() == LEAF)
 		{
@@ -387,44 +387,44 @@ template <typename KeyType, typename DataType>
 void CBPlusTree<KeyType, DataType>::recursive_remove(CNode<KeyType, DataType> *parentNode, KeyType key, DataType &dataValue)
 {
 	int keyIndex = parentNode->getKeyIndex(key);
-	int childIndex = parentNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
-	if (parentNode->getType() == LEAF)						   // 找到目标叶子节点
+	int childIndex = parentNode->getChildIndex(key, keyIndex); // Child node pointer index
+	if (parentNode->getType() == LEAF)						   // Find the target leaf node
 	{
 		if (key == m_MaxKey && keyIndex > 0)
 		{
 			m_MaxKey = parentNode->getKeyValue(keyIndex - 1);
 		}
 		dataValue = ((CLeafNode<KeyType, DataType> *)parentNode)->getData(keyIndex);
-		parentNode->removeKey(keyIndex, childIndex); // 直接删除
-		// 如果键值在内部结点中存在，也要相应的替换内部结点
+		parentNode->removeKey(keyIndex, childIndex); // delet directly
+		// If the key value exists in the internal node, the internal node should be replaced accordingly
 		if (childIndex == 0 && m_Root->getType() != LEAF && parentNode != m_DataHead)
 		{
 			changeKey(m_Root, key, parentNode->getKeyValue(0));
 		}
 	}
-	else // 内结点
+	else // Internal nodes
 	{
-		CNode<KeyType, DataType> *pChildNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex); //包含key的子树根节点
-		if (pChildNode->getKeyNum() == MINNUM_KEY)																	   // 包含关键字达到下限值，进行相关操作
+		CNode<KeyType, DataType> *pChildNode = ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex); // The child root node containing the key
+		if (pChildNode->getKeyNum() == MINNUM_KEY)																	   // If the number of keywords in the system reaches the lower limit, perform related operations
 		{
-			CNode<KeyType, DataType> *pLeft = childIndex > 0 ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex - 1) : NULL;						 //左兄弟节点
-			CNode<KeyType, DataType> *pRight = childIndex < parentNode->getKeyNum() ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex + 1) : NULL; //右兄弟节点
-			// 先考虑从兄弟结点中借
-			if (pLeft && pLeft->getKeyNum() > MINNUM_KEY) // 左兄弟结点可借
+			CNode<KeyType, DataType> *pLeft = childIndex > 0 ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex - 1) : NULL;						 // Left sibling node
+			CNode<KeyType, DataType> *pRight = childIndex < parentNode->getKeyNum() ? ((CInternalNode<KeyType, DataType> *)parentNode)->getChild(childIndex + 1) : NULL; // Right sibling node
+			// Let's think about borrowing from a sibling
+			if (pLeft && pLeft->getKeyNum() > MINNUM_KEY) // The left sibling can be borrowed
 			{
 				pChildNode->borrowFrom(pLeft, parentNode, childIndex - 1, LEFT);
 			}
-			else if (pRight && pRight->getKeyNum() > MINNUM_KEY) //右兄弟结点可借
+			else if (pRight && pRight->getKeyNum() > MINNUM_KEY) // The right sibling can be borrowed
 			{
 				pChildNode->borrowFrom(pRight, parentNode, childIndex, RIGHT);
 			}
-			//左右兄弟节点都不可借，考虑合并
-			else if (pLeft) //与左兄弟合并
+			// The left and right sibling nodes cannot be borrowed. Consider merging
+			else if (pLeft) // Merge with left brother
 			{
 				pLeft->mergeChild(parentNode, pChildNode, childIndex - 1);
 				pChildNode = pLeft;
 			}
-			else if (pRight) //与右兄弟合并
+			else if (pRight) // Merge with right brother
 			{
 				pChildNode->mergeChild(parentNode, pRight, childIndex);
 			}
@@ -439,7 +439,7 @@ vector<DataType> CBPlusTree<KeyType, DataType>::oneSideSelect(KeyType compareKey
 	vector<DataType> results;
 	if (m_Root != NULL)
 	{
-		if (compareKey > m_MaxKey) // 比较键值大于B+树中最大的键值
+		if (compareKey > m_MaxKey) // Compare keys greater than the largest in the B+ tree
 		{
 			if (compareOpeartor == LE || compareOpeartor == LT)
 			{
@@ -452,7 +452,7 @@ vector<DataType> CBPlusTree<KeyType, DataType>::oneSideSelect(KeyType compareKey
 				}
 			}
 		}
-		else if (compareKey < m_DataHead->getKeyValue(0)) // 比较键值小于B+树中最小的键值
+		else if (compareKey < m_DataHead->getKeyValue(0)) // Compare keys that are less than the smallest in the B+ tree
 		{
 			if (compareOpeartor == BE || compareOpeartor == BT)
 			{
@@ -465,7 +465,7 @@ vector<DataType> CBPlusTree<KeyType, DataType>::oneSideSelect(KeyType compareKey
 				}
 			}
 		}
-		else // 比较键值在B+树中
+		else // The comparison key is in the B+ tree
 		{
 			SelectResult<KeyType, DataType> result;
 			search(compareKey, result);
@@ -528,7 +528,7 @@ vector<DataType> CBPlusTree<KeyType, DataType>::oneSideSelect(KeyType compareKey
 				}
 			}
 			break;
-			default: // 范围查询
+			default: // Range queries
 				break;
 			}
 		}
@@ -585,7 +585,7 @@ void CBPlusTree<KeyType, DataType>::recursive_search(CNode<KeyType, DataType> *p
 {
 	// cout << "check0" << endl;
 	int keyIndex = pNode->getKeyIndex(key);
-	int childIndex = pNode->getChildIndex(key, keyIndex); // 孩子结点指针索引
+	int childIndex = pNode->getChildIndex(key, keyIndex); // Child node pointer index
 	if (pNode->getType() == LEAF)
 	{
 		result.keyIndex = keyIndex;

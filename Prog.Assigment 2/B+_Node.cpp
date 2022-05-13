@@ -2,6 +2,8 @@
 #include "B+_Node.h"
 #include <iostream>
 using namespace std;
+
+
 // CNode
 template <typename KeyType, typename DataType>
 CNode<KeyType, DataType>::CNode()
@@ -49,25 +51,8 @@ void CNode<KeyType, DataType>::setKeyValue(int i, KeyType key)
 template <typename KeyType, typename DataType>
 int CNode<KeyType, DataType>::getKeyIndex(KeyType key) const
 {
-	// cout << "Now get index of " << key << endl;
 	if (getKeyNum() == 0)
 		return 0;
-	// int left = 0;
-	// int right = getKeyNum() - 1;
-	// int current;
-	// while (left != right)
-	// {
-	// 	current = (left + right) / 2;
-	// 	KeyType currentKey = getKeyValue(current);
-	// 	if (key > currentKey)
-	// 	{
-	// 		left = current + 1;
-	// 	}
-	// 	else
-	// 	{
-	// 		right = current;
-	// 	}
-	// }
 	int ret = this->getKeyNum() - 1;
 	for (int i=0;i<this->getKeyNum();i++)
 	{
@@ -80,6 +65,8 @@ int CNode<KeyType, DataType>::getKeyIndex(KeyType key) const
 	}
 	return ret;
 }
+
+
 
 // CInternalNode
 template <typename KeyType, typename DataType>
@@ -94,10 +81,16 @@ CInternalNode<KeyType, DataType>::~CInternalNode()
 }
 
 template <typename KeyType, typename DataType>
-CNode<KeyType, DataType> *CInternalNode<KeyType, DataType>::getChild(int i) const { return m_Childs[i]; }
+CNode<KeyType, DataType> *CInternalNode<KeyType, DataType>::getChild(int i) const 
+{ 
+	return m_Childs[i];
+}
 
 template <typename KeyType, typename DataType>
-void CInternalNode<KeyType, DataType>::setChild(int i, CNode<KeyType, DataType> *child) { m_Childs[i] = child; }
+void CInternalNode<KeyType, DataType>::setChild(int i, CNode<KeyType, DataType> *child) 
+{ 
+	m_Childs[i] = child; 
+}
 
 template <typename KeyType, typename DataType>
 void CInternalNode<KeyType, DataType>::clear()
@@ -212,6 +205,8 @@ int CInternalNode<KeyType, DataType>::getChildIndex(KeyType key, int keyIndex)
 	}
 }
 
+
+
 // CLeafNode
 template <typename KeyType, typename DataType>
 CLeafNode<KeyType, DataType>::CLeafNode()
@@ -219,8 +214,7 @@ CLeafNode<KeyType, DataType>::CLeafNode()
 	this->setType(LEAF);
 	setLeftSibling(NULL);
 	setRightSibling(NULL);
-
-	m_overflow_size = 0;
+	overflow_temp_size = 0;
 }
 
 template <typename KeyType, typename DataType>
@@ -229,21 +223,33 @@ CLeafNode<KeyType, DataType>::~CLeafNode()
 }
 
 template <typename KeyType, typename DataType>
-CLeafNode<KeyType, DataType> *CLeafNode<KeyType, DataType>::getLeftSibling() const { return m_LeftSibling; }
+CLeafNode<KeyType, DataType> *CLeafNode<KeyType, DataType>::getLeftSibling() const 
+{ 
+	return m_LeftSibling;
+}
 
 template <typename KeyType, typename DataType>
-void CLeafNode<KeyType, DataType>::setLeftSibling(CLeafNode<KeyType, DataType> *node) { m_LeftSibling = node; }
+void CLeafNode<KeyType, DataType>::setLeftSibling(CLeafNode<KeyType, DataType> *node) 
+{
+	m_LeftSibling = node; 
+}
 
 template <typename KeyType, typename DataType>
-CLeafNode<KeyType, DataType> *CLeafNode<KeyType, DataType>::getRightSibling() const { return m_RightSibling; }
+CLeafNode<KeyType, DataType> *CLeafNode<KeyType, DataType>::getRightSibling() const 
+{
+	return m_RightSibling;
+}
 
 template <typename KeyType, typename DataType>
-void CLeafNode<KeyType, DataType>::setRightSibling(CLeafNode<KeyType, DataType> *node) { m_RightSibling = node; }
+void CLeafNode<KeyType, DataType>::setRightSibling(CLeafNode<KeyType, DataType> *node) 
+{
+	m_RightSibling = node;
+}
 
 template <typename KeyType, typename DataType>
 DataType CLeafNode<KeyType, DataType>::getData(int i)
 {
-	this->pour();
+	this->pour_out();
 	return m_Data[i];
 }
 
@@ -256,7 +262,7 @@ void CLeafNode<KeyType, DataType>::setData(int i, const DataType &data)
 template <typename KeyType, typename DataType>
 DataType *CLeafNode<KeyType, DataType>::getDataAddr(int i)
 {
-	this->pour();
+	this->pour_out();
 	return &(m_Data[i]);
 }
 
@@ -272,7 +278,7 @@ void CLeafNode<KeyType, DataType>::clear()
 }
 
 template <typename KeyType, typename DataType>
-void CLeafNode<KeyType, DataType>::mainInsert(KeyType key, const DataType data)
+void CLeafNode<KeyType, DataType>::INSERT_IN_MAIN(KeyType key, const DataType data)
 {
 	// cout << "this way " << endl;
 	int i;
@@ -289,11 +295,11 @@ void CLeafNode<KeyType, DataType>::mainInsert(KeyType key, const DataType data)
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::insert(KeyType key, const DataType data)
 {
-	// mainInsert(key, data);
+	// INSERT_IN_MAIN(key, data);
 
 	if (this->m_KeyNum + ORDER / 2 > MAXNUM_LEAF)
 	{
-		mainInsert(key, data);
+		INSERT_IN_MAIN(key, data);
 	}
 	else
 	{
@@ -304,7 +310,7 @@ void CLeafNode<KeyType, DataType>::insert(KeyType key, const DataType data)
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::split(CNode<KeyType, DataType> *parentNode, int childIndex)
 {
-	this->pour();
+	this->pour_out();
 	CLeafNode<KeyType, DataType> *newNode = new CLeafNode<KeyType, DataType>; // The split right node
 	this->setKeyNum(MINNUM_LEAF);
 	newNode->setKeyNum(MINNUM_LEAF + 1);
@@ -326,7 +332,7 @@ void CLeafNode<KeyType, DataType>::split(CNode<KeyType, DataType> *parentNode, i
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::mergeChild(CNode<KeyType, DataType> *parentNode, CNode<KeyType, DataType> *childNode, int keyIndex)
 {
-	this->pour();
+	this->pour_out();
 	// Merge data
 	for (int i = 0; i < childNode->getKeyNum(); ++i)
 	{
@@ -340,7 +346,7 @@ void CLeafNode<KeyType, DataType>::mergeChild(CNode<KeyType, DataType> *parentNo
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::removeKey(int keyIndex, int childIndex)
 {
-	this->pour();
+	this->pour_out();
 	for (int i = keyIndex; i < this->getKeyNum() - 1; ++i)
 	{
 		this->setKeyValue(i, this->getKeyValue(i + 1));
@@ -352,7 +358,7 @@ void CLeafNode<KeyType, DataType>::removeKey(int keyIndex, int childIndex)
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::borrowFrom(CNode<KeyType, DataType> *siblingNode, CNode<KeyType, DataType> *parentNode, int keyIndex, SIBLING_DIRECTION d)
 {
-	this->pour();
+	this->pour_out();
 	switch (d)
 	{
 	case LEFT: // Borrow from the left sibling
@@ -377,61 +383,73 @@ void CLeafNode<KeyType, DataType>::borrowFrom(CNode<KeyType, DataType> *siblingN
 template <typename KeyType, typename DataType>
 int CLeafNode<KeyType, DataType>::getChildIndex(KeyType key, int keyIndex)
 {
-	this->pour();
+	this->pour_out();
 	return keyIndex;
 }
 
 template <typename KeyType, typename DataType>
-void CLeafNode<KeyType, DataType>::pour()
+void CLeafNode<KeyType, DataType>::pour_out()
 {
-	if (m_overflow_size == 0)
+	if (overflow_temp_size == 0)
 		return;
-	// cout << "overflow size is: " << m_overflow_size << endl;
+	// cout << "overflow size is: " << overflow_temp_size << endl;
 	sortOverflow();
-	// cout << "again, overflow size is: " << m_overflow_size << endl;
-	for (int k = 0; k < m_overflow_size; k++)
+	// cout << "again, overflow size is: " << overflow_temp_size << endl;
+	for (int k = 0; k < overflow_temp_size; k++)
 	{
-		KeyType key = m_keys_overflow[k];
-		DataType data = m_data_overflow[k];
+		KeyType key = overflow_key[k];
+		DataType data = overflow_data[k];
 
-		mainInsert(key, data);
+		INSERT_IN_MAIN(key, data);
 	}
-	m_overflow_size = 0;
+	overflow_temp_size = 0;
 }
 
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::sortOverflow()
 {
-	int end_of_sorted = 0;
+	//adjust the order of data and keys in the overflow block
 
-	while (end_of_sorted < m_overflow_size - 1)
+	//In our B+ tree design, order==5 can satisfy the requirements, and order/2==2
+	if(overflow_key[0] > overflow_key[1])
+	{
+		DataType temp_data = overflow_data[1];
+		KeyType temp_key = overflow_key[1];
+		overflow_key[1] = overflow_key[0];
+		overflow_data[1] = overflow_data[0];
+		overflow_key[0] = temp_key;
+		overflow_data[0] = temp_data;
+	}
+
+	/*int end_of_sorted = 0;
+	while (end_of_sorted < overflow_temp_size - 1)
 	{
 		int start = 0;
 
-		while (m_keys_overflow[start] < m_keys_overflow[end_of_sorted + 1])
+		while (overflow_key[start] < overflow_key[end_of_sorted + 1])
 		{
 			start++;
 		}
 
-		int temp = m_keys_overflow[end_of_sorted + 1];
+		int temp = overflow_key[end_of_sorted + 1];
 
 		for (int i = end_of_sorted; i >= start; i--)
 		{
-			m_keys_overflow[i + 1] = m_keys_overflow[i];
-			m_data_overflow[i + 1] = m_data_overflow[i];
+			overflow_key[i + 1] = overflow_key[i];
+			overflow_data[i + 1] = overflow_data[i];
 		}
 
-		m_keys_overflow[start] = temp;
+		overflow_key[start] = temp;
 		end_of_sorted++;
-	}
+	}*/
 }
 
 template <typename KeyType, typename DataType>
 void CLeafNode<KeyType, DataType>::overflowInsert(KeyType key, const DataType data)
 {
-	if (m_overflow_size >= ORDER / 2)
-		pour();
-	m_keys_overflow[m_overflow_size] = key;
-	m_data_overflow[m_overflow_size] = data;
-	m_overflow_size++;
+	if (overflow_temp_size >= ORDER / 2)
+		pour_out();
+	overflow_key[overflow_temp_size] = key;
+	overflow_data[overflow_temp_size] = data;
+	++overflow_temp_size;
 }

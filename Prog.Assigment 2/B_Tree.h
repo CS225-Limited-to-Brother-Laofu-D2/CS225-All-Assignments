@@ -1,52 +1,75 @@
-#ifndef BTREE_H
-#define BTREE_H
+#include <iostream>
 using namespace std;
-#include "Tuple.h"//The class head file
 
-
-static const int m = 3;  
-static const int key_max = 2*m-1;
-static const int key_min = m - 1;
-static const int child_max = key_max + 1;
-static const int child_min = key_min + 1;
-
-// Modified the B tree to hold Tuple.
-
+template <typename T>
 class BTreeNode
 {
- 
-public:
-	BTreeNode(int _t, bool _leaf);//Constructor
-    friend class BTree;
-private:
-    bool leaf;// True if it is a leaf
-    int keyNum;//current number of keys
-    BTreeNode* parent;
-    BTreeNode* C[child_max];
-    Tuple* keyvalue[key_max];// An array of keys
-};
- 
+    bool is_leaf;// ture if is a leaf
+    int size;// the size of number of keys 
+    int depth;// its depth
 
+    T *keys;// An array of keys
+    BTreeNode<T> **children;// An array of child pointers
+public:
+BTreeNode(int _t, bool _leaf);   // Constructor
+ 
+    // A utility function to insert a new key in the subtree rooted with
+    // this node. The assumption is, the node must be non-full when this
+    // function is called
+    void insertNonFull(int k);
+ 
+    // A utility function to split the child y of this node. i is index of y in
+    // child array C[].  The Child y must be full when this function is called
+    void splitChild(int i, BTreeNode *y);
+ 
+    // A function to traverse all nodes in a subtree rooted with this node
+    void traverse();
+ 
+    // A function to search a key in the subtree rooted with this node.
+    T *search(int key);   // returns NULL if key is not present.
+// Make BTree friend of this so that we can access private members of this
+// class in BTree functions
+friend class BTree;
+};
+
+template <typename T>
 class BTree
 {
 public:
-    BTree();
-    bool _insert(Tuple* value);
-    void SplitBlock(BTreeNode* node_parent,int child_index,BTreeNode* node_child);
-    void Notfull_insert(BTreeNode* node,Tuple* value);
-    bool contain(Tuple* value);
+    BTree(int x = 3);
+    ~BTree();
 
-    void _printpoint(BTreeNode* node,int count);
-    void printpoint(void);
-
-    bool _delete(Tuple* value);
-    BTreeNode* _find(BTreeNode* node,Tuple* value);
-    void MergeBlock(BTreeNode* node_parent,int child_index);
-    Tuple* getprev(BTreeNode* node);
-    Tuple* getnext(BTreeNode* node);
-    void BTree_deletebalance(BTreeNode* node,Tuple* value);
+    bool contain(T key) const;
+    T *getHandle(T key) const;
+    void display() const;
+    bool insert(T key);
+    bool remove(T key);
 
 private:
-	  BTreeNode* root;
+    void printNodeInfo(BTreeNode<T> *p_node) const;
+    BTreeNode<T> *createEmptyNode();
+    void freeNode(BTreeNode<T> *p_node);
+    int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key) const;
+    //T *search(BTreeNode<T> *p_node, T key_to_search) const;
+    void freeAll(BTreeNode<T> *p_node);
+    void display(BTreeNode<T> *p_node) const;
+    void updateDepth(BTreeNode<T> *p_node);
+    T getPred(BTreeNode<T> *p_node, int index) const;
+    T getSucc(BTreeNode<T> *p_node, int index) const;
+    bool insertToNode(BTreeNode<T> *p_node, T new_key);
+    void splitChild(BTreeNode<T> *parent, int full_child_index);
+    void mergeChildren(BTreeNode<T> *parent, int merge_index);
+    bool removeFromLeaf(BTreeNode<T> *p_node, int remove_index);
+    bool insertNonFull_recursively(BTreeNode<T> *p_node, T insert_key);
+    // when the corresponding child has less than min_degree keys, try to fill the child with more key.
+    void fillChild(BTreeNode<T> *parent, int fill_child_index);
+    bool removeFromNonLeaf(BTreeNode<T> *&p_node, int remove_index);
+    bool remove(BTreeNode<T> *&p_node, T remove_key);
+    void borrowFromLeft(BTreeNode<T>* parent, int borrow_child_index);
+    void borrowFromRight(BTreeNode<T>* parent, int borrow_child_index);
+
+private:
+    int min_degree;
+    int key_num;
+    BTreeNode<T> *root;
 };
-#endif

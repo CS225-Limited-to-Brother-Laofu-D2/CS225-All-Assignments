@@ -108,7 +108,7 @@ public:
 
 	DataType *getDataAddr(int i);
 
-	void mainInsert(KeyType key, const DataType data);
+	void INSERT_IN_MAIN(KeyType key, const DataType data);
 	void insert(KeyType key, const DataType data);
 	virtual void split(CNode<KeyType, DataType> *parentNode, int childIndex);
 	virtual void mergeChild(CNode<KeyType, DataType> *parentNode, CNode<KeyType, DataType> *childNode, int keyIndex);
@@ -118,7 +118,7 @@ public:
 	virtual int getChildIndex(KeyType key, int keyIndex);
 
 	// Actions related to Overflow Block
-	void pour();
+	void pour_out();
 	void sortOverflow();
 	void overflowInsert(KeyType key, const DataType data);
 
@@ -128,9 +128,9 @@ private:
 	DataType m_Data[MAXNUM_LEAF];
 
 	// Additional Overflow Block
-	KeyType m_keys_overflow[ORDER/2];
-	DataType m_data_overflow[ORDER/2];
-	int m_overflow_size;
+	KeyType overflow_key[ORDER/2];
+	DataType overflow_data[ORDER/2];
+	int overflow_temp_size;
 };
 
 #endif

@@ -135,43 +135,14 @@ B_Tree_Node<T> *BTree<T>::createEmptyNode()
 
     return ret;
 }
-
+/*
 template <typename T>
 void BTree<T>::freeNode(B_Tree_Node<T> *p_node)
 {
     delete[] p_node->keys;
     delete[] p_node->children;
     delete p_node;
-}
-
-/*template <typename T>
-int BTree<T>::findFirstNotSmaller(B_Tree_Node<T> *p_node, T a_key) const
-{
-    int i = 0;
-    for (; i < p_node->size && p_node->keys[i] < a_key; i++)
-        ;
-    return i;
 }*/
-
-/*template <typename T>
-T *BTree<T>::search(B_Tree_Node<T> *p_node, T key_to_search) const
-{
-    if (p_node == nullptr)
-        return nullptr;
-
-    int key_arr_size = p_node->size;
-    int pos = findFirstNotSmaller(p_node, key_to_search);
-    if (pos < key_arr_size && key_to_search == p_node->keys[pos])
-        return &(p_node->keys[pos]);
-    else
-    {
-        if (p_node->is_leaf)
-            return nullptr;
-        else
-            return search(p_node->children[pos], key_to_search);
-    }
-}*/
-
 template <typename T>
 void BTree<T>::freeAll(B_Tree_Node<T> *root_node)
 {
@@ -181,8 +152,52 @@ void BTree<T>::freeAll(B_Tree_Node<T> *root_node)
             freeAll(root_node->children[i]);
     }
 
-    freeNode(root_node);
+    ///freeNode(root_node);
+    delete[] root_node->keys;
+    delete[] root_node->children;
+    delete root_node;
 }
+/*
+template <typename T>
+int BTree<T>::findFirstNotSmaller(B_Tree_Node<T> *p_node, T a_key) const
+{
+    int i = 0;
+    for (; i < p_node->size && p_node->keys[i] < a_key; i++)
+        ;
+    while (p_node->keys[i] < a_key && i < p_node->size)
+    {
+        i++;
+    }
+    return i;
+}
+*/
+template <typename T>
+T *BTree<T>::search(B_Tree_Node<T> *p_node, T search_key) const
+{
+    if (p_node != nullptr)
+    {
+
+    int n = p_node->size;
+    // Find the first key greater than or equal to k
+    int i = 0;
+    while (i < n && search_key > p_node->keys[i])
+    {
+        i++;
+    }
+    if (search_key == p_node->keys[i])// If the found key is equal to k, return this node
+        return &(p_node->keys[i]);
+    else
+    {
+        if (p_node->is_leaf == true)// If key is not found here and this is a leaf node
+            return nullptr;
+        else// Go to the appropriate child
+            return search(p_node->children[i], search_key);
+    }
+    
+    }
+    return nullptr
+}
+
 
 template <typename T>
 void BTree<T>::display(B_Tree_Node<T> *p_node) const
@@ -265,20 +280,28 @@ T BTree<T>::getSucc(B_Tree_Node<T> *p_node, int index) const
 template <typename T>
 bool BTree<T>::insertToNode(B_Tree_Node<T> *p_node, T new_key)
 {
-    int pos = findFirstNotSmaller(p_node, new_key);
-    if (new_key == p_node->keys[pos])
+    //int pos = findFirstNotSmaller(p_node, new_key);
+// Find the first key greater than or equal to k
+    int n = p_node->size;
+    int i = 0;
+    while (i < n && new_key > p_node->keys[i])
+    {
+        i++;
+    }
+
+    if (new_key == p_node->keys[i])
         return false; // repeated key is not allowed
 
-    for (int i = p_node->size; i > pos; i--)
+    for (int j = p_node->size; j > i; j--)
     {
-        p_node->keys[i] = p_node->keys[i - 1];
+        p_node->keys[j] = p_node->keys[j - 1];
         if (!p_node->is_leaf)
         {
-            p_node->children[i + 1] = p_node->children[i];
+            p_node->children[j + 1] = p_node->children[j];
         }
     }
 
-    p_node->keys[pos] = new_key;
+    p_node->keys[i] = new_key;
     p_node->size++;
     return true;
 }
@@ -353,7 +376,10 @@ void BTree<T>::mergeChildren(B_Tree_Node<T> *parent, int merge_index)
     left_child->size += right_child->size;
 
     // free right child
-    freeNode(right_child);
+    ///freeNode(right_child);
+    delete[] right_child->keys;
+    delete[] right_child->children;
+    delete right_child;
 
     // update parent
     int i = merge_index;
@@ -382,9 +408,12 @@ bool BTree<T>::removeFromLeaf(B_Tree_Node<T> *p_node, int remove_index)
 
     p_node->size--;
 
-    if (p_node->size == 0)
-        freeNode(p_node);
-
+    if (p_node->size == 0){
+        ///freeNode(p_node);
+    delete[] p_node->keys;
+    delete[] p_node->children;
+    delete p_node;
+    }
     return true;
 }
 
@@ -414,7 +443,10 @@ bool BTree<T>::removeFromNonLeaf(B_Tree_Node<T> *&p_node, int remove_index) // r
         {
             B_Tree_Node<T> *temp = p_node;
             p_node = p_node->children[0];
-            freeNode(temp);
+            ///freeNode(temp);
+            delete[] temp->keys;
+            delete[] temp->children;
+            delete temp;
         }
         return remove(p_node, remove_key);
     }
@@ -500,8 +532,17 @@ bool BTree<T>::remove(B_Tree_Node<T> *&p_node, T remove_key) // when to update d
     if (p_node->size == 0)
         p_node = p_node->children[0];
     // B_Tree_Node<T> *cursor = p_node;
-    int pos = findFirstNotSmaller(p_node, remove_key);
-    if (pos < p_node->size && remove_key == p_node->keys[pos])
+
+// Find the first key greater than or equal to k
+    int n = p_node->size;
+    int i = 0;
+    while (i < n && remove_key > p_node->keys[i])
+    {
+        i++;
+    }
+
+    //int pos = findFirstNotSmaller(p_node, remove_key);
+    if (i < p_node->size && remove_key == p_node->keys[i])
     {
         if (p_node->is_leaf)
             ret = removeFromLeaf(p_node, pos);
@@ -513,13 +554,13 @@ bool BTree<T>::remove(B_Tree_Node<T> *&p_node, T remove_key) // when to update d
         if (p_node->is_leaf)
             return false;
 
-        bool pos_at_end = pos == p_node->size;
-        if (p_node->children[pos]->size < min_degree)
-            fillChild(p_node, pos);
-        if (pos_at_end && pos > p_node->size)
-            ret = remove(p_node->children[pos - 1], remove_key);
+        bool pos_at_end = i == p_node->size;
+        if (p_node->children[i]->size < min_degree)
+            fillChild(p_node, i);
+        if (pos_at_end && i > p_node->size)
+            ret = remove(p_node->children[i - 1], remove_key);
         else
-            ret = remove(p_node->children[pos], remove_key);
+            ret = remove(p_node->children[i], remove_key);
     }
 
     updateDepth(p_node);
@@ -533,7 +574,15 @@ bool BTree<T>::insertNonFull_recursively(B_Tree_Node<T> *p_node, T insert_key)
         return insertToNode(p_node, insert_key);
 
     // cout << "point 1" << endl;
-    int i = findFirstNotSmaller(p_node, insert_key);
+    //int i = findFirstNotSmaller(p_node, insert_key);
+// Find the first key greater than or equal to k
+    int n = p_node->size;
+    int i = 0;
+    while (i < n && insert_key > p_node->keys[i])
+    {
+        i++;
+    }
+
     if (i < p_node->size && insert_key == p_node->keys[i])
         return false;
 

@@ -31,7 +31,11 @@ template <class T> int FibHeap<T>::comparePriority(FibNode<T> *node0, FibNode<T>
             else {
                 if (node0->loc->register_day < node1->loc->register_day) return 0;
                 else if (node0->loc->register_day > node1->loc->register_day) return 1;
-                else return 0;
+                else {
+                    if (node0->loc->treatment_type < node1->loc->treatment_type) return 0;
+                    else if (node0->loc->treatment_type > node1->loc->treatment_type) return 1;
+                    else return 0;
+                }
             }
         }
     }

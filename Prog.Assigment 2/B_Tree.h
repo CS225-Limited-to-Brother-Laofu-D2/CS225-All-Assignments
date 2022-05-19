@@ -24,8 +24,8 @@ public:
     ~BTree();//destructor
 
     bool contain(T key) const;//if the key is in the tree
-    T *getHandle(T key) const;
-    void display() const;
+    T *getHandle(T key) const;//return the node pointer we are searching 
+    void display() const;//show the inner tree
     bool insert(T key);
     bool remove(T key);
 
@@ -35,7 +35,7 @@ private:
    // void freeNode(BTreeNode<T> *p_node);
    // int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key) const;
    void freeAll(BTreeNode<T> *p_node);
-    T *search(BTreeNode<T> *p_node, T key_to_search) const;
+    T *search(BTreeNode<T> *p_node, T search_key) const;//search the node with respect to the key and return pointer 
     void display(BTreeNode<T> *p_node) const;
     void updateDepth(BTreeNode<T> *p_node);
     T getPred(BTreeNode<T> *p_node, int index) const;
@@ -45,8 +45,7 @@ private:
     void mergeChildren(BTreeNode<T> *parent, int merge_index);
     bool removeFromLeaf(BTreeNode<T> *p_node, int remove_index);
     bool insertNonFull_recursively(BTreeNode<T> *p_node, T insert_key);
-    // when the corresponding child has less than min_degree keys, try to fill the child with more key.
-    void fillChild(BTreeNode<T> *parent, int fill_child_index);
+    void fillChild(BTreeNode<T> *parent, int fill_child_index); // if the child has less than min_degree keys, try to fill the child with more keys.
     bool removeFromNonLeaf(BTreeNode<T> *&p_node, int remove_index);
     bool remove(BTreeNode<T> *&p_node, T remove_key);
     void borrowFromLeft(BTreeNode<T>* parent, int borrow_child_index);

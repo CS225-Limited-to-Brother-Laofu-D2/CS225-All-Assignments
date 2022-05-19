@@ -33,7 +33,7 @@ void BTree<T>::display() const
 {
 
     cout << endl
-         << "=====================INFO=====================" << endl
+         << "Display the B-Tree as follows" << endl
          << endl;
     // cout << "root info: " << endl;
     // printNodeInfo(root);
@@ -42,23 +42,21 @@ void BTree<T>::display() const
     // cout << "right info: " << endl;
     // printNodeInfo(root->children[1]);
 
-    cout << "B-Tree details (root node at left most):" << endl
-         << endl;
+    cout << "B-Tree root node at left most:" << endl;
 
     display(root);
 
     cout << endl
-         << "B-Tree has " << key_num << " keys in total." << endl;
+         << "B-Tree has " << key_num << " keys. " << endl;
 
     cout << endl
-         << "=====================ENDS=====================" << endl
+         << "*************END DISPLAY*******************" << endl
          << endl;
 }
 
 template <typename T>
 bool BTree<T>::insert(T key)
 {
-    // cout << "Now insert key: " << key << endl;
     if (contain(key))
         return false;
 
@@ -78,9 +76,6 @@ bool BTree<T>::insert(T key)
         root = new_root;
 
         updateDepth(root);
-        // cout << "point 1" << endl;
-        // printNodeInfo(root);
-        // cout << "point 2" << endl;
     }
 
     bool ret = insertNonFull_recursively(root, key);
@@ -104,17 +99,17 @@ template <typename T>
 void BTree<T>::printNodeInfo(B_Tree_Node<T> *p_node) const
 {
     cout << endl;
-    cout << "---node info---" << endl;
+    cout << "*******NODE INFORMATION********" << endl;
     cout << "is leaf: " << p_node->is_leaf << endl;
-    cout << "depth is: " << p_node->depth << endl;
-    cout << "key array contains: ";
+    cout << "depth : " << p_node->depth << endl;
+    cout << "key array : ";
     for (int i = 0; i < p_node->size; i++)
         cout << p_node->keys[i] << " ";
     cout << endl;
 
     for (int i = 0; i <= p_node->size; i++)
     {
-        cout << i << "th child contains: ";
+        cout " sNumber "<< i << " child contains: ";
         for (int j = 0; j < p_node->children[i]->size; j++)
             cout << p_node->children[i]->keys[j] << " ";
         cout << endl;

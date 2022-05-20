@@ -1,3 +1,11 @@
+/*
+B tree created by group D2 on 12.5.2022
+Some parts of the code modified from
+https://blog.csdn.net/xiaohusaier/article/details/77101640
+https://blog.csdn.net/liu1064782986/article/details/7984772
+https://blog.csdn.net/xiajun07061225/article/details/8696501
+*/
+
 #include <iostream>
 using namespace std;
 
@@ -30,29 +38,33 @@ public:
     bool remove(T key);
 
 private:
+    int min_degree;
+    int key_num;
+    BTreeNode<T> *root;
+
+private:
     void printNodeInfo(BTreeNode<T> *p_node) const;
     BTreeNode<T> *createEmptyNode();
-   // void freeNode(BTreeNode<T> *p_node);
-   // int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key) const;
+
    void freeAll(BTreeNode<T> *p_node);
     T *search(BTreeNode<T> *p_node, T search_key) const;//search the node with respect to the key and return pointer 
     void display(BTreeNode<T> *p_node) const;
     void updateDepth(BTreeNode<T> *p_node);
-    T getPred(BTreeNode<T> *p_node, int index) const;
-    T getSucc(BTreeNode<T> *p_node, int index) const;
+    
     bool insertToNode(BTreeNode<T> *p_node, T new_key);
     void splitChild(BTreeNode<T> *parent, int full_child_index);
     void mergeChildren(BTreeNode<T> *parent, int merge_index);
     bool removeFromLeaf(BTreeNode<T> *p_node, int remove_index);
     bool insertNonFull_recursively(BTreeNode<T> *p_node, T insert_key);
-    void fillChild(BTreeNode<T> *parent, int fill_child_index); // if the child has less than min_degree keys, try to fill the child with more keys.
-    bool removeFromNonLeaf(BTreeNode<T> *&p_node, int remove_index);
     bool remove(BTreeNode<T> *&p_node, T remove_key);
-    void borrowFromLeft(BTreeNode<T>* parent, int borrow_child_index);
-    void borrowFromRight(BTreeNode<T>* parent, int borrow_child_index);
 
-private:
-    int min_degree;
-    int key_num;
-    BTreeNode<T> *root;
+    bool removeFromNonLeaf(BTreeNode<T> *&p_node, int remove_index);
+    T getPred(BTreeNode<T> *p_node, int index) const;//used in nonleaf removing
+    T getSucc(BTreeNode<T> *p_node, int index) const;//used in nonleaf removing
+
+
+    void fillChild(BTreeNode<T> *parent, int fill_child_index); // if the child has less than min_degree keys, try to fill the child with more keys.
+    void borrowFromLeftC(BTreeNode<T>* parent, int borrow_child_index);//used in fillchild, take an element from left child
+    void borrowFromRightC(BTreeNode<T>* parent, int borrow_child_index);//used in fillchild, take an element from right child
+
 };

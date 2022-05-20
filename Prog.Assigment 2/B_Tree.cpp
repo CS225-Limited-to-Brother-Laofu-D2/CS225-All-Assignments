@@ -32,25 +32,16 @@ template <typename T>
 void BTree<T>::display() const
 {
 
-    cout << endl
-         << "Display the B-Tree as follows" << endl
+    cout <<  "Display the B-Tree as follows" << endl
          << endl;
-    // cout << "root info: " << endl;
-    // printNodeInfo(root);
-    // cout << "left info: " << endl;
-    // printNodeInfo(root->children[0]);
-    // cout << "right info: " << endl;
-    // printNodeInfo(root->children[1]);
 
     cout << "B-Tree root node at left most:" << endl;
 
     display(root);
 
-    cout << endl
-         << "B-Tree has " << key_num << " keys. " << endl;
+    cout <<  "B-Tree has " << key_num << " keys. " << endl;
 
-    cout << endl
-         << "*************END DISPLAY*******************" << endl
+    cout << "*************END DISPLAY*******************" << endl
          << endl;
 }
 
@@ -63,10 +54,8 @@ bool BTree<T>::insert(T key)
     if (root == nullptr)
         root = createEmptyNode();
 
-    // while searching for the position along the tree,
-    // we split every full node in time (including leaf node itself),
-    // such that every time we need to split full node,
-    // we can make sure that its parent node is not full.
+    // while searching for the position along the tree, splitting the full node if it is
+    // when every time we need to split a full node, we should make sure that its parent node is not full.
     if (root->size == 2 * min_degree - 1)
     {
         B_Tree_Node<T> *new_root = createEmptyNode();
@@ -130,14 +119,7 @@ B_Tree_Node<T> *BTree<T>::createEmptyNode()
 
     return ret;
 }
-/*
-template <typename T>
-void BTree<T>::freeNode(B_Tree_Node<T> *p_node)
-{
-    delete[] p_node->keys;
-    delete[] p_node->children;
-    delete p_node;
-}*/
+
 template <typename T>
 void BTree<T>::freeAll(B_Tree_Node<T> *root_node)
 {
@@ -147,25 +129,11 @@ void BTree<T>::freeAll(B_Tree_Node<T> *root_node)
             freeAll(root_node->children[i]);
     }
 
-    ///freeNode(root_node);
     delete[] root_node->keys;
     delete[] root_node->children;
     delete root_node;
 }
-/*
-template <typename T>
-int BTree<T>::findFirstNotSmaller(B_Tree_Node<T> *p_node, T a_key) const
-{
-    int i = 0;
-    for (; i < p_node->size && p_node->keys[i] < a_key; i++)
-        ;
-    while (p_node->keys[i] < a_key && i < p_node->size)
-    {
-        i++;
-    }
-    return i;
-}
-*/
+
 template <typename T>
 T *BTree<T>::search(B_Tree_Node<T> *p_node, T search_key) const
 {
@@ -206,7 +174,7 @@ void BTree<T>::display(B_Tree_Node<T> *p_node) const
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
-                cout << "------";
+                cout << "********";
             cout << "|";
             cout << p_node->keys[i] << " " << endl;
         }
@@ -220,22 +188,12 @@ void BTree<T>::display(B_Tree_Node<T> *p_node) const
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
-                cout << "------";
+                cout << "*******";
             cout << "|";
             cout << p_node->keys[i] << " " << endl;
         }
     }
 
-    // if (p_node->is_leaf)
-    //     for (int i = 0; i < p_node->size; ++i)
-    //         cout << p_node->keys[i] << " ";
-    // else
-    //     for (int i = 0; i <= p_node->size; ++i)
-    //     {
-    //         display(p_node->children[i]);
-    //         if (i != p_node->size)
-    //             cout << p_node->keys[i] << " ";
-    //     }
 }
 
 template <typename T>
@@ -275,7 +233,7 @@ T BTree<T>::getSucc(B_Tree_Node<T> *p_node, int index) const
 template <typename T>
 bool BTree<T>::insertToNode(B_Tree_Node<T> *p_node, T new_key)
 {
-    //int pos = findFirstNotSmaller(p_node, new_key);
+
 // Find the first key greater than or equal to k
     int n = p_node->size;
     int i = 0;
@@ -304,14 +262,9 @@ bool BTree<T>::insertToNode(B_Tree_Node<T> *p_node, T new_key)
 template <typename T>
 void BTree<T>::splitChild(B_Tree_Node<T> *parent, int full_child_index)
 {
-    // cout << "split..." << endl;
-    // cout << "min degree is: " << min_degree << endl;
+
     B_Tree_Node<T> *full_child = parent->children[full_child_index];
 
-    // cout << "full child is: ";
-    // for (int i = 0; i < 2 * min_degree - 1; i++)
-    //     cout << full_child->keys[i] << " ";
-    // cout << endl;
 
     // create a new node
     B_Tree_Node<T> *sibling = createEmptyNode();
@@ -337,17 +290,7 @@ void BTree<T>::splitChild(B_Tree_Node<T> *parent, int full_child_index)
     // connect sibling to parent
     parent->children[full_child_index + 1] = sibling;
 
-    // cout << "full child becomes: ";
-    // for (int i=0;i<full_child->size;i++)
-    //     cout << full_child->keys[i] << " ";
-    // cout << endl;
 
-    // cout << "sibling becomes: ";
-    // for (int i=0;i<sibling->size;i++)
-    //     cout << sibling->keys[i] << " ";
-    // cout << endl;
-
-    // cout << "end split." << endl;
 }
 
 template <typename T>
@@ -438,7 +381,6 @@ bool BTree<T>::removeFromNonLeaf(B_Tree_Node<T> *&p_node, int remove_index) // r
         {
             B_Tree_Node<T> *temp = p_node;
             p_node = p_node->children[0];
-            ///freeNode(temp);
             delete[] temp->keys;
             delete[] temp->children;
             delete temp;
@@ -448,50 +390,50 @@ bool BTree<T>::removeFromNonLeaf(B_Tree_Node<T> *&p_node, int remove_index) // r
 }
 
 template <typename T>
-void BTree<T>::borrowFromLeft(B_Tree_Node<T> *parent, int borrow_child_index)
+void BTree<T>::borrowFromLeftC(B_Tree_Node<T> *parent, int borrowed_child)
 {
-    B_Tree_Node<T> *poor_child = parent->children[borrow_child_index];
-    B_Tree_Node<T> *left_sibling = parent->children[borrow_child_index - 1];
+    B_Tree_Node<T> *Lchild = parent->children[borrowed_child];
+    B_Tree_Node<T> *left_sibling = parent->children[borrowed_child - 1];
 
-    // shift poor child
-    for (int i = poor_child->size; i >= 0; i--)
+    // shift that child
+    for (int i = Lchild->size; i >= 0; i--)
     {
         if (i > 0)
-            poor_child->keys[i] = poor_child->keys[i - 1];
-        if (!poor_child->is_leaf)
-            poor_child->children[i + 1] = poor_child->children[i];
+            Lchild->keys[i] = Lchild->keys[i - 1];
+        if (!Lchild->is_leaf)
+            Lchild->children[i + 1] = Lchild->children[i];
     }
 
-    // poor child drag key from parent
-    poor_child->keys[0] = parent->keys[borrow_child_index - 1];
+    // taht child drag key from parent
+    Lchild->keys[0] = parent->keys[borrowed_child - 1];
 
-    // poor child drag child from sibling
-    if (!poor_child->is_leaf)
-        poor_child->children[0] = left_sibling->children[left_sibling->size];
+    // that child drag child from sibling
+    if (!Lchild->is_leaf)
+        Lchild->children[0] = left_sibling->children[left_sibling->size];
 
-    poor_child->size++;
+    Lchild->size++;
 
     // parent drag from sibling
-    parent->keys[borrow_child_index - 1] = left_sibling->keys[left_sibling->size - 1];
+    parent->keys[borrowed_child - 1] = left_sibling->keys[left_sibling->size - 1];
     left_sibling->size--;
 }
 
 template <typename T>
-void BTree<T>::borrowFromRight(B_Tree_Node<T> *parent, int borrow_child_index)
+void BTree<T>::borrowFromRightC(B_Tree_Node<T> *parent, int borrowed_child)
 {
-    B_Tree_Node<T> *poor_child = parent->children[borrow_child_index];
-    B_Tree_Node<T> *right_sibling = parent->children[borrow_child_index + 1];
+    B_Tree_Node<T> *Rchild = parent->children[borrowed_child];
+    B_Tree_Node<T> *right_sibling = parent->children[borrowed_child + 1];
 
-    // poor child drag key from parent
-    poor_child->keys[poor_child->size] = parent->keys[borrow_child_index];
-    poor_child->size++;
+    // that child drag key from parent
+    Rchild->keys[poor_child->size] = parent->keys[borrowed_child];
+    Rchild->size++;
 
-    // poor child drag child from sibling
-    if (!poor_child->is_leaf)
-        poor_child->children[poor_child->size] = right_sibling->children[0];
+    // that child drag child from sibling
+    if (!Rchild->is_leaf)
+        Rchild->children[Rchild->size] = right_sibling->children[0];
 
     // parent drag key from sibling
-    parent->keys[borrow_child_index] = right_sibling->keys[0];
+    parent->keys[borrowed_child] = right_sibling->keys[0];
 
     // shift sibling
     for (int i = 0; i <= right_sibling->size - 1; i++)
@@ -505,18 +447,18 @@ void BTree<T>::borrowFromRight(B_Tree_Node<T> *parent, int borrow_child_index)
 }
 
 template <typename T>
-void BTree<T>::fillChild(B_Tree_Node<T> *parent, int fill_child_index)
+void BTree<T>::fillChild(B_Tree_Node<T> *parent, int fill_child)
 {
-    if (fill_child_index > 0 && parent->children[fill_child_index - 1]->size >= min_degree)
-        borrowFromLeft(parent, fill_child_index);
-    else if (fill_child_index < parent->size && parent->children[fill_child_index + 1]->size >= min_degree)
-        borrowFromRight(parent, fill_child_index);
+    if (fill_child > 0 && parent->children[fill_child - 1]->size >= min_degree)
+        borrowFromLeftC(parent, fill_child);
+    else if (fill_child < parent->size && parent->children[fill_child + 1]->size >= min_degree)
+        borrowFromRightC(parent, fill_child);
     else
     {
-        if (fill_child_index != parent->size)
-            mergeChildren(parent, fill_child_index);
+        if (fill_child != parent->size)
+            mergeChildren(parent, fill_child);
         else
-            mergeChildren(parent, fill_child_index - 1);
+            mergeChildren(parent, fill_child - 1);
     }
 }
 
@@ -526,7 +468,6 @@ bool BTree<T>::remove(B_Tree_Node<T> *&p_node, T remove_key) // when to update d
     bool ret;
     if (p_node->size == 0)
         p_node = p_node->children[0];
-    // B_Tree_Node<T> *cursor = p_node;
 
 // Find the first key greater than or equal to k
     int n = p_node->size;
@@ -536,7 +477,6 @@ bool BTree<T>::remove(B_Tree_Node<T> *&p_node, T remove_key) // when to update d
         i++;
     }
 
-    //int pos = findFirstNotSmaller(p_node, remove_key);
     if (i < p_node->size && remove_key == p_node->keys[i])
     {
         if (p_node->is_leaf)
@@ -568,8 +508,6 @@ bool BTree<T>::insertNonFull_recursively(B_Tree_Node<T> *p_node, T insert_key)
     if (p_node->is_leaf)
         return insertToNode(p_node, insert_key);
 
-    // cout << "point 1" << endl;
-    //int i = findFirstNotSmaller(p_node, insert_key);
 // Find the first key greater than or equal to k
     int n = p_node->size;
     int i = 0;

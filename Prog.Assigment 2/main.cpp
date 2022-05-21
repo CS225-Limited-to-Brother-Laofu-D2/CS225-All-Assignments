@@ -15,12 +15,13 @@ using std::cin;
 #include "appointment.h"
 #include "B+_Node.h"
 #include "B+_tree.h"
+#include "B_Tree.h"
 #include "FibHeap.cpp"
 #include "Register.cpp"
 #include "appointment.cpp"
 #include "B+_Node.cpp"
 #include "B+_tree.cpp"
-
+#include "B_Tree.cpp"
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
@@ -561,6 +562,36 @@ int main()
     }
     cout<<"*******Program terminated !********\n";
     return 0;
+
+
+    //Construct B-Tree with secondary key: age group (from 0 to 6)
+    BTree<int> B_tree;
+    //insert key*100000+id
+
+
+    cout<<"Do you want some info about people in certain age groups?\n";
+    cout<<"Enter 1 for yes, 0 for no\n";
+    int yorn;
+    cin>>yorn;
+    while(yorn == 1){
+    cout<<"Which age group do you want to see? Enter a number from 0 to 6:\n";
+    int age_g;
+    cin>>age_g;
+    if(age_g > 6 || age_g < 0)
+        {
+            cout<<"Please enter a vaild age group."<<endl;
+            break;
+        }
+
+    
+    cout<<"Do you want to know about other people?\n";
+    cout<<"Enter 1 for yes, 0 for no\n";
+    cin>>yorn;
+    }
+    cout<<"*******Program terminated !********\n";
+    return 0;
 }
+
+
 
     

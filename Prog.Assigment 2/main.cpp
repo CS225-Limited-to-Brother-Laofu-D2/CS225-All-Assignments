@@ -5,18 +5,22 @@
 #include <sstream>
 #include <cstdlib>
 #include <queue>
+using namespace std;
 using std::cout;
 using std::cin;
 
+//Include.h files and other .cpp files here
 #include "Fibheap.h"
 #include "Register.h"
 #include "appointment.h"
+#include "B+_Node.h"
+#include "B+_tree.h"
 #include "FibHeap.cpp"
 #include "Register.cpp"
 #include "appointment.cpp"
+#include "B+_Node.cpp"
+#include "B+_tree.cpp"
 
-using namespace std;
-//Include.h files and other .cpp files here
 
 //weekly report:Treated people；Registered people with appointment；Queueing people without appointments
 //(Including prof+age+risk+time)
@@ -101,6 +105,7 @@ int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<
  cout<<"\n*****Monthly Report is done****\n\n\n";   
     return 0;
 }
+
 //------------------------------main function------------------------------
 //1. Patients input
 
@@ -516,6 +521,20 @@ int main()
             }
         }
     }
+
+    //construct B+ tree
+    CBPlusTree<int,person_union> B_plus_tree;
+    //insert treated people into B+ tree
+    for(int i=0;i<125;i++){
+        appointment *day_now=appoint_daily[i];
+        int num_treated=15-day_now->get_num();
+        for(int j=0;j<num_treated;j++){
+            person *person_now=day_now->day_treat[j];
+            person_union *united = convert_form(person_now);
+            B_plus_tree.insert(person_now->id,*united);
+        }
+    }
+
     cout<<"Do you want some info about the treating details about some people?\n";
     cout<<"Enter 1 for yes, 0 for no\n";
     int want;

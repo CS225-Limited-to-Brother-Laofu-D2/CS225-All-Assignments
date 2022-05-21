@@ -1,6 +1,5 @@
 //
 // appointment.h Created by Group D2
-// 2022.04.05
 //
 #ifndef appointment_h
 #define appoointment_h

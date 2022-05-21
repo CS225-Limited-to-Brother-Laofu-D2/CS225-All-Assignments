@@ -218,3 +218,41 @@ int local_queue_push_pop(int k , int* register_counter , int register_process , 
     
     return register_process;
 }
+
+
+
+person_union* convert_form(person *person_now)
+{
+    person_union *united=new person_union;
+    united->info->id=person_now->id;
+    united->info->name=person_now->name;
+    united->info->profession=person_now->profession;
+    united->info->birth=person_now->birth;
+    united->info->age=person_now->age;
+    united->info->age_group=person_now->age_group;
+    united->info->address=person_now->address;
+    united->info->phone=person_now->phone;
+    united->info->wechat=person_now->wechat;
+    united->info->email=person_now->email;
+    united->info->preferred_hos1=person_now->preferred_hos1;
+    united->info->preferred_hos2=person_now->preferred_hos2;
+    united->info->preferred_hos3=person_now->preferred_hos3;
+    united->status->risk=person_now->risk;
+    united->status->treatment_type=person_now->treatment_type;
+    united->status->ddl_day=person_now->ddl_day;
+    united->reg->register_order=person_now->register_order;
+    united->reg->register_day=person_now->register_day;
+    united->reg->if_queueing=person_now->if_queueing;
+    united->reg->if_withdrawed=person_now->if_withdrawed;
+    united->reg->if_re_registered=person_now->if_re_registered;
+    united->reg->wait_before_in_queue=person_now->wait_before_in_queue;
+    united->reg->wait_re_register=person_now->wait_re_register;
+    united->treat->apponitment_loc=person_now->apponitment_loc;
+    united->treat->treated_order=person_now->treated_order;
+    united->treat->treated_date=person_now->treated_date;
+    united->treat->treated_time=person_now->treated_time;
+    united->treat->if_treated=person_now->if_treated;
+    united->treat->if_appointed=person_now->if_appointed;
+    united->treat->if_treated_locally=person_now->if_treated_locally;
+    return united;
+}

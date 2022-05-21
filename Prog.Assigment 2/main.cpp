@@ -65,27 +65,28 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"Treated people this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 
-    /*int begin_day=(week-1)*7;
+    int begin_day=(week-1)*7;
     int start=(begin_day+1)*10000;
     int end=(begin_day+7)*10000;
     int current = BTree.search_range(BTree.root,start);
+    cout<<current<<endl;
     queue<person_union*>* temp;
     temp = new queue<person_union*>;
     while (current < end)
     {
         temp->push(B_plus_tree.getDataHandle(current%10000));
-        current = BTree.search_range(BTree.root,current);
+        current = BTree.search_range(BTree.root,current+1);
+        cout<<current<<endl;
     }
     while (!temp->empty())
     {
         person_union *reported = temp->front();
         temp->pop();
         cout<<reported->info->name<<" "<<reported->info->id<<" "<<reported->info->profession<<" "<<reported->info->age_group<<" "<<reported->status->risk<<" "<<reported->treat->treated_date-reported->reg->register_day<<endl;
-    }*/
-        
+    }
     
     cout<<"\n";
-    int begin_day=(week-1)*7;
+
     //Waiting people with appointments (lists from three hospitals)
     cout<<"Waiting people with appointments at the end of this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;

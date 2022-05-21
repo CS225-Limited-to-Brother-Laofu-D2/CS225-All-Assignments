@@ -149,6 +149,10 @@ int main()
     
     // Centralized queue is not a pointer.
     Centralized_Queue<person*> Central_queue;
+    //construct B+ tree
+    CBPlusTree<int,person_union> B_plus_tree;
+    //Construct B-Tree with secondary key: age group (from 0 to 6)
+    BTree<int> B_tree;
     
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
@@ -498,7 +502,16 @@ int main()
                     reported->if_appointed=false;
                     reported->if_queueing=false;
                 }
+                //insert treated people into B+ tree
+                int num_treated=15-yesterday->get_num();
+                for(int j=0;j<num_treated;j++){
+                    person *person_now=yesterday->day_treat[j];
+                    person_union *united = convert_form(person_now);
+                    B_plus_tree.insert(person_now->id,*united);
+                    B_tree.insert(united->treat->treated_date*10000 + united->info->id);
+                }
             }
+
             if ( day % 7 == 0 ){
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);
@@ -523,23 +536,7 @@ int main()
         }
     }
 
-    //construct B+ tree
-    CBPlusTree<int,person_union> B_plus_tree;
-    //Construct B-Tree with secondary key: age group (from 0 to 6)
-    BTree<int> B_tree;
-    //insert treated people into B+ tree
-    for(int i=0;i<125;i++){
-        appointment *day_now=appoint_daily[i];
-        int num_treated=15-day_now->get_num();
-        for(int j=0;j<num_treated;j++){
-            person *person_now=day_now->day_treat[j];
-            person_union *united = convert_form(person_now);
-            B_plus_tree.insert(person_now->id,*united);
-            B_tree.insert(united->info->age_group*10000 + united->info->id);
-        }
-    }
-
-    /*cout<<"Do you want some info about the treating details about some people?\n";
+    cout<<"Do you want some info about the treating details about some people?\n";
     cout<<"Enter 1 for yes, 0 for no\n";
     int want;
     cin>>want;
@@ -589,7 +586,7 @@ int main()
     cin>>yorn;
     }
     cout<<"*******Program terminated !********\n";
-    return 0;*/
+    return 0;
 }
 
 

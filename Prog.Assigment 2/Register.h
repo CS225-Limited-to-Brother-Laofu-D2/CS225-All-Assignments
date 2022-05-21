@@ -119,4 +119,14 @@ class treatment
         bool if_treated_locally;
 };
 
+//person_union collects the pointers to four separate database 
+class person_union
+{
+    public:
+        person_specific *info;
+        medical_status *status;
+        registeration *reg;
+        treatment *treat;
+};
+
 #endif

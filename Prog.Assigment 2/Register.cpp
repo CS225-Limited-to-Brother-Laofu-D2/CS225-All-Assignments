@@ -1,5 +1,5 @@
 //
-// Register.cpp Created by YayItsThunder on 2022.4.3
+// Register.cpp Created by YayItsThunder 
 //
 
 #include "Register.h"
@@ -36,6 +36,59 @@ person::person(void)
     if_re_registered = false;
     ddl_day = -1;
     wait_before_in_queue = -1;
+}
+
+person_union::person_union(void)
+{
+    info= new person_specific;
+    status=new medical_status;
+    reg=new registeration;
+    treat=new treatment;
+}
+
+person_specific::person_specific()
+{
+    id=-1;
+    name="";
+    profession=-1;
+    birth="";
+    age=-1;
+    age_group = -1;
+    address = "";
+    phone = -1;
+    wechat = "";
+    email = "";
+    preferred_hos1 = -1;
+    preferred_hos2 = -1;
+    preferred_hos3 = -1;
+}
+
+medical_status::medical_status()
+{
+    risk=-1;
+    treatment_type=-1;
+    ddl_day=-1;
+}
+
+registeration::registeration()
+{
+    register_order = -1;
+    register_day = -1;
+    if_queueing = false;
+    if_withdrawed = false;
+    if_re_registered = false;
+    wait_before_in_queue = -1;
+    wait_re_register=-1;
+}
+
+treatment::treatment()
+{
+    apponitment_loc = -1;
+    treated_order = -1;
+    treated_date = -1;
+    treated_time ="";
+    if_treated = false;
+    if_appointed = false;
 }
 
 // This function will return the register_process counter.

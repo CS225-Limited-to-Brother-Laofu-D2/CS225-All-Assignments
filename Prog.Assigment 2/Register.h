@@ -72,6 +72,7 @@ class person
 class person_specific
 {
     public:
+        person_specific();
         int id;
         string name;
         int profession;
@@ -90,6 +91,7 @@ class person_specific
 class medical_status
 {
     public:
+        medical_status();
         int risk;
         int treatment_type;
         int ddl_day;    
@@ -98,6 +100,7 @@ class medical_status
 class registeration
 {
     public:
+        registeration();
         int register_order;
         int register_day;
         bool if_queueing;
@@ -110,6 +113,7 @@ class registeration
 class treatment
 {
     public:
+        treatment();
         int apponitment_loc;
         int treated_order;
         int treated_date;
@@ -123,6 +127,7 @@ class treatment
 class person_union
 {
     public:
+        person_union();
         person_specific *info;
         medical_status *status;
         registeration *reg;

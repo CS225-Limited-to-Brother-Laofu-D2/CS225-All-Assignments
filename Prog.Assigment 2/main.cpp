@@ -525,6 +525,8 @@ int main()
 
     //construct B+ tree
     CBPlusTree<int,person_union> B_plus_tree;
+    //Construct B-Tree with secondary key: age group (from 0 to 6)
+    BTree<int> B_tree;
     //insert treated people into B+ tree
     for(int i=0;i<125;i++){
         appointment *day_now=appoint_daily[i];
@@ -533,10 +535,11 @@ int main()
             person *person_now=day_now->day_treat[j];
             person_union *united = convert_form(person_now);
             B_plus_tree.insert(person_now->id,*united);
+            B_tree.insert(united->info->age_group*10000 + united->info->id);
         }
     }
 
-    cout<<"Do you want some info about the treating details about some people?\n";
+    /*cout<<"Do you want some info about the treating details about some people?\n";
     cout<<"Enter 1 for yes, 0 for no\n";
     int want;
     cin>>want;
@@ -564,9 +567,6 @@ int main()
     return 0;
 
 
-    //Construct B-Tree with secondary key: age group (from 0 to 6)
-    BTree<int> B_tree;
-    //insert key*100000+id
 
 
     cout<<"Do you want some info about people in certain age groups?\n";
@@ -589,7 +589,7 @@ int main()
     cin>>yorn;
     }
     cout<<"*******Program terminated !********\n";
-    return 0;
+    return 0;*/
 }
 
 

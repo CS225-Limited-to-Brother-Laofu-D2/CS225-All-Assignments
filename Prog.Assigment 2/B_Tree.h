@@ -48,7 +48,7 @@ private:
     T *search(BTreeNode<T> *p_node, T search_key) const;//search the node with respect to the key and return pointer 
     void display(BTreeNode<T> *p_node) const;
     void updateDepth(BTreeNode<T> *p_node);
-    int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key) const;
+    int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key, int *temp) const;
     
     bool insertToNode(BTreeNode<T> *p_node, T new_key);
     void splitChild(BTreeNode<T> *parent, int full_child_index);

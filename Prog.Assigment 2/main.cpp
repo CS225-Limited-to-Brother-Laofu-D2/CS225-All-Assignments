@@ -434,7 +434,7 @@ int main()
                 }   
             }while(op1 == 1 || op1 == 2 || op1 == 3 || op1 == 4);
         }
-
+        
         if(morning_afternoon == 1) // Morning
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue,new_risk_queue);
@@ -443,7 +443,7 @@ int main()
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue,new_risk_queue);   
         }
-
+        
         if(morning_afternoon == 0)
         {   
             if( day % 30 == 1){
@@ -526,7 +526,7 @@ int main()
                     B_tree.insert(united->treat->treated_date*10000 + united->info->id);
                 }
             }
-
+            
             if ( day % 7 == 0 ){
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc, B_tree, B_plus_tree);

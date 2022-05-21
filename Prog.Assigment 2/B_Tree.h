@@ -5,13 +5,14 @@ https://blog.csdn.net/xiaohusaier/article/details/77101640
 https://blog.csdn.net/liu1064782986/article/details/7984772
 https://blog.csdn.net/xiajun07061225/article/details/8696501
 */
-
+#pragma once
 #include <iostream>
 using namespace std;
 
 template <typename T>
 class BTreeNode
 {
+    public:
     bool is_leaf;// ture if is a leaf
     int size;// the size of number of keys 
     int depth;// its depth
@@ -19,9 +20,7 @@ class BTreeNode
     T *keys;// An array of keys
     //class of four pointers
     BTreeNode<T> **children;// An array of child pointers
-public:
 
-friend class BTree;
 };
 
 template <typename T>

@@ -1,0 +1,3 @@
+
+    while (!temp->empty())
+    {

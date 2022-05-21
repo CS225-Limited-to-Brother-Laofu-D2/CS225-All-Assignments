@@ -135,32 +135,29 @@ void BTree<T>::freeAll(BTreeNode<T> *root_node)
 }
 
 template <typename T>
-T *BTree<T>::search(BTreeNode<T> *p_node, T search_key) const
+int BTree<T>::findFirstNotSmaller(BTreeNode<T> *p_node, T a_key) const
 {
-    if (p_node != nullptr)
-    {
-
-    int n = p_node->size;
-    // Find the first key greater than or equal to k
     int i = 0;
-    while (i < n && search_key > p_node->keys[i])
-    {
-        i++;
-    }
-    if (search_key == p_node->keys[i])// If the found key is equal to k, return this node
-        return &(p_node->keys[i]);
-    else
-    {
-        if (p_node->is_leaf == true)// If key is not found here and this is a leaf node
-            return nullptr;
-        else// Go to the appropriate child
-            return search(p_node->children[i], search_key);
-    }
-    
-    }
-    return nullptr;
+    for (; i < p_node->size && p_node->keys[i] < a_key; i++)
+        ;
+    return i;
 }
 
+template <typename T>
+T BTree<T>::search_range(BTreeNode<T> *p_node, T key_to_search) const
+{
+    int key_arr_size = p_node->size;
+    int pos = findFirstNotSmaller(p_node, key_to_search);
+    if (pos < key_arr_size && key_to_search == p_node->keys[pos])
+        return p_node->keys[pos];
+    else
+    {
+        if (p_node->is_leaf)
+            return p_node->keys[pos];
+        else
+            return search_range(p_node->children[pos], key_to_search);
+    }
+}
 
 template <typename T>
 void BTree<T>::display(BTreeNode<T> *p_node) const

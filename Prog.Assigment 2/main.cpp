@@ -68,14 +68,19 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     int begin_day=(week-1)*7;
     int start=(begin_day+1)*10000;
     int end=(begin_day+7)*10000;
-    int current = BTree.search_range(BTree.root,start);
+    int *tempo = new int;
+    *tempo = 0;
+    int current = BTree.search_range(BTree.root,start,tempo);
     cout<<current<<endl;
     queue<person_union*>* temp;
     temp = new queue<person_union*>;
     while (current < end)
     {
         temp->push(B_plus_tree.getDataHandle(current%10000));
-        current = BTree.search_range(BTree.root,current+1);
+        *tempo=0;
+        int tempr= current;
+        current = BTree.search_range(BTree.root,current+1,tempo);
+        if(current==0) current=tempr+1;
         cout<<current<<endl;
     }
     while (!temp->empty())

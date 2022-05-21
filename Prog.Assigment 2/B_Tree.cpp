@@ -139,8 +139,9 @@ int BTree<T>::findFirstNotSmaller(BTreeNode<T> *p_node, T a_key, int *temp) cons
 {
     int i = 0;
     for (; i < p_node->size && p_node->keys[i] < a_key; i++)
-        ;
-    if (i == p_node->size && p_node->keys[i] < *temp) *temp = p_node->keys[i];
+        {
+            if (p_node->keys[i] > a_key && p_node->keys[i] < *temp) *temp = p_node->keys[i];
+        }
     return i;
 }
 
@@ -151,7 +152,9 @@ T *BTree<T>::search(BTreeNode<T> *p_node, T key_to_search) const
         return nullptr;
 
     int key_arr_size = p_node->size;
-    int pos = findFirstNotSmaller(p_node, key_to_search,0);
+    int pos = 0;
+    for (; pos < p_node->size && p_node->keys[pos] < key_to_search; pos++)
+        ;
     if (pos < key_arr_size && key_to_search == p_node->keys[pos])
         return &(p_node->keys[pos]);
     else
@@ -164,23 +167,21 @@ T *BTree<T>::search(BTreeNode<T> *p_node, T key_to_search) const
 }
 
 template <typename T>
-T BTree<T>::search_range(BTreeNode<T> *p_node, T key_to_search) const
+T BTree<T>::search_range(BTreeNode<T> *p_node, T key_to_search, int *tempo) const
 {
-    int *temp;
-    *temp = 0;
     int key_arr_size = p_node->size;
-    int pos = findFirstNotSmaller(p_node, key_to_search,temp);
+    int pos = findFirstNotSmaller(p_node, key_to_search,tempo);
     if (pos < key_arr_size && key_to_search == p_node->keys[pos])
         return p_node->keys[pos];
     else
     {
         if (p_node->is_leaf)
         {
-            if (pos==p_node->size) return *temp;
+            if (pos==p_node->size) return *tempo;
             return p_node->keys[pos];
         }
         else
-            return search_range(p_node->children[pos], key_to_search);
+            return search_range(p_node->children[pos], key_to_search, tempo);
     }
 }
 

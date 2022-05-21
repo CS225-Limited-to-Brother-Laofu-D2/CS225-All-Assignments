@@ -35,7 +35,7 @@ public:
     void display() const;//show the inner tree
     bool insert(T key);
     bool remove(T key);
-    T search_range(BTreeNode<T> *p_node, T search_key) const;
+    T search_range(BTreeNode<T> *p_node, T search_key, int *tempo) const;
     int min_degree;
     int key_num;
     BTreeNode<T> *root;

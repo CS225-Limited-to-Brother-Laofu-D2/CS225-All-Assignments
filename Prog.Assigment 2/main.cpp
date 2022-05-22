@@ -63,31 +63,12 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 
     int begin_day=(week-1)*7;
-<<<<<<< HEAD
     for(int i=0;i<=5;i++){
         appointment *now_day=appoint_daily[begin_day+i];
         for(int j=0;j<15-now_day->get_num();j++){
             person *reported=now_day->day_treat[j];
             cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
         }
-=======
-    int start=(begin_day+1)*10000;
-    int end=(begin_day+7)*10000;
-    int *tempo = new int;
-    *tempo = 0;
-    int current = BTree.search_range(BTree.root,start,tempo);
-    cout<<current<<endl;
-    queue<person_union*>* temp;
-    temp = new queue<person_union*>;
-    while (current < end)
-    {
-        temp->push(B_plus_tree.getDataHandle(current%10000));
-        *tempo=0;
-        int tempr= current;
-        current = BTree.search_range(BTree.root,current+1,tempo);
-        if(current==0) current=tempr+1;
-        cout<<current<<endl;
->>>>>>> e9a1ff2b06c244397cd8025c25623a6a899c21a3
     }
     cout<<"\n";
 
@@ -555,7 +536,6 @@ int main()
             }
         }
     }
-
     cout<<"Do you want some info about the treating details about some people?\n";
     cout<<"Enter 1 for yes, 0 for no\n";
     int want;

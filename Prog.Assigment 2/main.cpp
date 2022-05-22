@@ -3,8 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
 #include <cstdlib>
 #include <queue>
+#include <windows.h>
 using namespace std;
 using std::cout;
 using std::cin;
@@ -597,6 +599,29 @@ int main()
         cin>>want;
     }
     cout<<"*******Program terminated !********\n";
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    Sleep(200);
+    cout<< "   _______  _                    _              ______               _    _       _                  _ \n";
+    Sleep(200);
+    cout<< "  |__   __|| |                  | |            |  ____|             | |  | |     (_)                | |\n";
+    Sleep(200);
+    cout<< "     | |   | |__    __ _  _ __  | | __ ___     | |__  ___   _ __    | |  | | ___  _  _ __    __ _   | |\n";
+    Sleep(200);
+    cout<< "     | |   | '_ \\  / _` || '_ \\ | |/ // __|    |  __|/ _ \\ | '__|   | |  | |/ __|| || '_ \\  / _` |  | |\n";
+    Sleep(200);
+    cout<< "     | |   | | | || (_| || | | ||   < \\__ \\    | |  | (_) || |      | |__| |\\__ \\| || | | || (_| |  |_|\n";
+    Sleep(200);
+    cout<< "     |_|   |_| |_| \\__,_||_| |_||_|\\_\\|___/    |_|   \\___/ |_|       \\____/ |___/|_||_| |_| \\__, |  (_)\n";
+    Sleep(200);
+    cout<< "                                                                                             __/ |     \n";
+    Sleep(200);
+    cout<< "                                                                                            |___/     \n";
+    Sleep(200);
+    cout<< endl;
+    cout<< endl;
+    cout<< endl;
     return 0;
 }
 

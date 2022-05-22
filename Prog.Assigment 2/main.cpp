@@ -63,12 +63,31 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 
     int begin_day=(week-1)*7;
+<<<<<<< HEAD
     for(int i=0;i<=5;i++){
         appointment *now_day=appoint_daily[begin_day+i];
         for(int j=0;j<15-now_day->get_num();j++){
             person *reported=now_day->day_treat[j];
             cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
         }
+=======
+    int start=(begin_day+1)*10000;
+    int end=(begin_day+7)*10000;
+    int *tempo = new int;
+    *tempo = 0;
+    int current = BTree.search_range(BTree.root,start,tempo);
+    cout<<current<<endl;
+    queue<person_union*>* temp;
+    temp = new queue<person_union*>;
+    while (current < end)
+    {
+        temp->push(B_plus_tree.getDataHandle(current%10000));
+        *tempo=0;
+        int tempr= current;
+        current = BTree.search_range(BTree.root,current+1,tempo);
+        if(current==0) current=tempr+1;
+        cout<<current<<endl;
+>>>>>>> e9a1ff2b06c244397cd8025c25623a6a899c21a3
     }
     cout<<"\n";
 
@@ -420,7 +439,7 @@ int main()
                 }   
             }while(op1 == 1 || op1 == 2 || op1 == 3 || op1 == 4);
         }
-
+        
         if(morning_afternoon == 1) // Morning
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_1,localqueue_1_medium_risk,localqueue_1_high_risk,re_register_queue,new_risk_queue);
@@ -429,7 +448,7 @@ int main()
         {
             register_process = local_queue_push_pop(k,register_counter,register_process,local_register,Central_queue,localqueue_2,localqueue_2_medium_risk,localqueue_2_high_risk,re_register_queue,new_risk_queue);   
         }
-
+        
         if(morning_afternoon == 0)
         {   
             if( day % 30 == 1){
@@ -512,7 +531,7 @@ int main()
                     B_tree.insert(united->treat->treated_date*10000 + united->info->id);
                 }
             }
-
+            
             if ( day % 7 == 0 ){
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);

@@ -197,9 +197,9 @@ void BTree<T>::display(BTreeNode<T> *p_node) const
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
-                cout << "********";
-            cout << "|";
-            cout << p_node->keys[i] << " " << endl;
+                ;
+            cout << "profession: "<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " ID: ";
+            cout << (p_node->keys[i]%10000) << " " << endl;
         }
         return;
     }
@@ -211,9 +211,9 @@ void BTree<T>::display(BTreeNode<T> *p_node) const
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
-                cout << "*******";
-            cout << "|";
-            cout << p_node->keys[i] << " " << endl;
+                ;
+            cout << "profession: "<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " ID: ";
+            cout << (p_node->keys[i]%10000) << " " << endl;
         }
     }
 

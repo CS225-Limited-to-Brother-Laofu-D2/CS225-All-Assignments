@@ -551,8 +551,7 @@ int main()
             if ( day % 7 == 0 ){
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);
-                B_tree_pointer[day/7]->display();
-
+                B_tree_pointer[day/7-1]->display();
             }
             if ( day % 30 == 0 ){
                 cout<<"\n*******MONTHLY REPORT*******\n";
@@ -561,7 +560,7 @@ int main()
                 last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
                 report_monthly (appoint_count,register_counter,av_time,Central_queue,last_month_withdraw,day/30);
                 *register_counter = 0;
-                B_tree_monthly_pointer[day/30]->display();
+                B_tree_monthly_pointer[day/30-1]->display();
             }
             if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())
             {

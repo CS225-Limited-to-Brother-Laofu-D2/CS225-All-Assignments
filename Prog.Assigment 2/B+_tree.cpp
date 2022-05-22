@@ -146,7 +146,7 @@ DataType *CBPlusTree<KeyType, DataType>::recursive_getDataHandle(CNode<KeyType, 
 	// cout << "second" << endl;
 	if (pNode->getType() == LEAF)
 	{
-		// ((CLeafNode<KeyType, DataType> *)pNode)->pour();
+		// ((CLeafNode<KeyType, DataType> *)pNode)->pour_out();
 
 		// cout << "now \"pnode\" points to a leaf." << endl;
 		// cout << "key to get handle: " << key << endl;
@@ -187,7 +187,7 @@ template <typename KeyType, typename DataType>
 void CBPlusTree<KeyType, DataType>::printInConcavo(CNode<KeyType, DataType> *pNode, int count) const
 {
 	if (pNode->getType() == LEAF)
-		((CLeafNode<KeyType, DataType> *)pNode)->pour();
+		((CLeafNode<KeyType, DataType> *)pNode)->pour_out();
 	if (pNode != NULL)
 	{
 		int i, j;
@@ -217,7 +217,7 @@ void CBPlusTree<KeyType, DataType>::printData() const
 	cout << "Now print all the data stored in B+ tree:" << endl
 		 << endl;
 	CLeafNode<KeyType, DataType> *itr = m_DataHead;
-	itr->pour();
+	itr->pour_out();
 	while (itr != NULL)
 	{
 		cout << "block size: " << itr->getKeyNum() << endl;

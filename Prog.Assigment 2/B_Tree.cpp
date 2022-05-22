@@ -37,7 +37,45 @@ void BTree<T>::display() const
 
     cout << "B-Tree root node at left most:" << endl;
 
-    display(root);
+    display_weekly(root);
+
+    cout <<  "B-Tree has " << key_num << " keys. " << endl;
+
+    cout << "*************END DISPLAY*******************" << endl
+         << endl;
+}
+
+template <typename T>
+void BTree<T>::display_weekly(int week) const
+{
+
+    cout <<  "Display the B-Tree as follows" << endl
+         << endl;
+
+    cout << "B-Tree root node at left most:" << endl;
+
+    cout<<"profession"<<" "<<"ID"<<endl;
+
+    display_weekly(root);
+
+    cout <<  "B-Tree has " << key_num << " keys. " << endl;
+
+    cout << "*************END DISPLAY*******************" << endl
+         << endl;
+}
+
+template <typename T>
+void BTree<T>::display_monthly(int month) const
+{
+
+    cout <<  "Display the B-Tree as follows" << endl
+         << endl;
+
+    cout << "B-Tree root node at left most:" << endl;
+
+    cout<<"profession"<<" "<<"ID"<<endl;
+
+    display_monthly(root);
 
     cout <<  "B-Tree has " << key_num << " keys. " << endl;
 
@@ -198,8 +236,8 @@ void BTree<T>::display(BTreeNode<T> *p_node) const
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
                 ;
-            cout << "profession: "<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " ID: ";
-            cout << (p_node->keys[i]%10000) << " " << endl;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
         }
         return;
     }
@@ -212,8 +250,76 @@ void BTree<T>::display(BTreeNode<T> *p_node) const
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
                 ;
-            cout << "profession: "<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " ID: ";
-            cout << (p_node->keys[i]%10000) << " " << endl;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
+        }
+    }
+
+}
+
+template <typename T>
+void BTree<T>::display_weekly(BTreeNode<T> *p_node) const
+{
+    if (p_node == nullptr)
+        return;
+
+    if (p_node->is_leaf)
+    {
+        for (int i = 0; i < p_node->size; ++i)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                ;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
+        }
+        return;
+    }
+
+    for (int i = 0; i <= p_node->size; ++i)
+    {
+        display(p_node->children[i]);
+        if (i != p_node->size)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                ;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
+        }
+    }
+
+}
+
+template <typename T>
+void BTree<T>::display_monthly(BTreeNode<T> *p_node) const
+{
+    if (p_node == nullptr)
+        return;
+
+    if (p_node->is_leaf)
+    {
+        for (int i = 0; i < p_node->size; ++i)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                ;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
+        }
+        return;
+    }
+
+    for (int i = 0; i <= p_node->size; ++i)
+    {
+        display(p_node->children[i]);
+        if (i != p_node->size)
+        {
+            int height = root->depth - p_node->depth;
+            for (int j = 0; j < height; j++)
+                ;
+            cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            cout << (p_node->keys[i]%10000) << endl;
         }
     }
 

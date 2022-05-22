@@ -439,8 +439,7 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
     do
     {
         if (direction == 1){
-            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
-            cout<<"fuck";
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;       
             outfile<<node->loc->name<<","<<node->loc->id<<","<<node->loc->profession<<","<<node->loc->age<<","<<node->loc->risk<<","<<(day-node->loc->register_day)<<endl;}
         else{
             cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;

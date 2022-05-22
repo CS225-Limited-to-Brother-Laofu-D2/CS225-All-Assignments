@@ -49,8 +49,8 @@ private:
    void freeAll(BTreeNode<T> *p_node);
     T *search(BTreeNode<T> *p_node, T search_key) const;//search the node with respect to the key and return pointer 
     void display(BTreeNode<T> *p_node) const;
-    void display_weekly(BTreeNode<T> *p_node) const;
-    void display_monthly(BTreeNode<T> *p_node) const;
+    void display_weekly(BTreeNode<T> *p_node, int week) const;
+    void display_monthly(BTreeNode<T> *p_node, int month) const;
     void updateDepth(BTreeNode<T> *p_node);
     int findFirstNotSmaller(BTreeNode<T> *p_node, T a_key, int *temp) const;
     

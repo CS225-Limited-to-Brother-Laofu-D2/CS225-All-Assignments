@@ -541,9 +541,9 @@ int main()
                     person_union *united = convert_form(person_now);
                     B_plus_tree.insert(person_now->id,*united);
                     B_tree.insert(united->info->profession*10000 + united->info->id);
-                    int k=day/7;
+                    int k=(day-1)/7;
                     B_tree_pointer[k]->insert(united->info->profession*10000 + united->info->id);
-                    int m=day/30;
+                    int m=(day-1)/30;
                     B_tree_monthly_pointer[m]->insert(united->info->profession*10000 + united->info->id);
                 }
             }
@@ -552,6 +552,10 @@ int main()
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);
                 B_tree_pointer[day/7-1]->display_weekly(day/7);
+                string week_string = to_string(day/7);
+                string filename = "week " + week_string + " B-Tree report.csv";
+                ofstream outfile;
+                outfile.close();
             }
             if ( day % 30 == 0 ){
                 cout<<"\n*******MONTHLY REPORT*******\n";
@@ -561,6 +565,11 @@ int main()
                 report_monthly (appoint_count,register_counter,av_time,Central_queue,last_month_withdraw,day/30);
                 *register_counter = 0;
                 B_tree_monthly_pointer[day/30-1]->display_monthly(day/30);
+                string month_string = to_string(day/30);
+                string filename = "month " + month_string + " B-Tree report.csv";
+                ofstream outfile;
+                outfile.open(filename,ios::app);
+                outfile.close();
             }
             if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())
             {

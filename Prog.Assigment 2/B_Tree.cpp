@@ -54,9 +54,15 @@ void BTree<T>::display_weekly(int week) const
 
     cout << "B-Tree root node at left most:" << endl;
 
-    cout<<"profession"<<" "<<"ID"<<endl;
+    string week_string = to_string(week);
+    string filename = "week " + week_string + " B-Tree report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
 
-    display_weekly(root);
+    cout<<"profession"<<" "<<"ID"<<endl;
+    outfile<<"profession"<<","<<"ID"<<endl;
+
+    display_weekly(root,week);
 
     cout <<  "B-Tree has " << key_num << " keys. " << endl;
 
@@ -73,9 +79,15 @@ void BTree<T>::display_monthly(int month) const
 
     cout << "B-Tree root node at left most:" << endl;
 
-    cout<<"profession"<<" "<<"ID"<<endl;
+    string month_string = to_string(month);
+    string filename = "month " + month_string + " B-Tree report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
 
-    display_monthly(root);
+    cout<<"profession"<<" "<<"ID"<<endl;
+    outfile<<"profession"<<","<<"ID"<<endl;
+
+    display_monthly(root,month);
 
     cout <<  "B-Tree has " << key_num << " keys. " << endl;
 
@@ -258,8 +270,13 @@ void BTree<T>::display(BTreeNode<T> *p_node) const
 }
 
 template <typename T>
-void BTree<T>::display_weekly(BTreeNode<T> *p_node) const
+void BTree<T>::display_weekly(BTreeNode<T> *p_node, int week) const
 {
+    string week_string = to_string(week);
+    string filename = "week " + week_string + " B-Tree report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
+
     if (p_node == nullptr)
         return;
 
@@ -271,29 +288,37 @@ void BTree<T>::display_weekly(BTreeNode<T> *p_node) const
             for (int j = 0; j < height; j++)
                 ;
             cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            outfile<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< "," ;
             cout << (p_node->keys[i]%10000) << endl;
+            outfile<<(p_node->keys[i]%10000) << endl;
         }
         return;
     }
 
     for (int i = 0; i <= p_node->size; ++i)
     {
-        display(p_node->children[i]);
+        display_weekly(p_node->children[i],week);
         if (i != p_node->size)
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
                 ;
             cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            outfile<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< "," ;
             cout << (p_node->keys[i]%10000) << endl;
+            outfile<<(p_node->keys[i]%10000) << endl;
         }
     }
 
 }
 
 template <typename T>
-void BTree<T>::display_monthly(BTreeNode<T> *p_node) const
+void BTree<T>::display_monthly(BTreeNode<T> *p_node, int month) const
 {
+    string month_string = to_string(month);
+    string filename = "month " + month_string + " B-Tree report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
     if (p_node == nullptr)
         return;
 
@@ -305,21 +330,25 @@ void BTree<T>::display_monthly(BTreeNode<T> *p_node) const
             for (int j = 0; j < height; j++)
                 ;
             cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            outfile<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< "," ;
             cout << (p_node->keys[i]%10000) << endl;
+            outfile<<(p_node->keys[i]%10000) << endl;
         }
         return;
     }
 
     for (int i = 0; i <= p_node->size; ++i)
     {
-        display(p_node->children[i]);
+        display_monthly(p_node->children[i],month);
         if (i != p_node->size)
         {
             int height = root->depth - p_node->depth;
             for (int j = 0; j < height; j++)
                 ;
             cout <<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< " " ;
+            outfile<<((p_node->keys[i])-(p_node->keys[i]%10000))/10000<< "," ;
             cout << (p_node->keys[i]%10000) << endl;
+            outfile<<(p_node->keys[i]%10000) << endl;
         }
     }
 

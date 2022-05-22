@@ -171,11 +171,11 @@ int thanks()
     Sleep(200);
     cout<< green << "     | |   | '_ \\  / _` || '_ \\ | |/ // __|    | |      | |      | |" << "\033[0m" << endl;
     Sleep(200);
-    cout<< blue << "     | |   | | | || (_| || | | ||   < \\__ \\    |_|      |_|      |_|" << reset << std::endl;
+    cout<< "\033[0;1;36m" << "     | |   | | | || (_| || | | ||   < \\__ \\    |_|      |_|      |_|" << reset << std::endl;
     Sleep(200);
-    cout<< white << "     |_|   |_| |_| \\__,_||_| |_||_|\\_\\|___/     _        _        _  " << reset << std::endl;
+    cout<< blue << "     |_|   |_| |_| \\__,_||_| |_||_|\\_\\|___/     _        _        _  " << reset << std::endl;
     Sleep(200);
-    cout<< white << "                                               (_)      (_)      (_)    " << reset << std::endl;
+    cout<< "\033[0;1;35m" << "                                               (_)      (_)      (_)    " << reset << std::endl;
     Sleep(200);
     cout<< "                                                                                              \n";
     Sleep(200);

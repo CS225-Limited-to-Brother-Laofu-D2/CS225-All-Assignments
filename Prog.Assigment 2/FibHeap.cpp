@@ -428,14 +428,23 @@ template <class T> void FibHeap<T>::print(FibNode<T> *node, FibNode<T> *prev, in
 {
     FibNode<T> *start=node;
 
+    int week=day/7;
+    string week_string = to_string(week);
+    string filename = "week " + week_string + " report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
+
     if (node==NULL)
         return ;
     do
     {
         if (direction == 1){
-            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;}
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+            cout<<"fuck";
+            outfile<<node->loc->name<<","<<node->loc->id<<","<<node->loc->profession<<","<<node->loc->age<<","<<node->loc->risk<<","<<(day-node->loc->register_day)<<endl;}
         else{
-            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;}
+            cout<<node->loc->name<<" "<<node->loc->id<<" "<<node->loc->profession<<" "<<node->loc->age<<" "<<node->loc->risk<<" "<<(day-node->loc->register_day)<<endl;
+            outfile<<node->loc->name<<","<<node->loc->id<<","<<node->loc->profession<<","<<node->loc->age<<","<<node->loc->risk<<","<<(day-node->loc->register_day)<<endl;}
 
         if (node->child != NULL)
             print(node->child, node, 1, day);
@@ -452,16 +461,25 @@ template <class T> void FibHeap<T>::print(int day)
     int i=0;
     FibNode<T> *p;
 
+    int week=day/7;
+    string week_string = to_string(week);
+    string filename = "week " + week_string + " report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
+
     if (min==NULL)
         return ;
 
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+    outfile<<"name"<<","<<"ID"<<","<<"profession"<<","<<"age"<<","<<"risk"<<","<<"waiting-time-until-today"<<endl;
     p = min;
     do {
         cout<<p->loc->name<<" "<<p->loc->id<<" "<<p->loc->profession<<" "<<p->loc->age<<" "<<p->loc->risk<<" "<<(day-p->loc->register_day)<<endl;
+        outfile<<p->loc->name<<","<<p->loc->id<<","<<p->loc->profession<<","<<p->loc->age<<","<<p->loc->risk<<","<<(day-p->loc->register_day)<<endl; 
         print(p->child, p, 1, day);
         p = p->right;
     } while (p != min);
+    outfile.close();
     cout << endl;
 }
 

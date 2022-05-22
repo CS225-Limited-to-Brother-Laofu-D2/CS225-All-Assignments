@@ -30,6 +30,12 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     int week=Day/7;
     int category;
     int op;
+
+    string week_string = to_string(week);
+    string filename = "week " + week_string + " report.csv";
+    ofstream outfile;
+    outfile.open(filename,ios::app);
+
     cout<<"This is weekly report for week "<<week<<"!\n";
     cout<<"Which category do you want to sort?\n";
     cout<<"Enter 1 for treated people, 2 for appointed people, 3 for queueing people\n";
@@ -62,12 +68,16 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     cout<<"Treated people this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time"<<endl;
 
+    outfile<<"Treated people this week"<<endl;
+    outfile<<"name"<<","<<"ID"<<","<<"profession"<<","<<"age-group"<<","<<"risk"<<","<<"waiting-time"<<endl;
+
     int begin_day=(week-1)*7;
     for(int i=0;i<=5;i++){
         appointment *now_day=appoint_daily[begin_day+i];
         for(int j=0;j<15-now_day->get_num();j++){
             person *reported=now_day->day_treat[j];
             cout<<reported->name<<" "<<reported->id<<" "<<reported->profession<<" "<<reported->age_group<<" "<<reported->risk<<" "<<reported->treated_date-reported->register_day<<endl;
+            outfile<<reported->name<<","<<reported->id<<","<<reported->profession<<","<<reported->age_group<<","<<reported->risk<<","<<reported->treated_date-reported->register_day<<endl;
         }
     }
     cout<<"\n";
@@ -75,17 +85,24 @@ int report_weekly (int Day, appointment **appoint_daily, Centralized_Queue<perso
     //Waiting people with appointments (lists from three hospitals)
     cout<<"Waiting people with appointments at the end of this week"<<endl;
     cout<<"name"<<" "<<"ID"<<" "<<"profession"<<" "<<"age-group"<<" "<<"risk"<<" "<<"waiting-time-until-today"<<endl;
+    outfile<<"Waiting people with appointments at the end of this week"<<endl;
+    outfile<<"name"<<","<<"ID"<<","<<"profession"<<","<<"age-group"<<","<<"risk"<<","<<"waiting-time-until-today"<<endl;
+
     appointment *now_day=appoint_daily[begin_day+6];
     for(int j=0;j<15-now_day->get_num();j++){
         person *reported=now_day->day_treat[j];
         cout<<reported->name<<" "<<reported->id<<"  "<<reported->profession<<" "<<reported->age_group<<"  "<<reported->risk<<" "<<Day-reported->register_day<<endl;
+        outfile<<reported->name<<","<<reported->id<<","<<reported->profession<<","<<reported->age_group<<","<<reported->risk<<","<<Day-reported->register_day<<endl;
     }
     cout<<"\n";
 
     //Queueing people without apppointments (all the poeple in centralized queue(Fib-heap))
     cout<<"Queueing poeple without appointments this week"<<endl;
+    outfile<<"Queueing poeple without appointments this week"<<endl;
+    outfile.close();
     Central_queue.WeeklyReport(Day);
     cout<<"*****Weekly Report is done*****\n\n\n";
+    outfile.close();
     return 0;
 }
 
@@ -120,7 +137,7 @@ int report_monthly (int num_appoint,int* reg, double av_time, Centralized_Queue<
 
 int main()
 {
-    cout<<endl<<"Computing Program I--CS 225--Group D2"<<endl;
+    cout<<endl<<"Computing Program II--CS 225--Group D2"<<endl;
     cout<<"All rights reserved"<<endl<<endl;
     int sum_morning_afternoon = 200;
     int last_month_number = 0;

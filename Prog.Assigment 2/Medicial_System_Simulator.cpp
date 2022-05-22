@@ -195,10 +195,10 @@ int main()
     }
 
     // File open
-    ifstream registry1("registry_1.csv", ios::in);
+    ifstream registry1("registry.csv", ios::in);
     if (!registry1)
     {
-        cout << "Cannot open registry_1, program terminated." << endl;
+        cout << "Cannot open registry, program terminated." << endl;
         return 0;
     }
     string line;

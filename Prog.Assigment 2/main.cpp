@@ -169,15 +169,21 @@ int main()
     Centralized_Queue<person*> Central_queue;
     //construct B+ tree
     CBPlusTree<int,person_union> B_plus_tree;
-    //Construct B-Tree with secondary key: age group (from 0 to 6)
+    //Construct B-Tree with secondary key: profession group (from 0 to 6)
     BTree<int> B_tree;
-    //Construct of B tree to store the treating info for each week
+    //Construct B tree to store the treating info for each week
     BTree<int> **B_tree_pointer;
     B_tree_pointer = new BTree<int>*[20];
     for(int i=0;i<20;i++){
         B_tree_pointer[i]=new BTree<int>;
     }
-    
+    //Construct B tree to store the treating info for each month
+    BTree<int> **B_tree_monthly_pointer;
+    B_tree_monthly_pointer = new BTree<int>*[5];
+    for(int i=0;i<5;i++){
+        B_tree_monthly_pointer[i]=new BTree<int>;
+    }
+
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
     local_register = new person*[1500];
@@ -535,6 +541,8 @@ int main()
                     B_tree.insert(united->info->profession*10000 + united->info->id);
                     int k=day/7;
                     B_tree_pointer[k]->insert(united->info->profession*10000 + united->info->id);
+                    int m=day/30;
+                    B_tree_monthly_pointer[m]->insert(united->info->profession*10000 + united->info->id);
                 }
             }
             
@@ -551,6 +559,7 @@ int main()
                 last_month_withdraw = Central_queue.fib_heap->withdraw_number - last_month_withdraw;
                 report_monthly (appoint_count,register_counter,av_time,Central_queue,last_month_withdraw,day/30);
                 *register_counter = 0;
+                B_tree_monthly_pointer[day/30]->display();
             }
             if(localqueue_1_high_risk->empty() && localqueue_1_medium_risk->empty() && localqueue_2_high_risk->empty() && localqueue_2_medium_risk->empty() && new_risk_queue->empty() && Central_queue.fib_heap->ifempty() && re_register_queue->empty())
             {

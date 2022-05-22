@@ -171,6 +171,12 @@ int main()
     CBPlusTree<int,person_union> B_plus_tree;
     //Construct B-Tree with secondary key: age group (from 0 to 6)
     BTree<int> B_tree;
+    //Construct of B tree to store the treating info for each week
+    BTree<int> **B_tree_pointer;
+    B_tree_pointer = new BTree<int>*[20];
+    for(int i=0;i<20;i++){
+        B_tree_pointer[i]=new BTree<int>;
+    }
     
     // Create a double-pointer array, i.e, local_register is an array containing 500 pointers to class person.
     person** local_register;
@@ -526,13 +532,17 @@ int main()
                     person *person_now=yesterday->day_treat[j];
                     person_union *united = convert_form(person_now);
                     B_plus_tree.insert(person_now->id,*united);
-                    B_tree.insert(united->treat->treated_date*10000 + united->info->id);
+                    B_tree.insert(united->info->profession*10000 + united->info->id);
+                    int k=day/7;
+                    B_tree_pointer[k]->insert(united->info->profession*10000 + united->info->id);
                 }
             }
             
             if ( day % 7 == 0 ){
                 cout<<"\n*******WEEKLY REPORT*******\n";
                 report_weekly (day,appoint_daily,Central_queue, everyone_loc);
+                B_tree_pointer[day/7]->display();
+
             }
             if ( day % 30 == 0 ){
                 cout<<"\n*******MONTHLY REPORT*******\n";

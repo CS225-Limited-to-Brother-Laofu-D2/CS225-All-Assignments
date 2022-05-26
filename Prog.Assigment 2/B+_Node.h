@@ -1,3 +1,10 @@
+//     ************Reference**************   //
+//The data structure of our B+ tree has taken some reference to following websites
+//Some codes are modified from
+//https://www.cnblogs.com/yangj-Blog/p/12992124.html
+//https://blog.csdn.net/alzzw/article/details/97663352
+//https://blog.csdn.net/liu1064782986/article/details/7982290
+
 #ifndef BPLUS_NODE
 #define BPLUS_NODE
 
